@@ -1,0 +1,29 @@
+{
+	"miniprogramRoot": "dist/",
+	"projectname": "taro-demo",
+	"description": "taro demo",
+	"appid": "touristappid",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"enhance": false,
+		"postcss": true,
+		"minified": false,
+		"newFeature": true,
+		"coverView": true,
+		"nodeModules": false,
+		"autoAudits": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
+}
