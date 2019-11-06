@@ -64,7 +64,7 @@ export default class MyAddr extends Component {
         {
           list.map((ele, index) => {
             return (
-              <View className="list-item" key={index}>
+              <View className="list-item" key={ele.name}>
                 <View className="info">
                   <View className="line-first">
                     <Text>收货人：{ele.name}</Text>

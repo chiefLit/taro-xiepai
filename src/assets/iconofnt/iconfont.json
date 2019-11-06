@@ -1,0 +1,121 @@
+{
+  "id": "1492174",
+  "name": "鞋派",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "小程序icon",
+  "glyphs": [
+    {
+      "icon_id": "351755",
+      "name": "勾选",
+      "font_class": "gouxuan",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "11615786",
+      "name": "选择服务",
+      "font_class": "xuanzefuwu",
+      "unicode": "e6f9",
+      "unicode_decimal": 59129
+    },
+    {
+      "icon_id": "11617635",
+      "name": "在线支付",
+      "font_class": "zaixianzhifu",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "11617973",
+      "name": "发货到平台",
+      "font_class": "fahuodaopingtai",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "11618322",
+      "name": "开始洗护",
+      "font_class": "kaishixihu",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    },
+    {
+      "icon_id": "11619843",
+      "name": "完成并寄出",
+      "font_class": "wanchengbingjichu",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "11620455",
+      "name": "确认收货",
+      "font_class": "querenshouhuo",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "11621102",
+      "name": "未勾选",
+      "font_class": "weigouxuan1",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "11621255",
+      "name": "待支付",
+      "font_class": "daizhifu",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "11621511",
+      "name": "进行中",
+      "font_class": "jinhangzhong",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "11621915",
+      "name": "已完成",
+      "font_class": "yiwancheng",
+      "unicode": "e702",
+      "unicode_decimal": 59138
+    },
+    {
+      "icon_id": "11621967",
+      "name": "优惠劵",
+      "font_class": "youhuijuan",
+      "unicode": "e703",
+      "unicode_decimal": 59139
+    },
+    {
+      "icon_id": "11622110",
+      "name": "地址管理",
+      "font_class": "dizhiguanli",
+      "unicode": "e704",
+      "unicode_decimal": 59140
+    },
+    {
+      "icon_id": "11622169",
+      "name": "常见问题",
+      "font_class": "changjianwenti",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "11622202",
+      "name": "联系我们",
+      "font_class": "lianxiwomen",
+      "unicode": "e706",
+      "unicode_decimal": 59142
+    },
+    {
+      "icon_id": "11622205",
+      "name": "关于我们",
+      "font_class": "guanyuwomen",
+      "unicode": "e707",
+      "unicode_decimal": 59143
+    }
+  ]
+}

@@ -3,6 +3,9 @@ import Home from './pages/home/index'
 import '@tarojs/async-await';
 
 import './app.less'
+import './assets/iconofnt/iconfont.css'
+
+import "taro-ui/dist/style/components/icon.scss";
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -22,12 +25,13 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/myAddressEdit/index',
-      'pages/editMailInfo/index',
-      'pages/setting/index',
-      'pages/home/index',
-      'pages/wallet/index',
-      'pages/myAddress/index',
+      // 'pages/home/index',
+      // 'pages/servicePrice/index',
+      // 'pages/myAddressEdit/index',
+      // 'pages/editMailInfo/index',
+      // 'pages/setting/index',
+      // 'pages/wallet/index',
+      // 'pages/myAddress/index',
       'pages/cart/index',
       'pages/mine/index'
     ],
@@ -37,26 +41,30 @@ class App extends Component {
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
     },
-    tabBar: {
-      // custom: true,
-      // color: '#000000',
-      // selectedColor: '#000000',
-      // backgroundColor: '#000000',
-      list: [
-        {
-          pagePath: 'pages/home/index',
-          text: '首页'
-        }, 
-        {
-          pagePath: 'pages/cart/index',
-          text: '购物车'
-        }, 
-        {
-          pagePath: 'pages/mine/index',
-          text: '我的'
-        }
-      ]
-    }
+    // tabBar: {
+    //   color: '#999999',
+    //   selectedColor: '#1a1a1a',
+    //   list: [
+    //     {
+    //       pagePath: 'pages/home/index',
+    //       iconPath: 'assets/images/tabbar/home_n.png',
+    //       selectedIconPath: 'assets/images/tabbar/home_s.png',
+    //       text: '首页'
+    //     }, 
+    //     {
+    //       pagePath: 'pages/cart/index',
+    //       iconPath: 'assets/images/tabbar/cart_n.png',
+    //       selectedIconPath: 'assets/images/tabbar/cart_s.png',
+    //       text: '购物车'
+    //     }, 
+    //     {
+    //       pagePath: 'pages/mine/index',
+    //       iconPath: 'assets/images/tabbar/mine_n.png',
+    //       selectedIconPath: 'assets/images/tabbar/mine_s.png',
+    //       text: '我的'
+    //     }
+    //   ]
+    // }
   }
 
   componentDidMount () {}

@@ -1,9 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 // import { functionalPageNavigator } from '@tarojs/components'
-import { AtForm, AtInput, AtButton, AtIcon, AtList, AtListItem, AtTextarea } from 'taro-ui'
+import { AtForm, AtInput, AtButton } from 'taro-ui'
 import './index.less'
 import { View, Input, Text, Picker, Button } from '@tarojs/components'
-import TaroRegionPicker from '../../components/regionPicker'
 
 export default class MyAddrEdit extends Component {
 
@@ -30,7 +29,7 @@ export default class MyAddrEdit extends Component {
 
   componentWillMount() { }
 
-  componentDidMount() { 
+  componentDidMount() {
     Taro.login({
       success(res) {
         console.log(res)
@@ -45,10 +44,10 @@ export default class MyAddrEdit extends Component {
   componentDidHide() { }
 
   onSubmit() {
-    console.log(this.state.addressInfo)
+    // console.log(this.state.addressInfo)
   }
 
-  onGetRegion (region) {
+  onGetRegion(region) {
     // 参数region为选择的省市区
     console.log(region);
   }
@@ -93,15 +92,13 @@ export default class MyAddrEdit extends Component {
             }}>
               <Text className="at-input__title">微信地址</Text>
               <Input className="at-input__input" placeholder="地址" value={addressInfo.address} type='text' disabled />
-              <View className='at-icon at-icon-chevron-right' style={{color: '#ccc'}}></View>
+              <View className='at-icon at-icon-chevron-right' style={{ color: '#ccc' }}></View>
             </View>
           </View>
-          <Picker mode='region' onChange={(res) => {console.log(res)}}>
-            <View class="picker">
-              12312313
-            </View>
+          <Picker mode='region' onChange={(res) => { console.log(res) }}>
+            <Button>省市区筛选</Button>
           </Picker>
-          <Button open-type="getPhoneNumber" getphonenumber={(res)=> {console.log(res)}}>12312312</Button>
+          <Button open-type="getPhoneNumber" getphonenumber={(res) => { console.log(res) }}>获取手机号码</Button>
           <View className="at-input">
             <View className="at-input__container" onClick={() => {
               Taro.chooseAddress({
@@ -113,7 +110,7 @@ export default class MyAddrEdit extends Component {
             }}>
               <Text className="at-input__title">地址</Text>
               <Input className="at-input__input" placeholder="地址" value={addressInfo.address} type='text' disabled />
-              <View className='at-icon at-icon-chevron-right' style={{color: '#ccc'}}></View>
+              <View className='at-icon at-icon-chevron-right' style={{ color: '#ccc' }}></View>
             </View>
           </View>
           <AtInput
@@ -132,8 +129,7 @@ export default class MyAddrEdit extends Component {
           <AtButton className="submit-button" type="primary" formType='submit'>保存地址</AtButton>
           <AtButton className="delete-button" type="secondary">删除地址</AtButton>
         </AtForm>
-        <TaroRegionPicker  onGetRegion={this.onGetRegion.bind(this)}></TaroRegionPicker>
-      </View>
+      </View >
     )
   }
 }
