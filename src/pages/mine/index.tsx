@@ -1,5 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
+
+import api from '../../api'
 
 import './index.less'
 
@@ -13,18 +16,38 @@ export default class Mine extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '我的'
+    navigationBarTitleText: '我的',
+    backgroundColor: '#fff'
   }
 
-  componentWillMount() { }
+  state = {
+    nickName: '',
+    phone: '',
+    avatarUrl: defaultAvatarUrl,
+    couponCount: '0 张'
+  }
 
-  componentDidMount() { }
+  componentWillMount() { 
+    this.pullData()
+  }
 
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
+  async pullData() {
+    let data = await api.getMine()
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      let avatarUrl = data.object.avatarUrl || this.state.avatarUrl
+      this.setState({
+        avatarUrl,
+        phone: data.object.phone,
+        nickName: data.object.nickName,
+        couponCount: `${data.object.couponCount || 0} 张`
+      })
+    }
+  }
 
   orderContentList = [
     { iconClassName: 'iconfont icondaizhifu', name: '待支付' },
@@ -33,7 +56,7 @@ export default class Mine extends Component {
   ]
 
   mineList1 = [
-    { iconClassName: 'iconfont icondaizhifu', name: '优惠券', value: '0 张', color: 'rgba(48, 39, 39, 0.6)' },
+    { iconClassName: 'iconfont icondaizhifu', name: '优惠券', isCoupon: true, color: 'rgba(48, 39, 39, 0.6)' },
     { iconClassName: 'iconfont icondizhiguanli', name: '地址管理', value: '' },
   ]
 
@@ -47,8 +70,11 @@ export default class Mine extends Component {
     return (
       <View className='mine-wrapper'>
         <View className="user-contianer">
-          <Image className="head-portrait"></Image>
-          <View className="username">登录/注册</View>
+          <Image className="head-portrait" mode="aspectFill" src={this.state.avatarUrl}></Image>
+          <View className="username">
+            <View>{this.state.nickName}</View>
+            { this.state.phone ? <View className="phone">{this.state.phone}</View> : null }
+          </View>
         </View>
         <View className="order-contianer">
           <View className="order-header">
@@ -82,7 +108,7 @@ export default class Mine extends Component {
                 }}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
-                  <View className="right-value" style={{color: ele.color}}>{ele.value}</View>
+                  <View className="right-value" style={{color: ele.color}}>{ele.isCoupon? this.state.couponCount :ele.value}</View>
                   <View className='at-icon at-icon-chevron-right'></View>
                 </View>
               )

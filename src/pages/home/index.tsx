@@ -40,9 +40,8 @@ export default class Home extends Component {
     let data = await api.getIndex()
     if (data.code !== 1) {
       Taro.showToast({
-        title: '成功',
-        icon: 'success',
-        duration: 2000
+        title: data.message,
+        icon: 'none'
       })
     } else {
       this.setState({
@@ -60,11 +59,18 @@ export default class Home extends Component {
 
   processList = [
     { iconName: 'iconfont iconxuanzefuwu', line2: '选择服务', line3: '第01步' },
-    { iconName: 'iconfont iconzaixianzhifu', line2: '在线支付', line4: '第02步' },
+    { iconName: 'iconfont iconzaixianzhifu', line2: '在线支付', line3: '第02步' },
     { iconName: 'iconfont iconfahuodaopingtai', line2: '发货到平台', line3: '第03步' },
     { iconName: 'iconfont iconkaishixihu', line2: '开始洗护', line3: '第04步' },
     { iconName: 'iconfont iconwanchengbingjichu', line2: '完成并寄出', line3: '第05步' },
     { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' }
+  ]
+
+  qaList = [
+    {
+      q: '清洗周期是多久?',
+      a: '为了保护鞋子材质,我们都选择人工清洗,自然通 风阴干,洗涤周期一般为2-3天,配送周期为4-5天,一周内可以送回.'
+    }
   ]
 
   render() {
@@ -101,7 +107,7 @@ export default class Home extends Component {
             {
               articleList.map((ele, index) => {
                 return (
-                  <View className={index == bannerIndex ? 'curr dot-item' : 'dot-item'} key={ele}></View>
+                  <View className={index == bannerIndex ? 'curr dot-item' : 'dot-item'} key={ele.id}></View>
                 )
               })
             }
@@ -170,7 +176,7 @@ export default class Home extends Component {
             {
               this.processList.map((ele, index) => {
                 return (
-                  <View className="process-item" key={ele.iconName} key="ele.line2">
+                  <View className="process-item" key={ele.iconName} key={ele.line2}>
                     <View className={ele.iconName}></View>
                     <View className="line2">{ele.line2}</View>
                     <View className="line3">{ele.line3}</View>
@@ -192,11 +198,11 @@ export default class Home extends Component {
           </View>
           <View className="qa">
             {
-              [1, 2].map(ele => {
+              this.qaList.map(ele => {
                 return (
-                  <View className="qa-item" key={ele}>
-                    <View className="item-q">清洗周期是多久?</View>
-                    <View className="item-a">为了保护鞋子材质,我们都选择人工清洗,自然通 风阴干,洗涤周期一般为2-3天,配送周期为4-5天,一周内可以送回.</View>
+                  <View className="qa-item" key={ele.q}>
+                    <View className="item-q">{ele.q}</View>
+                    <View className="item-a">{ele.a}</View>
                   </View>
                 )
               })

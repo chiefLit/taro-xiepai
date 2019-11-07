@@ -25,15 +25,15 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/mine/index',
+      'pages/cart/index',
       'pages/home/index',
       'pages/servicePrice/index',
       'pages/myAddressEdit/index',
       'pages/editMailInfo/index',
       'pages/setting/index',
       'pages/wallet/index',
-      'pages/myAddress/index',
-      'pages/cart/index',
-      'pages/mine/index'
+      'pages/myAddress/index'
     ],
     window: {
       backgroundTextStyle: 'light',
