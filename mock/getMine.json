@@ -1,0 +1,13 @@
+{
+  "code": 1,
+  "message": "成功!",
+  "object": {
+    "id": 3565,
+    "phone": "1396***2771",
+    "nickName": "天外飞仙",
+    "avatarUrl": "https://baidu.com/url/image/798244",
+    "waitPayOrderCount": 2,
+    "ongoingOrderCount": 9
+  },
+  "map": {}
+}

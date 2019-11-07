@@ -1,0 +1,38 @@
+{
+  "code": 1,
+  "message": "成功!",
+  "object": {
+    "articleList": [
+      {
+        "id": 1,
+        "title": "标题1",
+        "subTitle": "副标题",
+        "imageUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg",
+        "linkUrl": ""
+      }
+    ],
+    "bannerList": [
+      {
+        "id": 1,
+        "title": "标题1",
+        "imageUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg",
+        "linkUrl": ""
+      }
+    ],
+    "couponList": [
+      {
+        "id": 1,
+        "name": "名称",
+        "describe": "描述",
+        "validStartTime": "",
+        "validEndTime": "",
+        "type": 1,
+        "faceAmount": "2131",
+        "discountRate": "",
+        "thresholdAmount": "",
+        "topOffAmount": ""
+      }
+    ]
+  },
+  "map": {}
+}

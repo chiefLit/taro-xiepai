@@ -3,15 +3,15 @@ import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
 import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
-import { AtButton, AtIcon } from 'taro-ui'
+
+import api from '../../api/index'
+
+
 
 export default class Home extends Component {
   constructor() {
     super()
-    this.state = {
-      banners: ['#f00', '#0f0', '#00f'],
-      bannerIndex: 0
-    }
+    this.pullData = this.pullData.bind(this)
   }
   /**
    * 指定config的类型声明为: Taro.Config
@@ -24,30 +24,51 @@ export default class Home extends Component {
     navigationBarTitleText: '首页'
   }
 
-  componentWillMount() { }
+  state = {
+    bannerIndex: 0,
 
-  componentDidMount() { }
+    articleList: [],
+    bannerList: [],
+    couponList: [],
+  }
 
-  componentWillUnmount() { }
+  componentWillMount() {
+    this.pullData()
+  }
 
-  componentDidShow() { }
+  async pullData() {
+    let data = await api.getIndex()
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: '成功',
+        icon: 'success',
+        duration: 2000
+      })
+    } else {
+      this.setState({
+        articleList: data.object.articleList,
+        bannerList: data.object.bannerList,
+        couponList: data.object.couponList
+      })
+    }
+  }
 
-  componentDidHide() { }
+  dailyServices = [
+    { name: '清洗球鞋', price: '49', imageUrl: qxImage },
+    { name: '修复球鞋', price: '64', imageUrl: xfImage }
+  ]
+
+  processList = [
+    { iconName: 'iconfont iconxuanzefuwu', line2: '选择服务', line3: '第01步' },
+    { iconName: 'iconfont iconzaixianzhifu', line2: '在线支付', line4: '第02步' },
+    { iconName: 'iconfont iconfahuodaopingtai', line2: '发货到平台', line3: '第03步' },
+    { iconName: 'iconfont iconkaishixihu', line2: '开始洗护', line3: '第04步' },
+    { iconName: 'iconfont iconwanchengbingjichu', line2: '完成并寄出', line3: '第05步' },
+    { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' }
+  ]
 
   render() {
-    let { banners, bannerIndex } = this.state;
-    let dailyServices = [
-      { name: '清洗球鞋', price: '49', imageUrl: qxImage },
-      { name: '修复球鞋', price: '64', imageUrl: xfImage },
-    ]
-    let processList = [
-      { iconName: 'iconfont iconxuanzefuwu', line2: '选择服务', line3: '第01步' },
-      { iconName: 'iconfont iconzaixianzhifu', line2: '在线支付', line4: '第02步' },
-      { iconName: 'iconfont iconfahuodaopingtai', line2: '发货到平台', line3: '第03步' },
-      { iconName: 'iconfont iconkaishixihu', line2: '开始洗护', line3: '第04步' },
-      { iconName: 'iconfont iconwanchengbingjichu', line2: '完成并寄出', line3: '第05步' },
-      { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' },
-    ]
+    let { articleList, bannerIndex } = this.state;
     return (
       <View className='home-wrapper'>
         {/* swiper */}
@@ -55,17 +76,22 @@ export default class Home extends Component {
           <Swiper
             className='swiper-box'
             circular
-            indicatorDots
             onChange={(e) => {
               bannerIndex = e.detail.current
               this.setState({ bannerIndex })
             }}
             autoplay>
             {
-              banners.map(ele => {
+              articleList.map(ele => {
                 return (
-                  <SwiperItem className="swiper-item" key={ele}>
-                    <View className='' style={{ 'background': ele }}>{ele}</View>
+                  <SwiperItem className="swiper-item" key={ele.id} onClick={() => {
+                    ele.linkUrl && Taro.navigateTo({
+                      url: ele.linkUrl
+                    })
+                  }}>
+                    <View className='' style={{ 'background': '#ccc' }}>
+                      <Image style={{width: '100%'}} mode="aspectFill" src={ele.imageUrl}></Image>
+                    </View>
                   </SwiperItem>
                 )
               })
@@ -73,7 +99,7 @@ export default class Home extends Component {
           </Swiper>
           <View className="dots">
             {
-              banners.map((ele, index) => {
+              articleList.map((ele, index) => {
                 return (
                   <View className={index == bannerIndex ? 'curr dot-item' : 'dot-item'} key={ele}></View>
                 )
@@ -89,7 +115,7 @@ export default class Home extends Component {
           </View>
           <View className="daily-service">
             {
-              dailyServices.map(ele => {
+              this.dailyServices.map(ele => {
                 return (
                   <View className="daily-item" key={ele.name}>
                     <View className="name">{ele.name}</View>
@@ -107,10 +133,10 @@ export default class Home extends Component {
           <View className="module-title">
             <Text className="line1">服务价目</Text>
             <Text className="line2">SERVICE PRICE</Text>
-            <View className="title-right-btn" onClick={() => { 
+            <View className="title-right-btn" onClick={() => {
               Taro.navigateTo({
                 url: '/pages/servicePrice/index'
-              }) 
+              })
             }}>
               <Text>查看明细</Text>
               <View className='at-icon at-icon-chevron-right'></View>
@@ -142,9 +168,9 @@ export default class Home extends Component {
           </View>
           <View className="service-process">
             {
-              processList.map((ele, index) => {
+              this.processList.map((ele, index) => {
                 return (
-                  <View className="process-item" key={ele.iconName}>
+                  <View className="process-item" key={ele.iconName} key="ele.line2">
                     <View className={ele.iconName}></View>
                     <View className="line2">{ele.line2}</View>
                     <View className="line3">{ele.line3}</View>
@@ -166,7 +192,7 @@ export default class Home extends Component {
           </View>
           <View className="qa">
             {
-              [1,2].map(ele=> {
+              [1, 2].map(ele => {
                 return (
                   <View className="qa-item" key={ele}>
                     <View className="item-q">清洗周期是多久?</View>

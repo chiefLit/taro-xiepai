@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import './index.less'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtSwipeAction } from 'taro-ui'
 
 export default class Cart extends Component {
 
@@ -19,7 +19,8 @@ export default class Cart extends Component {
 
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+    }
   }
 
   componentWillMount() { }
@@ -33,32 +34,46 @@ export default class Cart extends Component {
   componentDidHide() { }
 
   render() {
-    let cartList = [1, 2,3,4,5,6,7];
+    let cartList = [1, 2, 3, 4, 5, 6, 7];
     return (
       <View className='cart-wrapper'>
         {
-          cartList.map(ele => {
+          cartList.map((ele, index) => {
             return (
-              <View className="cart-item">
-                <View className="iconfont iconweigouxuan1 icongouxuan"></View>
-                <View className="image-box">
-                  {/* <Image src={}></Image> */}
-                </View>
-                <View className="cart-info">
-                  <View className="info-name">普通清洗</View>
-                  <View className="info-labels">
-                    {
-                      [1, 2, 3].map(ele => {
-                        return (
-                          <View className="label-item">防水</View>
-                        )
-                      })
+              <AtSwipeAction className="scroll-view"
+                options={[
+                  {
+                    text: "删除",
+                    style: {
+                      backgroundColor: '#FF3939'
                     }
+                  }
+                ]}
+                onClick={() => {
+                  console.log('delete')
+                }}
+              >
+                <View className='cart-item'>
+                  <View className="iconfont iconweigouxuan1 icongouxuan"></View>
+                  <View className="image-box">
+                    {/* <Image src={}></Image> */}
                   </View>
-                  <View className="info-price">￥49</View>
+                  <View className="cart-info">
+                    <View className="info-name">普通清洗</View>
+                    <View className="info-labels">
+                      {
+                        [1, 2, 3].map(ele => {
+                          return (
+                            <View className="label-item">防水</View>
+                          )
+                        })
+                      }
+                    </View>
+                    <View className="info-price">￥49</View>
+                  </View>
+                  <View className="info-right">快递配送</View>
                 </View>
-                <View className="info-right">快递配送</View>
-              </View>
+              </AtSwipeAction>
             )
           })
         }

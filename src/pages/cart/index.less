@@ -1,16 +1,21 @@
 .cart-wrapper {
-  .cart-item {
+  .scroll-view {
     margin: 0rpx 32rpx 32rpx 32rpx;
-    background: #fff;
     border-radius: 21rpx;
     height: 233rpx;
+    width: 686rpx;
+    &:first-child{
+      margin-top: 32rpx;
+    }
+  }
+  .cart-item {
+    width: 686rpx;
+    height: 233rpx;
+    background: #fff;
     display: flex;
     align-items: center;
     position: relative;
     padding: 32rpx;
-    &:first-child{
-      margin-top: 32rpx;
-    }
   }
   .iconfont {
     font-size: 37rpx;
@@ -67,6 +72,7 @@
   }
   .footer-contianer {
     position: fixed;
+    z-index: 9;
     bottom: 0;
     left: 0;
     width: 100%;

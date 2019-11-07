@@ -1,0 +1,35 @@
+{
+  "code": 1,
+  "message": "成功!",
+  "object": [
+    {
+      "id": 1,
+      "name": "店名1",
+      "provinceName": "浙江",
+      "cityName": "杭州",
+      "countyName": "余杭区",
+      "address": "详细地址详细地址",
+      "linkMan": "联系人",
+      "phone": "18815277265",
+      "pictureUrl": "https://www.baidu.com/link?url=gCg2dgWfATcGgjuzqASfd1co4ImF8lZfn6qidcskbaI7cElWkiqXRWRqasI_f_rfxwPlr_p4eV7Xq7XgAL9PDYNVgxlQ6_DIPwKf1ZdfB0Uad80ASAiKJ4a_gGtf8zHX&wd=&eqid=893a9203000211ac000000045dc3d82a",
+      "gpsLocation": "省份城市",
+      "businessHour": "7点到17点",
+      "describe": "描述描述描述描述描述描述描述描述描述描述描述描述描述"
+    },
+    {
+      "id": 2,
+      "name": "店名2",
+      "provinceName": "浙江",
+      "cityName": "杭州",
+      "countyName": "余杭区",
+      "address": "详细地址详细地址",
+      "linkMan": "联系人",
+      "phone": "18815277265",
+      "pictureUrl": "https://www.baidu.com/link?url=gCg2dgWfATcGgjuzqASfd1co4ImF8lZfn6qidcskbaI7cElWkiqXRWRqasI_f_rfxwPlr_p4eV7Xq7XgAL9PDYNVgxlQ6_DIPwKf1ZdfB0Uad80ASAiKJ4a_gGtf8zHX&wd=&eqid=893a9203000211ac000000045dc3d82a",
+      "gpsLocation": "省份城市",
+      "businessHour": "7点到17点",
+      "describe": "描述描述描述描述描述描述描述描述描述描述描述描述描述"
+    }
+  ],
+  "map": {}
+}

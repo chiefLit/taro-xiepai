@@ -12,7 +12,8 @@ export default class ServicePrice extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '服务价格'
+    navigationBarTitleText: '服务价格',
+    backgroundColor: '#fff'
   }
 
   componentWillMount() { }
@@ -48,7 +49,7 @@ export default class ServicePrice extends Component {
         {
           priceList.map(ele => {
             return (
-              <View className="t-body-row">
+              <View className="t-body-row" key={ele.content}>
                 <View>
                   <Text>{ele.content}</Text>
                 </View>

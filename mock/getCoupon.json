@@ -1,0 +1,18 @@
+{
+  "code": 1,
+  "message": "成功!",
+  "object": {
+    "id":	1,
+    "name":	"优惠券1",
+    "describe":	"描述描述描述描述描述描述描述",
+    "validStartTime":	"12",
+    "validEndTime":	"12",
+    "type":	1,
+    "faceAmount":	100.00,
+    "discountRate": 0.5,
+    "thresholdAmount":	200.00,
+    "topOffAmount":	100.00,
+    "status": 1
+  },
+  "map": {}
+}
