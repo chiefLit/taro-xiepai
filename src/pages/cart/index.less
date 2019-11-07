@@ -1,6 +1,116 @@
-.index {
-  background: #f00;
-  text {
-    color: #0f0;
+.cart-wrapper {
+  .cart-item {
+    margin: 0rpx 32rpx 32rpx 32rpx;
+    background: #fff;
+    border-radius: 21rpx;
+    height: 233rpx;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 32rpx;
+    &:first-child{
+      margin-top: 32rpx;
+    }
+  }
+  .iconfont {
+    font-size: 37rpx;
+    color: #D8D9D9;
+    margin-right: 32rpx;
+  }
+  .image-box {
+    width: 133rpx;
+    height: 133rpx;
+    background: #000;
+    margin-right: 32rpx;
+  } 
+  .cart-info {
+    .info-name {
+      font-size: 30rpx;
+      line-height: 1;
+      color: #000;
+      padding-bottom: 28rpx;
+    }
+    .info-labels {
+      display: flex;
+      padding-bottom: 24rpx;
+      .label-item {
+        background: #f2f2f2;
+        font-size: 24rpx;
+        color: #999;
+        line-height: 40rpx;
+        padding: 0 11rpx;
+        margin-right: 11rpx;
+        border-radius: 5rpx;
+      }
+    }
+  }
+  .info-price {
+    font-weight: bold;
+    color: #FF3939;
+    font-size: 30rpx;
+  }
+  .info-right {
+    font-size: 20rpx;
+    border: 1rpx solid #302727;
+    border-radius: 5rpx;
+    padding: 0 11rpx;
+    line-height: 39rpx;
+    height: 39rpx;
+    color: #302727;
+    position: absolute;
+    right: 32rpx;
+    top: 48rpx;
+  }
+  .footer-cover {
+    width: 100%;
+    height: 99rpx;
+  }
+  .footer-contianer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 99rpx;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    .select-all {
+      display: flex;
+      align-items: center;
+      padding: 0 28rpx;
+      .iconfont{
+        margin-right: 20rpx;
+        font-size: 37rpx;
+        line-height: 37rpx;
+        color: #ccc;
+      }
+      Text {
+        font-size: 28rpx;
+        line-height: 37rpx;
+        color: #666;
+      }
+    }
+    .sum-price {
+      flex: 1;
+      text-align: right;
+      padding-right: 32rpx;
+      font-size: 28rpx;
+      color: #666;
+      line-height: 32rpx;
+      Text {
+        font-size: 32rpx;
+        line-height: 1;
+        color: #FF3939;
+        font-weight: bold;
+      }
+    }
+    .at-button {
+      border-radius: 0;
+      background: #FF3939;
+      border-color: #FF3939;
+      height: 99rpx;
+      width: 212rpx;
+      color: #fff;
+    }
   }
 }
