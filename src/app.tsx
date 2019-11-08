@@ -25,9 +25,9 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/home/index',
       'pages/mine/index',
       'pages/cart/index',
-      'pages/home/index',
       'pages/servicePrice/index',
       'pages/myAddressEdit/index',
       'pages/editMailInfo/index',

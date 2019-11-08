@@ -1,26 +1,32 @@
 {
   "code": 1,
   "message": "成功!",
-  "object": {
-    "rp": 10,
-    "page": 1,
-    "rows": [
-      {
-        "id": 1,
-        "name": "",
-        "describe": "",
-        "validStartTime": "",
-        "validEndTime": "",
-        "type": "",
-        "faceAmount": "",
-        "discountRate": "",
-        "thresholdAmount": "",
-        "topOffAmount": "",
-        "status": ""
-      }
-    ],
-    "total": 100,
-    "isLastPage": false
-  },
-  "map": {}
+  "object": [
+    {
+      "id": 1,
+      "name": "",
+      "describe": "",
+      "validStartTime": "",
+      "validEndTime": "",
+      "type": "",
+      "faceAmount": "",
+      "discountRate": "",
+      "thresholdAmount": "",
+      "topOffAmount": "",
+      "status": ""
+    }
+  ],
+  "map": {},
+  "handelEntity": null,
+  "page": {
+    "currentPage": 1,
+    "pageRecords": 20,
+    "totalPages": 1,
+    "totalRecords": 1,
+    "startRecord": 0,
+    "nextPage": 1,
+    "previousPage": 1,
+    "hasNextPage": false,
+    "hasPreviousPage": false
+  }
 }

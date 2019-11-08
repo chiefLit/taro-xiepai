@@ -16,8 +16,7 @@ export default class Mine extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '我的',
-    backgroundColor: '#fff'
+    navigationBarTitleText: '我的'
   }
 
   state = {
@@ -120,7 +119,11 @@ export default class Mine extends Component {
             this.mineList2.map((ele, index) => {
               return(
                 <View className="module-item" key="ele.name" onClick={() => {
-                  console.log(index)
+                  if (index === 1) {
+                    Taro.makePhoneCall({
+                      phoneNumber: '18758255201'
+                    })
+                  }
                 }}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
