@@ -4,6 +4,7 @@ import './index.less'
 import { AtButton } from 'taro-ui'
 
 import api from '../../api/index'
+import { element } from 'prop-types'
 
 export default class productWash extends Component {
 
@@ -57,7 +58,8 @@ export default class productWash extends Component {
     let wayList = List.filter(ele => {
       return ele.classify_code === '000001'
     })
-    let chooseList = [wayList[0]]
+    let chooseList = [wayList[0]];
+    console.log(12312)
     let productList = List.filter(ele => {
       return ele.classify_code === '000002'
     })
@@ -67,27 +69,38 @@ export default class productWash extends Component {
       chooseList
     })
   }
-  
+
   // 生成已选中数据
   handleChoose(type: Number, item: Object) {
-    if (type === 1) {
-      let index = this.state.chooseList.findIndex((ele) => {
-        return ele.classify_code === '000001'
+    // 删除
+    let index1 = this.state.chooseList.findIndex((ele) => {
+      return ele.id === item.id
+    })
+    if (type === 2 && index1 !== -1) {
+      this.setState(preState => {
+        let chooseList = [...preState.chooseList]
+        chooseList = chooseList.filter((ele, index) => index !== index1)
+        return { chooseList }
       })
-      if (index === -1) {
-        this.setState(preState => ({
-          chooseList: preState.chooseList.push(item)
-        }))
-      } else {
-        this.setState(preState => ({
-          chooseList: preState.chooseList.splice(index, 1, item)
-        }))
-      }
-      console.log(this.state.chooseList)
+      return
     }
-    if (type === 2) {
-      
-    }
+    // 修改/添加
+    let index2 = this.state.chooseList.findIndex((ele) => {
+      return ele.group === item.group
+    })
+    this.setState(preState => {
+      let chooseList = [...preState.chooseList]
+      index2 === -1 ? chooseList.push(item) : chooseList[index2] = item;
+      return { chooseList }
+    })
+  }
+
+  mathSum(list: Array) {
+    let sum = 0;
+    list.map(ele => {
+      sum += ele.price
+    })
+    return sum
   }
 
 
@@ -103,8 +116,6 @@ export default class productWash extends Component {
             {
               wayList.map(ele => {
                 let isActive = chooseList.some(item => item.id === ele.id)
-                console.log(chooseList)
-                console.log(isActive)
                 return (
                   <View className={isActive ? 'way-item active' : 'way-item'} key={ele.id} onClick={this.handleChoose.bind(this, 1, ele)}>{`${ele.name} ￥${ele.price}`}</View>
                 )
@@ -120,10 +131,9 @@ export default class productWash extends Component {
           <View className="product-list">
             {
               productList.map(ele => {
+                let isActive = chooseList.some(item => item.id === ele.id)
                 return (
-                  <View className="product-item" key={ele.id} onClick={() => {
-                    console.log(ele.id, ele.group)
-                  }}>{`${ele.name} ￥${ele.price}`}</View>
+                  <View className={isActive ? 'product-item active' : 'product-item'} key={ele.id} onClick={this.handleChoose.bind(this, 2, ele)}>{`${ele.name} ￥${ele.price}`}</View>
                 )
               })
             }
@@ -136,7 +146,7 @@ export default class productWash extends Component {
           </View>
         </View>
         <View className="footer-contianer">
-          <View className="priceSum">￥0.0</View>
+          <View className="priceSum">￥{this.mathSum(this.state.chooseList)}</View>
           <AtButton full className="addInCart">加入购物车</AtButton>
           <AtButton full className="submit">提交订单</AtButton>
         </View>
