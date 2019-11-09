@@ -25,15 +25,16 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/home/index',
-      'pages/mine/index',
-      'pages/cart/index',
-      'pages/servicePrice/index',
-      'pages/myAddressEdit/index',
-      'pages/editMailInfo/index',
-      'pages/setting/index',
-      'pages/wallet/index',
-      'pages/myAddress/index'
+      'pages/productWash/index',
+      // 'pages/home/index',
+      // 'pages/mine/index',
+      // 'pages/cart/index',
+      // 'pages/servicePrice/index',
+      // 'pages/myAddressEdit/index',
+      // 'pages/editMailInfo/index',
+      // 'pages/setting/index',
+      // 'pages/wallet/index',
+      // 'pages/myAddress/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -42,30 +43,30 @@ class App extends Component {
       navigationBarTextStyle: 'black',
       backgroundColor: "#fafafa"
     },
-    tabBar: {
-      color: '#999999',
-      selectedColor: '#1a1a1a',
-      list: [
-        {
-          pagePath: 'pages/home/index',
-          iconPath: 'assets/images/tabbar/home_n.png',
-          selectedIconPath: 'assets/images/tabbar/home_s.png',
-          text: '首页'
-        }, 
-        {
-          pagePath: 'pages/cart/index',
-          iconPath: 'assets/images/tabbar/cart_n.png',
-          selectedIconPath: 'assets/images/tabbar/cart_s.png',
-          text: '购物车'
-        }, 
-        {
-          pagePath: 'pages/mine/index',
-          iconPath: 'assets/images/tabbar/mine_n.png',
-          selectedIconPath: 'assets/images/tabbar/mine_s.png',
-          text: '我的'
-        }
-      ]
-    }
+    // tabBar: {
+    //   color: '#999999',
+    //   selectedColor: '#1a1a1a',
+    //   list: [
+    //     {
+    //       pagePath: 'pages/home/index',
+    //       iconPath: 'assets/images/tabbar/home_n.png',
+    //       selectedIconPath: 'assets/images/tabbar/home_s.png',
+    //       text: '首页'
+    //     }, 
+    //     {
+    //       pagePath: 'pages/cart/index',
+    //       iconPath: 'assets/images/tabbar/cart_n.png',
+    //       selectedIconPath: 'assets/images/tabbar/cart_s.png',
+    //       text: '购物车'
+    //     }, 
+    //     {
+    //       pagePath: 'pages/mine/index',
+    //       iconPath: 'assets/images/tabbar/mine_n.png',
+    //       selectedIconPath: 'assets/images/tabbar/mine_s.png',
+    //       text: '我的'
+    //     }
+    //   ]
+    // }
   }
 
   componentDidMount () {}

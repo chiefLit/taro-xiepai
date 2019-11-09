@@ -4,42 +4,102 @@
   "object": [
     {
       "id": 1,
-      "name": "服务项目名称",
-      "code": "12",
-      "goodzId": 12,
-      "classify_id": 1,
-      "classify_name": "清洗方式",
+      "name": "普通洗鞋",
       "classify_code": "000001",
       "group": 1,
-      "icon": "12",
-      "face_price": 30.00,
-      "price": 50.00
+      "price": 49.00
     },
     {
       "id": 2,
-      "name": "服务项目名称",
-      "code": "12",
-      "goodzId": 12,
-      "classify_id": 1,
-      "classify_name": "清洗方式",
+      "name": "中级洗鞋",
       "classify_code": "000001",
       "group": 1,
-      "icon": "12",
-      "face_price": 30.00,
-      "price": 50.00
+      "price": 69.00
     },
     {
       "id": 3,
-      "name": "服务项目名称",
+      "name": "高级洗鞋",
+      "classify_code": "000001",
+      "group": 1,
+      "price": 109.00
+    },
+
+    {
+      "id": 4,
+      "name": "防水",
       "code": "12",
       "goodzId": 12,
       "classify_id": 1,
       "classify_name": "清洗方式",
-      "classify_code": "000001",
-      "group": 1,
-      "icon": "12",
-      "face_price": 30.00,
-      "price": 50.00
+      "classify_code": "000002",
+      "group": 2,
+      "price": 29.00
+    },
+    {
+      "id": 5,
+      "name": "塑封",
+      "code": "12",
+      "goodzId": 12,
+      "classify_id": 1,
+      "classify_name": "清洗方式",
+      "classify_code": "000002",
+      "group": 3,
+      "price": 15.00
+    },
+    {
+      "id": 6,
+      "name": "防氧化",
+      "code": "12",
+      "goodzId": 12,
+      "classify_id": 1,
+      "classify_name": "清洗方式",
+      "classify_code": "000002",
+      "group": 4,
+      "price": 69.00
+    },
+    {
+      "id": 7,
+      "name": "去氧化",
+      "code": "12",
+      "goodzId": 12,
+      "classify_id": 1,
+      "classify_name": "清洗方式",
+      "classify_code": "000002",
+      "group": 4,
+      "price": 79.00
+    },
+    {
+      "id": 8,
+      "name": "半掌贴底",
+      "code": "12",
+      "goodzId": 12,
+      "classify_id": 1,
+      "classify_name": "清洗方式",
+      "classify_code": "000002",
+      "group": 5,
+      "price": 69.00
+    },
+    {
+      "id": 9,
+      "name": "全掌贴底",
+      "code": "12",
+      "goodzId": 12,
+      "classify_id": 1,
+      "classify_name": "清洗方式",
+      "classify_code": "000002",
+      "group": 5,
+      "price": 129.00
+    },
+    {
+      "id": 10,
+      "name": "去霉/去油/染色处理",
+      "code": "12",
+      "goodzId": 12,
+      "classify_id": 1,
+      "classify_name": "清洗方式",
+      "classify_code": "000002",
+      "group": 7,
+      "price": 49.00
     }
   ],
   "map": {}

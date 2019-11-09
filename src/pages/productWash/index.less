@@ -1,0 +1,98 @@
+.product-wash-wrapper {
+  .module-contianer {
+    background: #fff;
+    margin-top: 20rpx;
+    padding: 30rpx 30rpx;
+  }
+  .module-title {
+    font-size: 32rpx;
+    color: #1A1A1A;
+    line-height: 44rpx;
+    .subTitle {
+      color: #999;
+      font-size: 24rpx;
+      line-height: 44rpx;
+    }
+  }
+  .wash-way {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30rpx;
+    .way-item {
+      width: 215rpx;
+      height: 80rpx;
+      background: #fafafa;
+      line-height: 80rpx;
+      border-radius: 8rpx;
+      border: 1px solid #fafafa;
+      font-size: 28rpx;
+      text-align: center;
+      &.active {
+        border-color: #FF3939;
+        background: rgba(255, 57, 57, 0.1);
+        color: #FF3939;
+      }
+    }
+  }
+  .way-tips {
+    font-size: 20rpx;
+    line-height: 30rpx;
+    color: #999;
+    margin: 36rpx 0 -6rpx 0;
+  }
+  .product-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 30rpx;
+    .product-item {
+      min-width: 215rpx;
+      height: 80rpx;
+      background: #fafafa;
+      line-height: 80rpx;
+      border-radius: 8rpx;
+      border: 1px solid #fafafa;
+      font-size: 28rpx;
+      text-align: center;
+      padding: 0 15rpx;
+      margin-bottom: 30rpx;
+      &.active {
+        border-color: #FF3939;
+        background: rgba(255, 57, 57, 0.1);
+        color: #FF3939;
+      }
+    }
+  }
+  .footer-contianer {
+    display: flex;
+    height: 108rpx;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: #fff;
+    .priceSum {
+      flex: 1;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 2px solid #e5e5e5;
+      Text {
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #1a1a1a;
+      }
+    }
+    .at-button {
+      border: 0;
+      width: 265rpx;
+      height: 100%;
+      line-height: 108rpx;
+      font-size: 32rpx;
+    }
+    .submit {
+      background: #FF3939;
+      color: #fff;
+    }
+  }
+}
