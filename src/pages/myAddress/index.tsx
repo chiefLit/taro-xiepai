@@ -3,8 +3,6 @@ import { View, Text } from '@tarojs/components'
 import { AtIcon, AtButton } from 'taro-ui'
 import './index.less'
 
-import indexService from '../../api/index'
-
 export default class MyAddr extends Component {
 
   /**
@@ -41,8 +39,7 @@ export default class MyAddr extends Component {
   }
 
   async pullData() {
-    let data = await indexService.test();
-    console.log(data)
+    
   }
 
   componentWillMount () { }

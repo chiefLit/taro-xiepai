@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
-import api from '../../api'
+import { getMine } from '../../api/user'
 
 import './index.less'
 
@@ -26,12 +26,12 @@ export default class Mine extends Component {
     couponCount: '0 张'
   }
 
-  componentWillMount() { 
+  componentWillMount() {
     this.pullData()
   }
 
   async pullData() {
-    let data = await api.getMine()
+    let data = await getMine()
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -72,7 +72,7 @@ export default class Mine extends Component {
           <Image className="head-portrait" mode="aspectFill" src={this.state.avatarUrl}></Image>
           <View className="username">
             <View>{this.state.nickName}</View>
-            { this.state.phone ? <View className="phone">{this.state.phone}</View> : null }
+            {this.state.phone ? <View className="phone">{this.state.phone}</View> : null}
           </View>
         </View>
         <View className="order-contianer">
@@ -85,9 +85,9 @@ export default class Mine extends Component {
           </View>
           <View className="content-list">
             {
-              this.orderContentList.map((ele,index) => {
+              this.orderContentList.map((ele, index) => {
                 return (
-                  <View className="list-item" onClick={()=> {
+                  <View className="list-item" onClick={() => {
                     console.log(index)
                   }} key={ele.name}>
                     <View className={ele.iconClassName}></View>
@@ -101,13 +101,13 @@ export default class Mine extends Component {
         <View className="list-module">
           {
             this.mineList1.map((ele, index) => {
-              return(
+              return (
                 <View className="module-item" key="ele.name" onClick={() => {
                   console.log(index)
                 }}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
-                  <View className="right-value" style={{color: ele.color}}>{ele.isCoupon? this.state.couponCount :ele.value}</View>
+                  <View className="right-value" style={{ color: ele.color }}>{ele.isCoupon ? this.state.couponCount : ele.value}</View>
                   <View className='at-icon at-icon-chevron-right'></View>
                 </View>
               )
@@ -117,7 +117,7 @@ export default class Mine extends Component {
         <View className="list-module">
           {
             this.mineList2.map((ele, index) => {
-              return(
+              return (
                 <View className="module-item" key="ele.name" onClick={() => {
                   if (index === 1) {
                     Taro.makePhoneCall({
@@ -127,7 +127,7 @@ export default class Mine extends Component {
                 }}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
-                  <View className="right-value" style={{color: ele.color}}>{ele.value}</View>
+                  <View className="right-value" style={{ color: ele.color }}>{ele.value}</View>
                   <View className='at-icon at-icon-chevron-right'></View>
                 </View>
               )

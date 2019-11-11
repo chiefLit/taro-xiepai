@@ -1,7 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
+import { View, Text, Image, } from '@tarojs/components'
 import './index.less'
 import { AtButton, AtSwipeAction } from 'taro-ui'
+
+import { getCartList, washToCart } from '../../api/cart'
 
 export default class Cart extends Component {
 
@@ -13,28 +15,88 @@ export default class Cart extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '购物车',
-    backgroundColor: '#fafafa'
+    navigationBarTitleText: '购物车'
   }
 
   constructor() {
     super()
-    this.state = {
+  }
+
+  state = {
+    cartList: [],
+    selectedList: [],
+    isSelectAll: false
+  }
+
+  componentWillMount() {
+    this.pullData()
+  }
+
+  async pullData() {
+    let data = await getCartList();
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      this.setState({
+        cartList: data.object
+      })
     }
   }
 
-  componentWillMount() { }
+  async deleteItem(id, index) {
+    let data = await washToCart({id})
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      // let cartList = [...this.state.cartList]
+      let cartList = this.state.cartList.filter((ele, i) => i !== index);
+      this.setState({
+        cartList
+      })
+    }
+  }
 
-  componentDidMount() { }
+  tapItem(item) {
+    let selectedList = [...this.state.selectedList]
+    let isSelectAll;
+    let exisiIndex = selectedList.findIndex(ele => ele.id === item.id);
+    if (exisiIndex === -1) {
+      selectedList.push(item)
+    } else {
+      selectedList = selectedList.filter((ele, index) => index !== exisiIndex)
+    }
+    isSelectAll = selectedList.length === this.state.cartList.length
+    this.setState({
+      isSelectAll,
+      selectedList
+    })
+  }
 
-  componentWillUnmount() { }
+  randerIcon(item: Object) {
+    let { selectedList } = this.state
+    let isActive = selectedList.some(ele => ele.id === item.id)
+    return (
+      !isActive ? <View className="iconfont iconweigouxuan1"></View> : <View className="iconfont icongouxuan"></View>
+    )
+  }
 
-  componentDidShow() { }
-
-  componentDidHide() { }
+  calcTotalPrice(list: Array) {
+    let sum = 0;
+    list.map(ele => {
+      sum += ele.totalPrice
+    })
+    return sum
+  }
 
   render() {
-    let cartList = [1, 2, 3, 4, 5, 6, 7];
+    let { cartList, selectedList } = this.state;
+    let deleteItem = this.deleteItem.bind(this);
     return (
       <View className='cart-wrapper'>
         {
@@ -42,34 +104,44 @@ export default class Cart extends Component {
             return (
               <AtSwipeAction className="scroll-view"
                 options={[
-                  {
-                    text: "删除",
-                    style: {
-                      backgroundColor: '#FF3939'
-                    }
-                  }
+                  { text: "删除", style: { backgroundColor: '#FF3939' } }
                 ]}
                 onClick={() => {
-                  console.log('delete')
+                  Taro.showModal({
+                    // title: '提示',
+                    content: '确定删除？',
+                    success(res) {
+                      if (res.confirm) {
+                        deleteItem(ele.id, index)
+                      }
+                    }
+                  })
                 }}
+                key={ele.id}
               >
-                <View className='cart-item'>
-                  <View className="iconfont iconweigouxuan1 icongouxuan"></View>
+                <View className='cart-item' onClick={this.tapItem.bind(this, ele, index)}>
+                  {this.randerIcon(ele)}
                   <View className="image-box">
-                    {/* <Image src={}></Image> */}
+                    {
+                      ele.cartServiceImageList.map(imgItem => {
+                        return (
+                          imgItem.aspect === 2 ? <Image mode="aspectFill" src={imgItem.url} key={imgItem.id}></Image> : null
+                        )
+                      })
+                    }
                   </View>
                   <View className="cart-info">
-                    <View className="info-name">普通清洗</View>
+                    <View className="info-name">{ele.goodzTitle}</View>
                     <View className="info-labels">
                       {
-                        [1, 2, 3].map(ele => {
+                        ele.cartServiceDetailList.map(sub => {
                           return (
-                            <View className="label-item">防水</View>
+                            <View className="label-item" key={sub.id}>{sub.serviceName}</View>
                           )
                         })
                       }
                     </View>
-                    <View className="info-price">￥49</View>
+                    <View className="info-price">￥ {ele.totalPrice}</View>
                   </View>
                   <View className="info-right">快递配送</View>
                 </View>
@@ -79,11 +151,18 @@ export default class Cart extends Component {
         }
         <View className="footer-cover"></View>
         <View className="footer-contianer">
-          <View className="select-all">
-            <View className="iconfont iconweigouxuan1 icongouxuan"></View>
+          <View className="select-all" onClick={() => {
+            this.setState(preState => {
+              return {
+                selectedList: preState.isSelectAll ? [] : [...preState.cartList],
+                isSelectAll: !preState.isSelectAll
+              }
+            })
+          }}>
+            <View className={isSelectAll ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
             <Text>全选</Text>
           </View>
-          <View className="sum-price">合计：<Text>￥49</Text></View>
+          <View className="sum-price">合计：<Text>￥ {this.calcTotalPrice(selectedList)}</Text></View>
           <AtButton full className="">结算</AtButton>
         </View>
       </View>

@@ -3,8 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton } from 'taro-ui'
 
-import api from '../../api/index'
-import { element } from 'prop-types'
+import { washServiceList } from '../../api/service'
 
 export default class productWash extends Component {
 
@@ -28,7 +27,8 @@ export default class productWash extends Component {
   state = {
     wayList: [],
     productList: [],
-    chooseList: []
+    chooseList: [],
+    showSelectedProduct: false
   }
 
   componentWillMount() {
@@ -44,7 +44,7 @@ export default class productWash extends Component {
   componentDidHide() { }
 
   async pullData() {
-    let data = await api.washServiceList();
+    let data = await washServiceList();
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message
@@ -59,7 +59,6 @@ export default class productWash extends Component {
       return ele.classify_code === '000001'
     })
     let chooseList = [wayList[0]];
-    console.log(12312)
     let productList = List.filter(ele => {
       return ele.classify_code === '000002'
     })
@@ -121,9 +120,44 @@ export default class productWash extends Component {
     }
   ]
 
+  randerSelectedProduct() {
+    const { chooseList } = this.state
+    return (
+      <View className="popup-contianer">
+        <View className="popup-mask" onClick={() => {
+          this.setState({
+            showSelectedProduct: false
+          })
+        }}></View>
+        <View className="popup-content">
+          <View className="content-title">
+            <Text>已选择项目</Text>
+            <View className="iconfont iconshanchu" onClick={() => {
+              this.setState({
+                showSelectedProduct: false
+              })
+            }}></View>
+          </View>
+          <View className="select-popup-list">
+            {
+              chooseList.map(ele => {
+                return (
+                  <View className="list-item" key={ele.id}>
+                    <View className="name">{ele.name}</View>
+                    <View className="price">￥{ele.price}</View>
+                  </View>
+                )
+              })
+            }
+          </View>
+        </View>
+      </View>
+    )
+  }
+
 
   render() {
-    let { wayList, productList, chooseList } = this.state
+    let { wayList, productList, chooseList, showSelectedProduct } = this.state
     return (
       <View className='product-wash-wrapper'>
         <View className="module-contianer">
@@ -174,7 +208,7 @@ export default class productWash extends Component {
                           title: '暂未上传',
                           icon: 'none'
                         })
-                        return 
+                        return
                         Taro.uploadFile({
                           url: '',
                           filePath: tempFilePaths[0],
@@ -199,13 +233,18 @@ export default class productWash extends Component {
         </View>
         <View className="footer-cover"></View>
         <View className="footer-contianer">
-          <View className="priceSum">
+          <View className="priceSum" onClick={() => {
+            this.setState({
+              showSelectedProduct: !showSelectedProduct
+            })
+          }}>
             <View className="iconfont iconxihuxiangmu"></View>
             <Text>￥{this.mathSum(this.state.chooseList)}</Text>
           </View>
           <AtButton full className="addInCart">加入购物车</AtButton>
           <AtButton full className="submit">提交订单</AtButton>
         </View>
+        {showSelectedProduct ? this.randerSelectedProduct() : ''}
       </View>
     )
   }

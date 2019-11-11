@@ -1,6 +1,43 @@
 view {
   box-sizing: border-box;
 }
+
 page {
   background: #fafafa;
+}
+
+// 重置tabs样式
+.at-tabs__item {
+  color: #666;
+}
+
+.at-tabs__item--active {
+  color: #1a1a1a;
+  font-weight: bold;
+}
+
+.at-tabs__item-underline {
+  height: 4rpx;
+  background: #1a1a1a;
+  width: 128rpx;
+  left: 50%;
+  margin-left: -64rpx;
+}
+
+.at-tabs-pane {
+  margin-top: 87rpx;
+}
+
+.at-tabs__header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  border-bottom: 1rpx solid #eee;
+}
+
+.at-tabs__underline {
+  position: fixed;
+  top: 87rpx;
+  display: none;
 }

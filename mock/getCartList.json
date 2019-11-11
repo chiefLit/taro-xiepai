@@ -1,0 +1,115 @@
+{
+  "code": 1,
+  "message": "成功!",
+  "object": [
+    {
+      "id": 1,
+      "userId": 1,
+      "goodzId": 1,
+      "goodzTitle": "商品名称1",
+      "goodzType": 0,
+      "quantity": "",
+      "price": "",
+      "totalPrice": 209.00,
+      "addTime": "",
+      "cartServiceDetailList": [
+        {
+          "id": 1,
+          "cartId": 1,
+          "serviceId": 1,
+          "serviceName": "服务名称1",
+          "price": 28.00
+        },
+        {
+          "id": 2,
+          "cartId": 1,
+          "serviceId": 1,
+          "serviceName": "服务名称2",
+          "price": 28.00
+        },
+        {
+          "id": 3,
+          "cartId": 1,
+          "serviceId": 1,
+          "serviceName": "服务名称2",
+          "price": 28.00
+        },
+        {
+          "id": 4,
+          "cartId": 1,
+          "serviceId": 1,
+          "serviceName": "服务名称2",
+          "price": 28.00
+        }
+      ],
+      "cartServiceImageList": [
+        {
+          "id": 1,
+          "cartId": 1,
+          "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg",
+          "aspect": 0
+        },
+        {
+          "id": 2,
+          "cartId": 2,
+          "url": "https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D500/sign=f36d7f317cf082022992913f7bfbfb8a/060828381f30e924e6bf072343086e061d95f78d.jpg",
+          "aspect": 1
+        },
+        {
+          "id": 3,
+          "cartId": 3,
+          "url": "https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D500/sign=725bf7a0bdb7d0a27fc9049dfbee760d/9825bc315c6034a881b02393c413495409237656.jpg",
+          "aspect": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "goodzId": 2,
+      "goodzTitle": "商品名称2",
+      "goodzType": 0,
+      "quantity": "",
+      "price": "",
+      "totalPrice": 209.00,
+      "addTime": "",
+      "cartServiceDetailList": [
+        {
+          "id": 1,
+          "cartId": 1,
+          "serviceId": 1,
+          "serviceName": "服务名称1",
+          "price": 28.00
+        },
+        {
+          "id": 2,
+          "cartId": 1,
+          "serviceId": 1,
+          "serviceName": "服务名称2",
+          "price": 28.00
+        }
+      ],
+      "cartServiceImageList": [
+        {
+          "id": 1,
+          "cartId": 1,
+          "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg",
+          "aspect": 0
+        },
+        {
+          "id": 2,
+          "cartId": 2,
+          "url": "https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D500/sign=f36d7f317cf082022992913f7bfbfb8a/060828381f30e924e6bf072343086e061d95f78d.jpg",
+          "aspect": 1
+        },
+        {
+          "id": 3,
+          "cartId": 3,
+          "url": "https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D500/sign=725bf7a0bdb7d0a27fc9049dfbee760d/9825bc315c6034a881b02393c413495409237656.jpg",
+          "aspect": 2
+        }
+      ]
+    }
+  ],
+  "map": {}
+}

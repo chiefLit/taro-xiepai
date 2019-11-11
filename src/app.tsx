@@ -25,12 +25,13 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/home/index',
-      'pages/productWash/index',
+      // 'pages/home/index',
+      // 'pages/couponList/index',
+      // 'pages/productWash/index',
       // 'pages/productMend/index',
       // 'pages/mine/index',
-      // 'pages/cart/index',
-      'pages/servicePrice/index',
+      'pages/cart/index',
+      // 'pages/servicePrice/index',
       // 'pages/myAddressEdit/index',
       // 'pages/editMailInfo/index',
       // 'pages/setting/index',

@@ -4,7 +4,7 @@ import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
 
-import api from '../../api/index'
+import { getIndex } from '../../api/common'
 
 
 
@@ -37,7 +37,7 @@ export default class Home extends Component {
   }
 
   async pullData() {
-    let data = await api.getIndex()
+    let data = await getIndex()
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -96,7 +96,7 @@ export default class Home extends Component {
                     })
                   }}>
                     <View className='' style={{ 'background': '#ccc' }}>
-                      <Image style={{width: '100%'}} mode="aspectFill" src={ele.imageUrl}></Image>
+                      <Image style={{ width: '100%' }} mode="aspectFill" src={ele.imageUrl}></Image>
                     </View>
                   </SwiperItem>
                 )
