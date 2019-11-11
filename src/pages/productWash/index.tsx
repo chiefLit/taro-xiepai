@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton } from 'taro-ui'
 
@@ -103,6 +103,24 @@ export default class productWash extends Component {
     return sum
   }
 
+  photoList = [
+    {
+      id: 1,
+      src: require('../../assets/images/photo-cm.png'),
+      name: '侧面',
+    },
+    {
+      id: 2,
+      src: require('../../assets/images/photo-bm.png'),
+      name: '背面',
+    },
+    {
+      id: 3,
+      src: require('../../assets/images/photo-zm.png'),
+      name: '正面',
+    }
+  ]
+
 
   render() {
     let { wayList, productList, chooseList } = this.state
@@ -124,7 +142,7 @@ export default class productWash extends Component {
           </View>
           <View className="way-tips">注:普通清洗-仅清洗皮质球鞋,中级清洗-仅清洗反皮/麂皮/绒皮,高级清洗-仅清洗特殊面料/ow系列</View>
         </View>
-        <View className="module-contianer wash-product">
+        <View className="module-contianer">
           <View className="module-title">
             <Text className="title">选择护理项目</Text>
           </View>
@@ -139,14 +157,52 @@ export default class productWash extends Component {
             }
           </View>
         </View>
-        <View className="module-contianer wash-photo">
+        <View className="module-contianer">
           <View className="module-title">
             <Text className="title">拍摄球鞋照片</Text>
             <Text className="subTitle">便于我们确认您爱鞋的情况</Text>
           </View>
+          <View className="wash-photo">
+            {
+              this.photoList.map(ele => {
+                return (
+                  <View className="photo-item" key={ele.id} onClick={() => {
+                    Taro.chooseImage({
+                      count: 1,
+                      success({ tempFilePaths }) {
+                        Taro.showToast({
+                          title: '暂未上传',
+                          icon: 'none'
+                        })
+                        return 
+                        Taro.uploadFile({
+                          url: '',
+                          filePath: tempFilePaths[0],
+                          name: 'file',
+                          formData: {
+                            'user': 'test'
+                          },
+                          success(res) {
+                            const data = res.data
+                            //do something
+                          }
+                        })
+                      }
+                    })
+                  }}>
+                    <Image src={ele.src}></Image>
+                  </View>
+                )
+              })
+            }
+          </View>
         </View>
+        <View className="footer-cover"></View>
         <View className="footer-contianer">
-          <View className="priceSum">￥{this.mathSum(this.state.chooseList)}</View>
+          <View className="priceSum">
+            <View className="iconfont iconxihuxiangmu"></View>
+            <Text>￥{this.mathSum(this.state.chooseList)}</Text>
+          </View>
           <AtButton full className="addInCart">加入购物车</AtButton>
           <AtButton full className="submit">提交订单</AtButton>
         </View>

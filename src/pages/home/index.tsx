@@ -53,8 +53,8 @@ export default class Home extends Component {
   }
 
   dailyServices = [
-    { name: '清洗球鞋', price: '49', imageUrl: qxImage },
-    { name: '修复球鞋', price: '64', imageUrl: xfImage }
+    { name: '清洗球鞋', price: '49', imageUrl: qxImage, url: '/pages/productWash/index' },
+    { name: '修复球鞋', price: '64', imageUrl: xfImage, url: '/pages/productMend/index' }
   ]
 
   processList = [
@@ -123,7 +123,11 @@ export default class Home extends Component {
             {
               this.dailyServices.map(ele => {
                 return (
-                  <View className="daily-item" key={ele.name}>
+                  <View className="daily-item" key={ele.name} onClick={() => {
+                    Taro.navigateTo({
+                      url: ele.url
+                    })
+                  }}>
                     <View className="name">{ele.name}</View>
                     <View className="price">￥ <Text>{ele.price}</Text></View>
                     <View className="desc">最低</View>

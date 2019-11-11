@@ -13,6 +13,27 @@
       "unicode_decimal": 58895
     },
     {
+      "icon_id": "599872",
+      "name": "扫一扫",
+      "font_class": "saoyisao",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "6682548",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "6970021",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
       "icon_id": "11615786",
       "name": "选择服务",
       "font_class": "xuanzefuwu",
@@ -116,6 +137,13 @@
       "font_class": "guanyuwomen",
       "unicode": "e707",
       "unicode_decimal": 59143
+    },
+    {
+      "icon_id": "11700993",
+      "name": "洗护项目",
+      "font_class": "xihuxiangmu",
+      "unicode": "e708",
+      "unicode_decimal": 59144
     }
   ]
 }

@@ -3,7 +3,7 @@ import Home from './pages/home/index'
 import '@tarojs/async-await';
 
 import './app.less'
-import './assets/iconofnt/iconfont.css'
+import './assets/iconfont/iconfont.css'
 
 import "taro-ui/dist/style/components/icon.scss";
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
@@ -25,11 +25,12 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/home/index',
       'pages/productWash/index',
-      // 'pages/home/index',
+      // 'pages/productMend/index',
       // 'pages/mine/index',
       // 'pages/cart/index',
-      // 'pages/servicePrice/index',
+      'pages/servicePrice/index',
       // 'pages/myAddressEdit/index',
       // 'pages/editMailInfo/index',
       // 'pages/setting/index',
