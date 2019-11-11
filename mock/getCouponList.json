@@ -4,16 +4,42 @@
   "object": [
     {
       "id": 1,
-      "name": "",
-      "describe": "",
+      "name": "名称",
+      "describe": "描述",
       "validStartTime": "",
       "validEndTime": "",
-      "type": "",
-      "faceAmount": "",
-      "discountRate": "",
+      "type": 1,
+      "faceAmount": 20.00,
+      "discountRate": 50,
       "thresholdAmount": "",
       "topOffAmount": "",
-      "status": ""
+      "status": 0
+    },
+    {
+      "id": 1,
+      "name": "名称",
+      "describe": "描述",
+      "validStartTime": "",
+      "validEndTime": "",
+      "type": 0,
+      "faceAmount": 20.00,
+      "discountRate": 50,
+      "thresholdAmount": "",
+      "topOffAmount": "",
+      "status": 0
+    },
+    {
+      "id": 1,
+      "name": "名称",
+      "describe": "描述",
+      "validStartTime": "",
+      "validEndTime": "",
+      "type": 1,
+      "faceAmount": 20.00,
+      "discountRate": 50,
+      "thresholdAmount": "",
+      "topOffAmount": "",
+      "status": 0
     }
   ],
   "map": {},

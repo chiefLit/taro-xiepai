@@ -21,7 +21,7 @@ export function drawCoupon(data) {
   return axios(config);
 }
 // 我-优惠券-列表
-export function couponList(data) {
+export function getCouponList(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/coupon/list',
