@@ -1,9 +1,11 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import './index.less'
 
 import { getCouponList } from '../../api/coupon'
+import iconYsx from '../../assets/images/yishixiao.png'
+import iconYsy from '../../assets/images/yishiyong.png'
 
 export default class CouponList extends Component {
 
@@ -61,14 +63,6 @@ export default class CouponList extends Component {
   componentWillMount() {
     this.pullData(this.state.page0, 0, null)
   }
-
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
 
   /**
    * 
@@ -165,9 +159,8 @@ export default class CouponList extends Component {
         </View>
         <View className="left-icon circle-icon"></View>
         <View className="right-icon circle-icon"></View>
-        {item.status === 1 ? <View className="state-icons"></View> : null}
-        {item.status === 2 ? <View className="state-icons"></View> : null}
-        {/* <View className="state-icons"></View> */}
+        {item.status === 1 ? <Image src={iconYsy} className="state-icons"></Image> : null}
+        {item.status === 2 ? <Image src={iconYsx} className="state-icons"></Image> : null}
       </View>
     )
   }
@@ -177,28 +170,21 @@ export default class CouponList extends Component {
     let { current, page0, page1, page2 } = this.state;
     return (
       <View className='coupon-list-wrapper'>
-        <AtTabs height="87" current={current} tabList={tabList} onClick={this.handleClick.bind(this)}>
+        <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={current} index={0} >
-            <ScrollView className="ScrollView">
-              {
-                page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
-              }
-            </ScrollView>
+            {
+              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+            }
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
-            <ScrollView className="ScrollView">
-              {
-                page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
-              }
-            </ScrollView>
-
+            {
+              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+            }
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
-            <ScrollView className="ScrollView">
-              {
-                page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
-              }
-            </ScrollView>
+            {
+              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+            }
           </AtTabsPane>
         </AtTabs>
       </View>

@@ -15,7 +15,7 @@ export default class MyAddr extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      list:  [
+      list: [
         {
           address: '详细地址详细地址',
           name: '张三',
@@ -39,54 +39,59 @@ export default class MyAddr extends Component {
   }
 
   async pullData() {
-    
+
   }
 
-  componentWillMount () { }
+  componentWillMount() { }
 
-  componentDidMount () { 
+  componentDidMount() {
     this.pullData()
   }
 
-  componentWillUnmount () { }
+  componentWillUnmount() { }
 
-  componentDidShow () { }
+  componentDidShow() { }
 
-  componentDidHide () { }
+  componentDidHide() { }
 
-  render () {
+  render() {
     let { list } = this.state;
     return (
       <View className='my-address-wrapper'>
+        <View className="module-list">
         {
           list.map((ele, index) => {
             return (
               <View className="list-item" key={ele.name}>
                 <View className="info">
                   <View className="line-first">
-                    <Text>收货人：{ele.name}</Text>
+                    <Text>{ele.name}</Text>
                     <Text>{ele.phone}</Text>
                   </View>
                   <View className="line-second">
-                    <Text>地址：{ele.address}</Text>
+                    <Text>{ele.address}</Text>
                   </View>
                 </View>
-                <AtIcon value="edit" color="#999"></AtIcon>
+                <AtIcon value="edit" size="15" color="#999"></AtIcon>
               </View>
             )
           })
         }
-        <View className="button-cover"></View>
-        <AtButton 
-          className="add-button" 
-          type='primary' 
-          full={true} 
-          onClick={()=> {
-            Taro.navigateTo({
-              url: '/pages/myAddressEdit/index?id=2'
-            })
-          }}
-        >添加地址</AtButton>
+
+        </View>
+        <View className="footer-cover"></View>
+        <View className="footer-contianer">
+          <AtButton
+            className="add-button"
+            type='primary'
+            circle={true}
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/pages/myAddressEdit/index?id=2'
+              })
+            }}
+          >添加地址</AtButton>
+        </View>
       </View>
     )
   }

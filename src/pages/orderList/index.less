@@ -1,6 +1,91 @@
-.index {
-  background: #f00;
-  text {
-    color: #0f0;
+.order-list-wrapper {
+  .order-item {
+    background: #fff;
+    position: relative;
+    margin-bottom: 20rpx;
+
+    .item-title {
+      height: 88rpx;
+      border-bottom: 1rpx solid #e6e6e6;
+      display: flex;
+      justify-content: space-between;
+      line-height: 88rpx;
+      padding: 0 30rpx;
+      font-size: 28rpx;
+    }
+
+    .item-content {
+      padding: 36rpx 30rpx 0 30rpx;
+    }
+
+    .produce-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30rpx;
+      Image {
+        width: 120rpx;
+        min-width: 120rpx;
+        height: 120rpx;
+        border-radius: 8rpx;
+        background: #f2f2f2;
+        margin-right: 30rpx;
+      }
+
+      .info {
+        flex: 1;
+
+        .name {
+          color: #000;
+          font-size: 30rpx;
+          font-weight: bold;
+          line-height: 1;
+        }
+      }
+
+      .product-list {
+        margin-top: 23rpx;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .product-item {
+        font-size: 20rpx;
+        color: #999;
+        line-height: 40rpx;
+        padding: 0 16rpx;
+        margin: 0rpx 16rpx 10rpx 0;
+        background: #f2f2f2;
+        border-radius: 4rpx;
+      }
+
+      .order-price {
+        font-size: 32rpx;
+        color: #FF3939;
+        line-height: 1;
+        margin-top: 14rpx;
+        font-weight: bold;
+      }
+    }
+
+    .item-footer {
+      margin: -6rpx 0 0 0;
+      padding: 0 30rpx 24rpx 30rpx;
+      text-align: right;
+      .at-button {
+        display: inline-flex;
+        height: 64rpx;
+        line-height: 64rpx;
+        background: #ff3939;
+        color: #fff;
+        font-size: 30rpx;
+        padding: 0 26rpx;
+        border-color: #FF3939;
+        border-radius: 0;
+      }
+    }
+  }
+
+  .at-tabs-pane {
+    padding: 20rpx 0rpx 0 0rpx;
   }
 }
