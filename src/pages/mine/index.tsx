@@ -49,20 +49,65 @@ export default class Mine extends Component {
   }
 
   orderContentList = [
-    { iconClassName: 'iconfont icondaizhifu', name: '待支付' },
+    { iconClassName: 'iconfont icondaizhifu', name: '待支付', },
     { iconClassName: 'iconfont iconjinhangzhong', name: '进行中' },
     { iconClassName: 'iconfont iconyiwancheng', name: '已完成' },
   ]
 
   mineList1 = [
-    { iconClassName: 'iconfont icondaizhifu', name: '优惠券', isCoupon: true, color: 'rgba(48, 39, 39, 0.6)' },
-    { iconClassName: 'iconfont icondizhiguanli', name: '地址管理', value: '' },
+    { 
+      iconClassName: 'iconfont icondaizhifu', 
+      name: '优惠券', 
+      isCoupon: true, 
+      color: 'rgba(48, 39, 39, 0.6)', 
+      clickFn() {
+        Taro.navigateTo({
+          url: '/pages/couponList/index'
+        })
+      } 
+    },
+    { 
+      iconClassName: 'iconfont icondizhiguanli', 
+      name: '地址管理', 
+      value: '',
+      clickFn: () => {
+        Taro.navigateTo({
+          url: '/pages/myAddress/index'
+        })
+      } 
+    },
   ]
 
   mineList2 = [
-    { iconClassName: 'iconfont iconchangjianwenti', name: '常见问题' },
-    { iconClassName: 'iconfont iconlianxiwomen', name: '联系我们', value: '187 5825 5201', color: '#4A90E2' },
-    { iconClassName: 'iconfont iconguanyuwomen', name: '关于我们' },
+    { 
+      iconClassName: 'iconfont iconchangjianwenti', 
+      name: '常见问题',
+      clickFn: () => {
+        Taro.navigateTo({
+          url: '/pages/myAddress/index'
+        })
+      } 
+    },
+    { 
+      iconClassName: 'iconfont iconlianxiwomen', 
+      name: '联系我们', 
+      value: '187 5825 5201', 
+      color: '#4A90E2',
+      clickFn: () => {
+        Taro.makePhoneCall({
+          phoneNumber: '18758255201'
+        })
+      } 
+    },
+    { 
+      iconClassName: 'iconfont iconguanyuwomen', 
+      name: '关于我们',
+      clickFn: () => {
+        Taro.navigateTo({
+          url: '/pages/myAddress/index'
+        })
+      } 
+    },
   ]
 
   render() {
@@ -78,7 +123,11 @@ export default class Mine extends Component {
         <View className="order-contianer">
           <View className="order-header">
             <View className="title">我的订单</View>
-            <View className="header-right-btn">
+            <View className="header-right-btn" onClick={() => {
+              Taro.navigateTo({
+                url: '/pages/orderList/index'
+              })
+            }}>
               <Text>查看全部</Text>
               <View className='at-icon at-icon-chevron-right'></View>
             </View>
@@ -88,7 +137,9 @@ export default class Mine extends Component {
               this.orderContentList.map((ele, index) => {
                 return (
                   <View className="list-item" onClick={() => {
-                    console.log(index)
+                    Taro.navigateTo({
+                      url: `/pages/orderList/index?index=${index}`
+                    })
                   }} key={ele.name}>
                     <View className={ele.iconClassName}></View>
                     <View className="name">{ele.name}</View>
@@ -102,9 +153,7 @@ export default class Mine extends Component {
           {
             this.mineList1.map((ele, index) => {
               return (
-                <View className="module-item" key="ele.name" onClick={() => {
-                  console.log(index)
-                }}>
+                <View className="module-item" key="ele.name" onClick={ele.clickFn}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
                   <View className="right-value" style={{ color: ele.color }}>{ele.isCoupon ? this.state.couponCount : ele.value}</View>
@@ -118,13 +167,7 @@ export default class Mine extends Component {
           {
             this.mineList2.map((ele, index) => {
               return (
-                <View className="module-item" key="ele.name" onClick={() => {
-                  if (index === 1) {
-                    Taro.makePhoneCall({
-                      phoneNumber: '18758255201'
-                    })
-                  }
-                }}>
+                <View className="module-item" key="ele.name" onClick={ele.clickFn}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
                   <View className="right-value" style={{ color: ele.color }}>{ele.value}</View>

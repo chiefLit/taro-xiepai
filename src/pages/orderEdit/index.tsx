@@ -21,7 +21,11 @@ export default class OrderEdit extends Component {
   render() {
     return (
       <View className='order-edit-wrapper'>
-        <View className="addressee-info">
+        <View className="addressee-info" onClick={() => {
+          Taro.navigateTo({
+            url: '/pages/myAddress/index'
+          })
+        }}>
           <View className="iconfont icondizhiguanli"></View>
           <View className="content">
             {
@@ -93,7 +97,11 @@ export default class OrderEdit extends Component {
             <View className="key">运费</View>
             <View className="value">￥ 6.5</View>
           </View>
-          <View className="module-list">
+          <View className="module-list" onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/couponList/index'
+            })
+          }}>
             <View className="key">优惠券</View>
             <View className="value">￥ 6.5</View>
           </View>

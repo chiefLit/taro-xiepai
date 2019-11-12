@@ -163,7 +163,11 @@ export default class Cart extends Component {
             <Text>全选</Text>
           </View>
           <View className="sum-price">合计：<Text>￥ {this.calcTotalPrice(selectedList)}</Text></View>
-          <AtButton full className="">结算</AtButton>
+          <AtButton full onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/orderEdit/index'
+            })
+          }}>结算</AtButton>
         </View>
       </View>
     )

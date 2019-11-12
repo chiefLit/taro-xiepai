@@ -12,71 +12,65 @@ export default class MyAddr extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  constructor(props) {
-    super(props)
-    this.state = {
-      list: [
-        {
-          address: '详细地址详细地址',
-          name: '张三',
-          phone: '18815288276'
-        },
-        {
-          address: '详细地址详细地址详细地址详细地址详细地址详细地址详细地址详细地址',
-          name: '李四',
-          phone: '18815288276'
-        },
-        {
-          address: '详细地址详细地址',
-          name: '王五',
-          phone: '18815288276'
-        }
-      ]
-    }
+  constructor() {
+    super()
   }
+
   config: Config = {
     navigationBarTitleText: '我的地址'
+  }
+
+  state = {
+    list: [
+      {
+        address: '详细地址详细地址',
+        name: '张三',
+        phone: '18815288276'
+      },
+      {
+        address: '详细地址详细地址详细地址详细地址详细地址详细地址详细地址详细地址',
+        name: '李四',
+        phone: '18815288276'
+      },
+      {
+        address: '详细地址详细地址',
+        name: '王五',
+        phone: '18815288276'
+      }
+    ]
   }
 
   async pullData() {
 
   }
 
-  componentWillMount() { }
-
-  componentDidMount() {
+  componentWillMount() {
     this.pullData()
   }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
 
   render() {
     let { list } = this.state;
     return (
       <View className='my-address-wrapper'>
         <View className="module-list">
-        {
-          list.map((ele, index) => {
-            return (
-              <View className="list-item" key={ele.name}>
-                <View className="info">
-                  <View className="line-first">
-                    <Text>{ele.name}</Text>
-                    <Text>{ele.phone}</Text>
+          {
+            list.map((ele, index) => {
+              return (
+                <View className="list-item" key={ele.name}>
+                  <View className="info">
+                    <View className="line-first">
+                      <Text>{ele.name}</Text>
+                      <Text>{ele.phone}</Text>
+                    </View>
+                    <View className="line-second">
+                      <Text>{ele.address}</Text>
+                    </View>
                   </View>
-                  <View className="line-second">
-                    <Text>{ele.address}</Text>
-                  </View>
+                  <AtIcon value="edit" size="15" color="#999"></AtIcon>
                 </View>
-                <AtIcon value="edit" size="15" color="#999"></AtIcon>
-              </View>
-            )
-          })
-        }
+              )
+            })
+          }
 
         </View>
         <View className="footer-cover"></View>
@@ -90,7 +84,10 @@ export default class MyAddr extends Component {
                 url: '/pages/myAddressEdit/index?id=2'
               })
             }}
-          >添加地址</AtButton>
+          >
+            <AtIcon value='add' size='14' color='#fff'></AtIcon>
+            添加地址
+          </AtButton>
         </View>
       </View>
     )

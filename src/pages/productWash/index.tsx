@@ -241,8 +241,16 @@ export default class productWash extends Component {
             <View className="iconfont iconxihuxiangmu"></View>
             <Text>￥{this.mathSum(this.state.chooseList)}</Text>
           </View>
-          <AtButton full className="addInCart">加入购物车</AtButton>
-          <AtButton full className="submit">提交订单</AtButton>
+          <AtButton full className="addInCart" onClick={() => {
+            Taro.switchTab({
+              url: '/pages/cart/index'
+            })
+          }}>加入购物车</AtButton>
+          <AtButton full className="submit" onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/orderEdit/index`
+            })
+          }}>提交订单</AtButton>
         </View>
         {showSelectedProduct ? this.randerSelectedProduct() : ''}
       </View>
