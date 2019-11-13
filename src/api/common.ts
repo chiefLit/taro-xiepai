@@ -21,3 +21,14 @@ export function getExpressCompanyList(data) {
   }
   return axios(config);
 }
+
+// 常见问题列表
+export function getFaqlist(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/common/faqlist',
+    mockData: require('../../mock/getFaqlist.json'),
+    data: data
+  }
+  return axios(config);
+}

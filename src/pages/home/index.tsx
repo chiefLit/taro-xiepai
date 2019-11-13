@@ -95,7 +95,11 @@ export default class Home extends Component {
         <View className="module-title">
           <Text className="line1">常见问题</Text>
           <Text className="line2">Q&A</Text>
-          <View className="title-right-btn" onClick={() => { console.log('more') }}>
+          <View className="title-right-btn" onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/faqList/index'
+            })
+          }}>
             <Text>更多</Text>
             <View className='at-icon at-icon-chevron-right'></View>
           </View>

@@ -42,11 +42,14 @@ export default class MyAddr extends Component {
   }
 
   componentWillMount() {
+    // this.pullData()
+  }
+
+  componentDidShow() {
     this.pullData()
   }
 
   renderItem(item: any) {
-    // console.log(item.id)
     let { selectedAddressId } = this.state;
     return (
       <View className="list-item" onClick={() => {

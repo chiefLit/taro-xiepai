@@ -25,6 +25,7 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/faqList/index',
       // 'pages/home/index',
       // 'pages/orderEdit/index',
       // 'pages/orderDetail/index',
