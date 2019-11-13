@@ -1,0 +1,39 @@
+{
+  "code": 1,
+  "object": {
+    "userId": 1,
+    "cashierSubVoList": [
+      {
+        "cartId": 1,
+        "userId": 1,
+        "goodzId": 1,
+        "goodzTitle": "标题标题",
+        "goodzType": 0,
+        "quantity": "",
+        "price": "",
+        "totalPrice": "",
+        "couponId": "",
+        "couponDiscountAmount": "",
+        "totalDiscountAmount": "",
+        "realPayPrice": "",
+        "serviceDetailList": [
+          {
+            "serviceId": 1,
+            "serviceName": "服务项目",
+            "price": 12.3
+          }
+        ],
+        "serviceImageList": [
+          { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 0 },
+          { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 1 },
+          { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 2 }
+        ]
+      }
+    ],
+    "totalPrice": 123.12,
+    "couponId": 123,
+    "couponDiscountAmount": 123.12,
+    "totalDiscountAmount": 123.12,
+    "realPayPrice": 123.12
+  }
+}

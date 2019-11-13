@@ -3,7 +3,7 @@ import axios from '../utils/axios'
 export function getCartList(data) {
   const config = {
     method: 'post',
-    url: '/api/wxmp/cart',
+    url: '/api/wxmp/cartList',
     mockData: require('../../mock/getCartList.json'),
     data: data
   };

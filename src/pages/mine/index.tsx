@@ -153,7 +153,7 @@ export default class Mine extends Component {
           {
             this.mineList1.map((ele, index) => {
               return (
-                <View className="module-item" key="ele.name" onClick={ele.clickFn}>
+                <View className="module-item" key={ele.name} onClick={ele.clickFn}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
                   <View className="right-value" style={{ color: ele.color }}>{ele.isCoupon ? this.state.couponCount : ele.value}</View>
@@ -167,7 +167,7 @@ export default class Mine extends Component {
           {
             this.mineList2.map((ele, index) => {
               return (
-                <View className="module-item" key="ele.name" onClick={ele.clickFn}>
+                <View className="module-item" key={ele.name} onClick={ele.clickFn}>
                   <View className={ele.iconClassName}></View>
                   <View className="name">{ele.name}</View>
                   <View className="right-value" style={{ color: ele.color }}>{ele.value}</View>

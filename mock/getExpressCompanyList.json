@@ -3,10 +3,22 @@
   "message": "成功!",
   "object": [
     {
-      "id": "",
-      "code": "",
-      "name": "",
-      "iconUrl": ""
+      "id": 1,
+      "code": "0001",
+      "name": "顺丰",
+      "iconUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg"
+    },
+    {
+      "id": 2,
+      "code": "0001",
+      "name": "圆通",
+      "iconUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg"
+    },
+    {
+      "id": 3,
+      "code": "0001",
+      "name": "中通",
+      "iconUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg"
     }
   ],
   "map": {}

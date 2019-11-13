@@ -30,6 +30,7 @@ export default class Home extends Component {
     articleList: [],
     bannerList: [],
     couponList: [],
+    faqList: []
   }
 
   componentWillMount() {
@@ -47,9 +48,22 @@ export default class Home extends Component {
       this.setState({
         articleList: data.object.articleList,
         bannerList: data.object.bannerList,
-        couponList: data.object.couponList
+        couponList: data.object.couponList,
+        faqList: data.object.faqList
       })
     }
+  }
+
+  checkLogin() {
+    Taro.checkSession({
+      success () {
+        //session_key 未过期，并且在本生命周期一直有效
+      },
+      fail () {
+        // session_key 已经失效，需要重新执行登录流程
+        Taro.login() //重新登录
+      }
+    })
   }
 
   dailyServices = [
@@ -73,8 +87,36 @@ export default class Home extends Component {
     }
   ]
 
+  renderFaq() {
+    let { faqList } = this.state;
+    return (
+      <View className="module-contianer">
+        <View className="module-title">
+          <Text className="line1">常见问题</Text>
+          <Text className="line2">Q&A</Text>
+          <View className="title-right-btn" onClick={() => { console.log('more') }}>
+            <Text>更多</Text>
+            <View className='at-icon at-icon-chevron-right'></View>
+          </View>
+        </View>
+        <View className="qa">
+          {
+            faqList.map((ele: any) => {
+              return (
+                <View className="qa-item" key={ele.id}>
+                  <View className="item-q">{ele.title}</View>
+                  <View className="item-a">{ele.content}</View>
+                </View>
+              )
+            })
+          }
+        </View>
+      </View>
+    );
+  }
+
   render() {
-    let { articleList, bannerIndex } = this.state;
+    let { articleList, bannerIndex, faqList } = this.state;
     return (
       <View className='home-wrapper'>
         {/* swiper */}
@@ -190,30 +232,8 @@ export default class Home extends Component {
             }
           </View>
         </View>
-        {/* 服务价目 */}
-        <View className="module-contianer">
-          <View className="module-title">
-            <Text className="line1">常见问题</Text>
-            <Text className="line2">Q&A</Text>
-            <View className="title-right-btn" onClick={() => { console.log('more') }}>
-              <Text>更多</Text>
-              <View className='at-icon at-icon-chevron-right'></View>
-            </View>
-          </View>
-          <View className="qa">
-            {
-              this.qaList.map(ele => {
-                return (
-                  <View className="qa-item" key={ele.q}>
-                    <View className="item-q">{ele.q}</View>
-                    <View className="item-a">{ele.a}</View>
-                  </View>
-                )
-              })
-            }
-          </View>
-        </View>
-        {/* <AtButton type='primary'>按钮文案</AtButton> */}
+        {/* 常见问题 */}
+        { faqList.length ? this.renderFaq() : null }
       </View>
     )
   }
