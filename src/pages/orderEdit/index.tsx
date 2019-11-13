@@ -16,7 +16,9 @@ export default class OrderEdit extends Component {
     navigationBarTitleText: '订单确认'
   }
 
-  componentWillMount() { }
+  componentWillMount() {
+    console.log(this.props)
+  }
 
   render() {
     return (

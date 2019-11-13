@@ -3,6 +3,8 @@ import { View, Text } from '@tarojs/components'
 import { AtIcon, AtButton } from 'taro-ui'
 import './index.less'
 
+import { getAddressList } from '../../api/user'
+
 export default class MyAddr extends Component {
 
   /**
@@ -21,57 +23,87 @@ export default class MyAddr extends Component {
   }
 
   state = {
-    list: [
-      {
-        address: '详细地址详细地址',
-        name: '张三',
-        phone: '18815288276'
-      },
-      {
-        address: '详细地址详细地址详细地址详细地址详细地址详细地址详细地址详细地址',
-        name: '李四',
-        phone: '18815288276'
-      },
-      {
-        address: '详细地址详细地址',
-        name: '王五',
-        phone: '18815288276'
-      }
-    ]
+    addressList: [],
+    selectedAddressId: null
   }
 
   async pullData() {
-
+    let data: any = await getAddressList(null)
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      this.setState({
+        addressList: data.object || []
+      })
+    }
   }
 
   componentWillMount() {
     this.pullData()
   }
 
+  renderItem(item: any) {
+    // console.log(item.id)
+    let { selectedAddressId } = this.state;
+    return (
+      <View className="list-item" onClick={() => {
+        this.setState({
+          selectedAddressId: item.id
+        })
+      }}>
+        <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
+        <View className="info">
+          <View className="line-first">
+            <Text style={{ paddingRight: '60rpx' }}>{item.linkName}</Text>
+            <Text>{item.phone}</Text>
+          </View>
+          <View className="line-second">
+            <Text>{item.provinceName}{item.cityName}{item.countyName}{item.address}</Text>
+          </View>
+        </View>
+        <AtIcon value="edit" size="15" color="#999"></AtIcon>
+      </View>
+    )
+  }
+
   render() {
-    let { list } = this.state;
+    let { addressList, selectedAddressId } = this.state;
     return (
       <View className='my-address-wrapper'>
         <View className="module-list">
           {
-            list.map((ele, index) => {
+            addressList.map((ele: any) => {
               return (
-                <View className="list-item" key={ele.name}>
-                  <View className="info">
-                    <View className="line-first">
-                      <Text>{ele.name}</Text>
-                      <Text>{ele.phone}</Text>
-                    </View>
-                    <View className="line-second">
-                      <Text>{ele.address}</Text>
+                <View key={ele.id} className="list-item">
+                  <View style={{ display: 'flex', flex: 1, alignItems: 'center' }} onClick={() => {
+                    if (selectedAddressId === ele.id) return
+                    this.setState({
+                      selectedAddressId: ele.id
+                    })
+                  }}>
+                    <View className={selectedAddressId === ele.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
+                    <View className="info">
+                      <View className="line-first">
+                        <Text style={{ paddingRight: '60rpx' }}>{ele.linkName}</Text>
+                        <Text>{ele.phone}</Text>
+                      </View>
+                      <View className="line-second">
+                        <Text>{ele.provinceName}{ele.cityName}{ele.countyName}{ele.address}</Text>
+                      </View>
                     </View>
                   </View>
-                  <AtIcon value="edit" size="15" color="#999"></AtIcon>
+                  <AtIcon value="edit" size="15" color="#999" onClick={() => {
+                    Taro.navigateTo({
+                      url: `/pages/myAddressEdit/index?id=${ele.id}`
+                    })
+                  }}></AtIcon>
                 </View>
               )
             })
           }
-
         </View>
         <View className="footer-cover"></View>
         <View className="footer-contianer">
@@ -81,7 +113,7 @@ export default class MyAddr extends Component {
             circle={true}
             onClick={() => {
               Taro.navigateTo({
-                url: '/pages/myAddressEdit/index?id=2'
+                url: '/pages/myAddressEdit/index'
               })
             }}
           >

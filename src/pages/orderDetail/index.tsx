@@ -16,7 +16,9 @@ export default class OrderDetail extends Component {
     navigationBarTitleText: '订单详情'
   }
 
-  componentWillMount() { }
+  componentWillMount() {
+    console.log(this.props)
+  }
 
   render() {
     return (

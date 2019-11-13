@@ -33,11 +33,11 @@ export function login(data) {
 }
 
 // 我-我的地址-列表
-export function addressList(data) {
+export function getAddressList(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/user/address/list',
-    mockData: require('../../mock/addressList.json'),
+    mockData: require('../../mock/getAddressList.json'),
     data: data
   }
   return axios(config);

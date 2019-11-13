@@ -3,7 +3,7 @@ import { View, Text, Image, } from '@tarojs/components'
 import './index.less'
 import { AtButton, AtSwipeAction } from 'taro-ui'
 
-import { getCartList, washToCart } from '../../api/cart'
+import { getCartList, washToCart, deleteCart } from '../../api/cart'
 
 export default class Cart extends Component {
 
@@ -33,7 +33,7 @@ export default class Cart extends Component {
   }
 
   async pullData() {
-    let data = await getCartList();
+    let data = await getCartList(null);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -46,26 +46,34 @@ export default class Cart extends Component {
     }
   }
 
-  async deleteItem(id, index) {
-    let data = await washToCart({id})
-    if (data.code !== 1) {
-      Taro.showToast({
-        title: data.message,
-        icon: 'none'
-      })
-    } else {
-      // let cartList = [...this.state.cartList]
-      let cartList = this.state.cartList.filter((ele, i) => i !== index);
-      this.setState({
-        cartList
-      })
-    }
+  deleteItem(id: Number, index: Number) {
+    let { cartList } = this.state
+    Taro.showModal({
+      // title: '提示',
+      content: '确定删除？',
+      success: async (res) => {
+        if (res.confirm) {
+          let data = await deleteCart({ id })
+          if (data.code !== 1) {
+            Taro.showToast({
+              title: data.message,
+              icon: 'none'
+            })
+          } else {
+            let currCartList = cartList.filter((ele, i) => i !== index);
+            this.setState({
+              cartList: currCartList
+            })
+          }
+        }
+      }
+    })
   }
 
-  tapItem(item) {
-    let selectedList = [...this.state.selectedList]
+  tapItem(item: any) {
+    let selectedList: Array<any> = [...this.state.selectedList]
     let isSelectAll;
-    let exisiIndex = selectedList.findIndex(ele => ele.id === item.id);
+    let exisiIndex = selectedList.findIndex((ele: any) => ele.id === item.id);
     if (exisiIndex === -1) {
       selectedList.push(item)
     } else {
@@ -78,52 +86,39 @@ export default class Cart extends Component {
     })
   }
 
-  randerIcon(item: Object) {
+  randerIcon(item: any) {
     let { selectedList } = this.state
-    let isActive = selectedList.some(ele => ele.id === item.id)
+    let isActive = selectedList.some((ele: any) => ele.id === item.id)
     return (
       !isActive ? <View className="iconfont iconweigouxuan1"></View> : <View className="iconfont icongouxuan"></View>
     )
   }
 
-  calcTotalPrice(list: Array) {
+  calcTotalPrice(list: any) {
     let sum = 0;
-    list.map(ele => {
+    list.map((ele: any) => {
       sum += ele.totalPrice
     })
     return sum
   }
 
   render() {
-    let { cartList, selectedList } = this.state;
-    let deleteItem = this.deleteItem.bind(this);
+    let { cartList, selectedList, isSelectAll } = this.state;
     return (
       <View className='cart-wrapper'>
         {
-          cartList.map((ele, index) => {
+          cartList.map((ele: any, index: Number) => {
             return (
               <AtSwipeAction className="scroll-view"
-                options={[
-                  { text: "删除", style: { backgroundColor: '#FF3939' } }
-                ]}
-                onClick={() => {
-                  Taro.showModal({
-                    // title: '提示',
-                    content: '确定删除？',
-                    success(res) {
-                      if (res.confirm) {
-                        deleteItem(ele.id, index)
-                      }
-                    }
-                  })
-                }}
+                options={[{ text: "删除", style: { backgroundColor: '#FF3939' } }]}
+                onClick={this.deleteItem.bind(this, ele.id, index)}
                 key={ele.id}
               >
                 <View className='cart-item' onClick={this.tapItem.bind(this, ele, index)}>
                   {this.randerIcon(ele)}
                   <View className="image-box">
                     {
-                      ele.cartServiceImageList.map(imgItem => {
+                      ele.cartServiceImageList.map((imgItem: any) => {
                         return (
                           imgItem.aspect === 2 ? <Image mode="aspectFill" src={imgItem.url} key={imgItem.id}></Image> : null
                         )
@@ -134,7 +129,7 @@ export default class Cart extends Component {
                     <View className="info-name">{ele.goodzTitle}</View>
                     <View className="info-labels">
                       {
-                        ele.cartServiceDetailList.map(sub => {
+                        ele.cartServiceDetailList.map((sub: any) => {
                           return (
                             <View className="label-item" key={sub.id}>{sub.serviceName}</View>
                           )
@@ -152,7 +147,7 @@ export default class Cart extends Component {
         <View className="footer-cover"></View>
         <View className="footer-contianer">
           <View className="select-all" onClick={() => {
-            this.setState(preState => {
+            this.setState((preState: any) => {
               return {
                 selectedList: preState.isSelectAll ? [] : [...preState.cartList],
                 isSelectAll: !preState.isSelectAll

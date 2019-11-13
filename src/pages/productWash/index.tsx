@@ -3,7 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton } from 'taro-ui'
 
-import { washServiceList } from '../../api/service'
+import { washServiceList, washToOrderByCart } from '../../api/service'
 
 export default class productWash extends Component {
 
@@ -22,26 +22,31 @@ export default class productWash extends Component {
     super()
     this.operateData = this.operateData.bind(this)
     this.handleChoose = this.handleChoose.bind(this)
+    this.chooseImage = this.chooseImage.bind(this)
   }
 
   state = {
+    // 清洗方式（也属于产品）
     wayList: [],
+    // 产品列表
     productList: [],
-    chooseList: [],
-    showSelectedProduct: false
+    // 已选择产品
+    chosenList: [],
+    // 弹窗显示-已选产品
+    showSelectedProduct: false,
+    // 图片列表 球鞋展示面 鞋子展示面：0：正面 1：背后 2：侧面
+    image0Url: '',
+    image1Url: '',
+    image2Url: ''
   }
+
+  defaultImg0Url = require('../../assets/images/photo-zm.png')
+  defaultImg1Url = require('../../assets/images/photo-cm.png')
+  defaultImg2Url = require('../../assets/images/photo-bm.png')
 
   componentWillMount() {
     this.pullData()
   }
-
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
 
   async pullData() {
     let data = await washServiceList();
@@ -54,47 +59,48 @@ export default class productWash extends Component {
     }
   }
   // 获取数据之后操作数据
-  operateData(List: Array) {
+  operateData(List: any) {
     let wayList = List.filter(ele => {
       return ele.classify_code === '000001'
     })
-    let chooseList = [wayList[0]];
+    let chosenList = [wayList[0]];
     let productList = List.filter(ele => {
       return ele.classify_code === '000002'
     })
     this.setState({
       wayList,
       productList,
-      chooseList
+      chosenList
     })
   }
 
   // 生成已选中数据
-  handleChoose(type: Number, item: Object) {
+  handleChoose(type: Number, item: any) {
     // 删除
-    let index1 = this.state.chooseList.findIndex((ele) => {
+    let index1 = this.state.chosenList.findIndex((ele: any) => {
       return ele.id === item.id
     })
     if (type === 2 && index1 !== -1) {
-      this.setState(preState => {
-        let chooseList = [...preState.chooseList]
-        chooseList = chooseList.filter((ele, index) => index !== index1)
-        return { chooseList }
+      this.setState((preState: any) => {
+        let chosenList = [...preState.chosenList]
+        chosenList = chosenList.filter((ele, index) => index !== index1)
+        return { chosenList }
       })
       return
     }
     // 修改/添加
-    let index2 = this.state.chooseList.findIndex((ele) => {
+    let index2 = this.state.chosenList.findIndex((ele: any) => {
       return ele.group === item.group
     })
-    this.setState(preState => {
-      let chooseList = [...preState.chooseList]
-      index2 === -1 ? chooseList.push(item) : chooseList[index2] = item;
-      return { chooseList }
+    this.setState((preState: any) => {
+      let chosenList = [...preState.chosenList]
+      index2 === -1 ? chosenList.push(item) : chosenList[index2] = item;
+      return { chosenList }
     })
   }
 
-  mathSum(list: Array) {
+  // 计算总价
+  mathSum(list: any) {
     let sum = 0;
     list.map(ele => {
       sum += ele.price
@@ -102,26 +108,94 @@ export default class productWash extends Component {
     return sum
   }
 
-  photoList = [
-    {
-      id: 1,
-      src: require('../../assets/images/photo-cm.png'),
-      name: '侧面',
-    },
-    {
-      id: 2,
-      src: require('../../assets/images/photo-bm.png'),
-      name: '背面',
-    },
-    {
-      id: 3,
-      src: require('../../assets/images/photo-zm.png'),
-      name: '正面',
+  chooseImage(index: Number) {
+    // 选择图片
+    Taro.chooseImage({
+      count: 1,
+      success: ({ tempFilePaths }) => {
+        Taro.showToast({
+          title: '暂未上传',
+          icon: 'none'
+        })
+        this.setState({
+          [`image${index}Url`]: tempFilePaths[0]
+        })
+        return;
+        // 上传图片
+        Taro.uploadFile({
+          url: '',
+          filePath: tempFilePaths[0],
+          name: 'file',
+          formData: {
+            'user': 'test'
+          },
+          success(res: any) {
+            const data = res.data
+            console.log(data)
+            //do something
+          }
+        })
+      }
+    })
+  }
+
+  checkImageUpload() {
+    if (!this.state.image0Url) {
+      Taro.showToast({
+        title: '请先上传球鞋正面照片',
+        icon: 'none'
+      })
+      return false
     }
-  ]
+    if (!this.state.image1Url) {
+      Taro.showToast({
+        title: '请先上传球鞋侧面面照片',
+        icon: 'none'
+      })
+      return false
+    }
+    if (!this.state.image2Url) {
+      Taro.showToast({
+        title: '请先上传球鞋背面照片',
+        icon: 'none'
+      })
+      return false
+    }
+    return true
+  }
+
+  // 添加到购物车
+  async addCart() {
+    if (!this.checkImageUpload()) return
+    let { chosenList, image0Url, image1Url, image2Url } = this.state;
+    let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
+    let data: any = await washToOrderByCart({
+      serviceItemIds, image0Url, image1Url, image2Url
+    })
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      // 添加成功
+      // Taro.switchTab({
+      //   url: '/pages/cart/index'
+      // })
+    }
+  }
+
+  submitOrder() {
+    if (!this.checkImageUpload()) return
+    let { showSelectedProduct, image0Url, image1Url, image2Url } = this.state;
+    let paramsString: String = `serviceItems=${JSON.stringify(showSelectedProduct)}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
+    Taro.navigateTo({
+      url: `/pages/orderEdit/index?${paramsString}`
+    })
+  }
 
   randerSelectedProduct() {
-    const { chooseList } = this.state
+    const { chosenList } = this.state
     return (
       <View className="popup-contianer">
         <View className="popup-mask" onClick={() => {
@@ -140,7 +214,7 @@ export default class productWash extends Component {
           </View>
           <View className="select-popup-list">
             {
-              chooseList.map(ele => {
+              chosenList.map((ele: any) => {
                 return (
                   <View className="list-item" key={ele.id}>
                     <View className="name">{ele.name}</View>
@@ -157,7 +231,7 @@ export default class productWash extends Component {
 
 
   render() {
-    let { wayList, productList, chooseList, showSelectedProduct } = this.state
+    let { wayList, productList, chosenList, showSelectedProduct, image0Url, image1Url, image2Url } = this.state
     return (
       <View className='product-wash-wrapper'>
         <View className="module-contianer">
@@ -166,8 +240,8 @@ export default class productWash extends Component {
           </View>
           <View className="wash-way">
             {
-              wayList.map(ele => {
-                let isActive = chooseList.some(item => item.id === ele.id)
+              wayList.map((ele: any) => {
+                let isActive = chosenList.some((item: any) => item.id === ele.id)
                 return (
                   <View className={isActive ? 'way-item active' : 'way-item'} key={ele.id} onClick={this.handleChoose.bind(this, 1, ele)}>{`${ele.name} ￥${ele.price}`}</View>
                 )
@@ -182,8 +256,8 @@ export default class productWash extends Component {
           </View>
           <View className="product-list">
             {
-              productList.map(ele => {
-                let isActive = chooseList.some(item => item.id === ele.id)
+              productList.map((ele: any) => {
+                let isActive = chosenList.some((item: any) => item.id === ele.id)
                 return (
                   <View className={isActive ? 'product-item active' : 'product-item'} key={ele.id} onClick={this.handleChoose.bind(this, 2, ele)}>{`${ele.name} ￥${ele.price}`}</View>
                 )
@@ -197,38 +271,15 @@ export default class productWash extends Component {
             <Text className="subTitle">便于我们确认您爱鞋的情况</Text>
           </View>
           <View className="wash-photo">
-            {
-              this.photoList.map(ele => {
-                return (
-                  <View className="photo-item" key={ele.id} onClick={() => {
-                    Taro.chooseImage({
-                      count: 1,
-                      success({ tempFilePaths }) {
-                        Taro.showToast({
-                          title: '暂未上传',
-                          icon: 'none'
-                        })
-                        return
-                        Taro.uploadFile({
-                          url: '',
-                          filePath: tempFilePaths[0],
-                          name: 'file',
-                          formData: {
-                            'user': 'test'
-                          },
-                          success(res) {
-                            const data = res.data
-                            //do something
-                          }
-                        })
-                      }
-                    })
-                  }}>
-                    <Image src={ele.src}></Image>
-                  </View>
-                )
-              })
-            }
+            <View className="photo-item" onClick={this.chooseImage.bind(this, 0)}>
+              <Image mode="aspectFill" src={image0Url ? image0Url : this.defaultImg0Url}></Image>
+            </View>
+            <View className="photo-item" onClick={this.chooseImage.bind(this, 1)}>
+              <Image mode="aspectFill" src={image1Url ? image1Url : this.defaultImg1Url}></Image>
+            </View>
+            <View className="photo-item" onClick={this.chooseImage.bind(this, 2)}>
+              <Image mode="aspectFill" src={image2Url ? image2Url : this.defaultImg2Url}></Image>
+            </View>
           </View>
         </View>
         <View className="footer-cover"></View>
@@ -239,18 +290,10 @@ export default class productWash extends Component {
             })
           }}>
             <View className="iconfont iconxihuxiangmu"></View>
-            <Text>￥{this.mathSum(this.state.chooseList)}</Text>
+            <Text>￥{this.mathSum(this.state.chosenList)}</Text>
           </View>
-          <AtButton full className="addInCart" onClick={() => {
-            Taro.switchTab({
-              url: '/pages/cart/index'
-            })
-          }}>加入购物车</AtButton>
-          <AtButton full className="submit" onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/orderEdit/index`
-            })
-          }}>提交订单</AtButton>
+          <AtButton full className="addInCart" onClick={this.addCart.bind(this)}>加入购物车</AtButton>
+          <AtButton full className="submit" onClick={this.submitOrder.bind(this)}>提交订单</AtButton>
         </View>
         {showSelectedProduct ? this.randerSelectedProduct() : ''}
       </View>

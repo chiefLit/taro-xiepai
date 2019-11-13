@@ -1,0 +1,55 @@
+{
+  "code": 1,
+  "message": "成功!",
+  "object": [
+    {
+      "id": 1,
+      "linkName": "张三",
+      "provinceId": 1,
+      "provinceCode": 1,
+      "provinceName": "浙江省",
+      "cityId": 11,
+      "cityName": "杭州市",
+      "cityCode": 11,
+      "countyId": 111,
+      "countyCode": 111,
+      "countyName": "下城区",
+      "address": "详细地址详细地址",
+      "phone": 18815288276,
+      "describe": "描述描述描述"
+    },
+    {
+      "id": 2,
+      "linkName": "李四",
+      "provinceId": 2,
+      "provinceCode": 2,
+      "provinceName": "浙江省",
+      "cityId": 22,
+      "cityName": "杭州市",
+      "cityCode": 22,
+      "countyId": 222,
+      "countyCode": 222,
+      "countyName": "下城区",
+      "address": "详细地址详细地址",
+      "phone": 18815288276,
+      "describe": "描述描述描述"
+    },
+    {
+      "id": 3,
+      "linkName": "王五",
+      "provinceId": 3,
+      "provinceCode": 3,
+      "provinceName": "浙江省",
+      "cityId": 33,
+      "cityName": "杭州市",
+      "cityCode": 33,
+      "countyId": 333,
+      "countyCode": 333,
+      "countyName": "下城区",
+      "address": "详细地址详细地址",
+      "phone": 18815288276,
+      "describe": "描述描述描述"
+    }
+  ],
+  "map": {}
+}

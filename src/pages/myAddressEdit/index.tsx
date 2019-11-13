@@ -2,7 +2,9 @@ import Taro, { Component, Config } from '@tarojs/taro'
 // import { functionalPageNavigator } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import './index.less'
-import { View, Input, Text, Picker, Button } from '@tarojs/components'
+import { View, Input, Text, Picker } from '@tarojs/components'
+
+import { getAddressList, addAddress, editAddress } from '../../api/user'
 
 export default class MyAddrEdit extends Component {
 
@@ -13,61 +15,98 @@ export default class MyAddrEdit extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  constructor(props) {
-    super(props)
-    this.state = {
-      addressInfo: {
-        address: '详细地址详细地址',
-        name: '张三',
-        phone: '18815288276'
-      }
+
+  config: Config = {
+    // navigationBarTitleText: '收货地址'
+  }
+
+  state = {
+    addressId: '',
+    addressInfo: {
+      provinceName: "",
+      provinceCode: "",
+      cityName: "",
+      cityCode: "",
+      countyName: "",
+      countyCode: "",
+      linkName: "",
+      address: "",
+      phone: "",
+      describe: ""
     }
   }
-  config: Config = {
-    navigationBarTitleText: '编辑收货地址'
-  }
 
-  componentWillMount() { }
-
-  componentDidMount() {
-    Taro.login({
-      success(res) {
-        console.log(res)
-      }
+  componentWillMount() {
+    let params: any = this.$router.params || {}
+    let title: string = params.id ? '编辑收货地址' : '新增收货地址'
+    Taro.setNavigationBarTitle({ title })
+    this.setState({
+      addressId: Number(params.id)
     })
+    if (params.id) {
+      this.pullData(Number(params.id));
+    }
   }
 
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  onSubmit() {
-    // console.log(this.state.addressInfo)
+  async submitAddress() {
+    let {addressId, addressInfo} = this.state
+    let data: any;
+    if (addressId) {
+      data = await editAddress({ ...addressInfo })
+    } else {
+      data = await addAddress({ ...addressInfo })
+    }
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      Taro.showToast({
+        title: addressId ? '修改成功' : '新增成功',
+        icon: 'none'
+      })
+      Taro.navigateBack()
+    }
   }
 
-  onGetRegion(region) {
-    // 参数region为选择的省市区
-    console.log(region);
+  async deleteAddress() {
+    // let data: any = de
+  }
+
+  async pullData(id: Number) {
+    let data: any = await getAddressList(null);
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      let addressList: Array<any> = data.object || []
+      let addressInfo: any = addressList.find((ele: any) => ele.id === id)
+      this.setState({
+        addressInfo: { ...addressInfo }
+      })
+    }
   }
 
   render() {
     let { addressInfo } = this.state;
+    let fullAddress: String = `${addressInfo.provinceName} ${addressInfo.cityName} ${addressInfo.countyName}`;
     return (
       <View className="my-address-edit-wrapper">
-        <AtForm onSubmit={this.onSubmit.bind(this)} >
+        <AtForm >
           <AtInput
             name='name'
             title='联系人'
             type='text'
             placeholder='请填写'
-            value={addressInfo.name}
-            onChange={(val) => {
-              addressInfo.name = val;
-              this.setState({ addressInfo })
+            value={addressInfo.linkName}
+            onChange={(val: String) => {
+              this.setState({
+                addressInfo: { ...addressInfo, linkName: val }
+              })
             }}
-            clear
           />
           <AtInput
             name='phone'
@@ -75,60 +114,50 @@ export default class MyAddrEdit extends Component {
             type='phone'
             placeholder='请填写'
             value={addressInfo.phone}
-            onChange={(val) => {
-              addressInfo.phone = val;
-              this.setState({ addressInfo })
+            onChange={(val: Number) => {
+              this.setState({
+                addressInfo: { ...addressInfo, linkNaphoneme: val }
+              })
             }}
-            clear
           />
-          <View className="at-input">
-            <View className="at-input__container" onClick={() => {
-              Taro.chooseAddress({
-                success: (res) => {
-                  addressInfo.address = `${res.provinceName} ${res.cityName} ${res.countyName}`
-                  this.setState({ addressInfo })
-                }
-              })
-            }}>
-              <Text className="at-input__title">微信地址</Text>
-              <Input className="at-input__input" placeholder="地址" value={addressInfo.address} type='text' disabled />
-              <View className='at-icon at-icon-chevron-right' style={{ color: '#ccc' }}></View>
+          <Picker mode='region' onChange={(res) => {
+            this.setState({
+              addressInfo: {
+                ...addressInfo,
+                provinceName: res.detail.value[0],
+                provinceCode: res.detail.code[0],
+                cityName: res.detail.value[1],
+                cityCode: res.detail.code[1],
+                countyName: res.detail.value[2],
+                countyCode: res.detail.code[2]
+              }
+            })
+          }}>
+            <View className="at-input">
+              <View className="at-input__container">
+                <Text className="at-input__title">地址</Text>
+                <Input className="at-input__input" placeholder="地址" value={fullAddress} type='text' disabled />
+                <View className='at-icon at-icon-chevron-right' style={{ color: '#ccc' }}></View>
+              </View>
             </View>
-          </View>
-          <Picker mode='region' onChange={(res) => { console.log(res) }}>
-            <Button>省市区筛选</Button>
           </Picker>
-          <Button open-type="getPhoneNumber" getphonenumber={(res) => { console.log(res) }}>获取手机号码</Button>
-          <View className="at-input">
-            <View className="at-input__container" onClick={() => {
-              Taro.chooseAddress({
-                success: (res) => {
-                  addressInfo.address = `${res.provinceName} ${res.cityName} ${res.countyName}`
-                  this.setState({ addressInfo })
-                }
-              })
-            }}>
-              <Text className="at-input__title">地址</Text>
-              <Input className="at-input__input" placeholder="地址" value={addressInfo.address} type='text' disabled />
-              <View className='at-icon at-icon-chevron-right' style={{ color: '#ccc' }}></View>
-            </View>
-          </View>
           <AtInput
             name='address'
             title='详细地址'
             type='text'
             placeholder='请填写'
             value={addressInfo.address}
-            clear
             onChange={(val) => {
-              addressInfo.address = val
-              this.setState({ addressInfo })
+              this.setState({
+                addressInfo: { ...addressInfo, address: val }
+              })
             }}
           />
-          <View className=""></View>
-          <AtButton className="submit-button" type="primary" formType='submit'>保存地址</AtButton>
-          <AtButton className="delete-button" type="secondary">删除地址</AtButton>
         </AtForm>
+        <View className="footer-contianer">
+          <AtButton className="submit-button" onClick={this.submitAddress.bind(this)} type="primary">保存地址</AtButton>
+          {/* <AtButton full className="delete-button" onClick={this.deleteAddress.bind(this)} type="secondary">删除地址</AtButton> */}
+        </View>
       </View >
     )
   }
