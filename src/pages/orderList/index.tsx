@@ -3,7 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtButton } from 'taro-ui'
 import './index.less'
 
-import { getCouponList } from '../../api/coupon'
+import { getOrderList } from '../../api/order'
 
 export default class OrderList extends Component {
 
@@ -77,7 +77,7 @@ export default class OrderList extends Component {
    * @param callBack 回调
    */
   async pullData(page: any, index: Number, callBack: any) {
-    let data = await getCouponList(page.params)
+    let data = await getOrderList(page.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -152,37 +152,55 @@ export default class OrderList extends Component {
     }
   }
 
+  orderStatusToValue(status: any) {
+    return { 0: "待支付", 1: "等待物流信息", 2: "运输到店途中", 3: "到店核验中", 4: "清洗中", 5: "清洗完成", 6: "寄回中", 7: "订单完成", 8: "退款中", 9: "已退款", "-1": "已取消", "-2": "已关闭" }[status]
+  }
+
   randerItem(item: any) {
+    let orderStatusToValue = this.orderStatusToValue;
     return (
       <View className="order-item">
         <View className="item-title">
-          <Text>订单编号:3123123123123</Text>
-          <Text>订单关闭</Text>
+          <Text>订单编号: {item.number}</Text>
+          <Text>{orderStatusToValue(item.status)}</Text>
         </View>
         <View className="item-content">
           {
-            [1, 2].map(ele => {
-              return <View className="produce-item">
-                <Image src={123}></Image>
+            item.orderSubVoList.map((ele: any) => {
+              return <View className="produce-item" key={ele.id}>
+                {
+                  ele.serviceImageList.map((imageItem: any) => {
+                    return imageItem.aspect === 0 ? <Image mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                  })
+                }
                 <View className="info">
-                  <View className="name">高级清洗</View>
+                  <View className="name">{ele.goodzTitle}</View>
                   <View className="product-list">
                     {
-                      [1, 2, 3].map(ele => {
+                      ele.serviceDetailList.map((serviceItem: any) => {
                         return (
-                          <View className="product-item" key={ele}>防水</View>
+                          <View className="product-item" key={serviceItem.serviceId}>{serviceItem.serviceName}</View>
                         )
                       })
                     }
                   </View>
                 </View>
-                <View className="order-price">￥ 109.5</View>
+                <View className="order-price">￥ {item.realPayPrice}</View>
               </View>
             })
           }
         </View>
         <View className="item-footer">
-          <AtButton>去支付</AtButton>
+          {item.status === 0 ? <AtButton onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/orderDetail/index?id=${item.id}`
+            })
+          }}>去支付</AtButton> : null}
+          {item.status === 1 ? <AtButton onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/orderDetail/index?id=${item.id}`
+            })
+          }}>补充物流信息</AtButton> : null}
         </View>
       </View>
     )

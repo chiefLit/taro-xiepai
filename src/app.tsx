@@ -25,13 +25,13 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/orderSteps/index',
-      'pages/expressInfo/index',
       // 'pages/home/index',
+      // 'pages/orderSteps/index',
+      // 'pages/expressInfo/index',
       // 'pages/faqList/index',
       // 'pages/orderEdit/index',
-      // 'pages/orderDetail/index',
-      // 'pages/orderList/index',
+      'pages/orderDetail/index',
+      'pages/orderList/index',
       // 'pages/couponList/index',
       // 'pages/productWash/index',
       // 'pages/productMend/index',

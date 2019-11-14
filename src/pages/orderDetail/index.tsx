@@ -3,6 +3,8 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
 
+import { getOrderDetail } from '../../api/order'
+
 export default class OrderDetail extends Component {
 
   /**
@@ -16,23 +18,55 @@ export default class OrderDetail extends Component {
     navigationBarTitleText: '订单详情'
   }
 
+  state = {
+    orderDetail: {}
+  }
+
   componentWillMount() {
-    console.log(this.props)
+    let params: any = this.$router.params
+    // if (params.id) {
+    this.pullData(params.id)
+    // }
+  }
+
+  async pullData(orderId: any) {
+    let data: any = await getOrderDetail({ orderId });
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      this.setState({
+        orderDetail: data.object
+      })
+    }
+  }
+
+  orderStatusToValue(status: any) {
+    return { 0: "待支付", 1: "等待物流信息", 2: "运输到店途中", 3: "到店核验中", 4: "清洗中", 5: "清洗完成", 6: "寄回中", 7: "订单完成", 8: "退款中", 9: "已退款", "-1": "已取消", "-2": "已关闭" }[status]
   }
 
   render() {
+    let orderDetail: any = this.state.orderDetail
     return (
       <View className='order-detail-wrapper'>
         <View className="order-status">
-          <View className="status-value">运输中</View>
-          <View className="status-desc">描述描述描述描述描述描述描述</View>
+          <View className="status-value">{this.orderStatusToValue(orderDetail.status)}</View>
+          {/* <View className="status-desc">{orderDetail.status}</View> */}
         </View>
 
         <View className="order-address">
           <View className="title">收货地址</View>
-          <View className="address-info">
-            <View className="name">灰色彭于晏 18758255201</View>
-            <View className="address">浙江省 杭州市 下城区 体育场路406号浙江省 杭州市 下城区 体育场路406号浙江省 杭州市 下城区 体育场路406号</View>
+          <View className="address-info" onClick={() => {
+            if (orderDetail.status !== undefined) return
+            console.log('选择地址')
+          }}>
+            <View className="left-box">
+              <View className="name">{orderDetail.userAddressVo.linkName}  {orderDetail.userAddressVo.phone}</View>
+              <View className="address">{orderDetail.userAddressVo.provinceName} {orderDetail.userAddressVo.cityName} {orderDetail.userAddressVo.countyName} {orderDetail.userAddressVo.address}</View>
+            </View>
+            {orderDetail.status === undefined ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null}
           </View>
           <View className="dist-mode">
             <View className="mode-left">
@@ -46,80 +80,89 @@ export default class OrderDetail extends Component {
         <View className="order-service">
           <View className="service-list">
             {
-              [1].map(ele => {
+              orderDetail.orderSubVoList.map((ele: any) => {
                 return (
                   <View className="service-item" key={ele}>
-                    <Image className="item-image"></Image>
+                    {
+                      ele.serviceImageList.map((imageItem: any) => {
+                        return imageItem.aspect === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                      })
+                    }
                     <View className="item-info">
-                      <View className="name">高级清洗</View>
+                      <View className="name">{ele.goodzTitle}</View>
                       <View className="product-list">
                         {
-                          [1,2,3].map(ele => {
+                          ele.serviceDetailList.map((serviceItem: any) => {
                             return (
-                              <View className="product-item" key={ele}>去氧化</View>
+                              <View className="product-item" key={serviceItem.serviceId}>{serviceItem.serviceName}</View>
                             )
                           })
                         }
                       </View>
                     </View>
-                    <View className="product-price">￥ 109.5</View>
+
+                    <View className="product-price">￥ {ele.totalPrice}</View>
                   </View>
                 )
               })
             }
           </View>
-          <View className="module-list">
+          {/* <View className="module-list">
             <View className="key">运费</View>
             <View className="value">￥ 6.00</View>
-          </View>
+          </View> */}
           <View className="module-list">
             <View className="key">优惠券</View>
             <View className="value">
-              <Text>暂无可用</Text>
-              <AtIcon value="chevron-right" size="15" color="#999"></AtIcon>
+              {orderDetail.couponId ? <Text>-￥ {orderDetail.couponAmount}</Text> : null}
+              {/* <Text>暂无可用</Text> */}
             </View>
+            {orderDetail.status === undefined ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null}
           </View>
         </View>
 
         <View className="order-price">
           <View className="module-list">
             <View className="key">商品总额</View>
-            <View className="value">￥ 109.00</View>
+            <View className="value">￥ {orderDetail.totalPrice}</View>
           </View>
-          <View className="module-list">
+          {/* <View className="module-list">
             <View className="key">运费</View>
             <View className="value">￥ 6.5</View>
-          </View>
+          </View> */}
           <View className="module-list">
             <View className="key">优惠券</View>
-            <View className="value">￥ 6.5</View>
+
+            <View className="value">{orderDetail.couponId ? `-￥ ${orderDetail.couponAmount}` : `未使用`}</View>
           </View>
           <View className="module-list">
             <View className="key">实际支付</View>
-            <View className="value red">￥ 100.5</View>
+            <View className="value red">￥ {orderDetail.realPayPrice}</View>
           </View>
         </View>
 
         <View className="order-infomation">
           <View className="module-list">
             <View className="key">订单编号</View>
-            <View className="value">123123123123123</View>
+            <View className="value">{orderDetail.number}</View>
           </View>
           <View className="module-list">
             <View className="key">订单日期</View>
-            <View className="value">123123123123123</View>
+            <View className="value">{orderDetail.applyTime}</View>
           </View>
           <View className="module-list">
             <View className="key">支付方式</View>
-            <View className="value">微信支付</View>
+            <View className="value">{orderDetail.payChannel === 0 ? "微信支付" : ""}</View>
           </View>
         </View>
 
         <View className="footer-cover"></View>
 
         <View className="order-footer">
-          <AtButton className="type1" full>联系客服</AtButton>
-          <AtButton className="type2" full>联系客服</AtButton>
+          {orderDetail.status === 0 || orderDetail.status === 1 ? <AtButton className="type1" full>取消订单</AtButton> : null}
+          {orderDetail.status === 0 ? <AtButton className="type2" full>立即支付</AtButton> : null}
+          {orderDetail.status === 1 ? <AtButton className="type2" full>填写快递信息</AtButton> : null}
+          {orderDetail.status !== 0 && orderDetail.status !== 1 ? <AtButton className="type2" full>联系客服</AtButton> : null}
         </View>
       </View>
     )

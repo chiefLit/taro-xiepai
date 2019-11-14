@@ -118,7 +118,7 @@ export default class OrderEdit extends Component {
             <Text>合计：</Text>
             <Text className="price">￥91.5</Text>
           </View>
-          <AtButton full>立即支付</AtButton>
+          <AtButton full>立即下单</AtButton>
         </View>
       </View>
     )
