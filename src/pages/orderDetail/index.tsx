@@ -76,7 +76,7 @@ export default class OrderDetail extends Component {
             <View className="key">优惠券</View>
             <View className="value">
               <Text>暂无可用</Text>
-              <AtIcon value="chevron-right" color="#999"></AtIcon>
+              <AtIcon value="chevron-right" size="15" color="#999"></AtIcon>
             </View>
           </View>
         </View>

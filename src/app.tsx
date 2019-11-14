@@ -25,8 +25,10 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/faqList/index',
+      'pages/orderSteps/index',
+      'pages/expressInfo/index',
       // 'pages/home/index',
+      // 'pages/faqList/index',
       // 'pages/orderEdit/index',
       // 'pages/orderDetail/index',
       // 'pages/orderList/index',
@@ -36,12 +38,11 @@ class App extends Component {
       // 'pages/mine/index',
       // 'pages/cart/index',
       // 'pages/servicePrice/index',
-      'pages/myAddress/index',
-      'pages/myAddressEdit/index',
+      // 'pages/myAddress/index',
+      // 'pages/myAddressEdit/index',
       // 'pages/editMailInfo/index',
       // 'pages/setting/index',
-      // 'pages/wallet/index',
-      // 'pages/myAddress/index'
+      // 'pages/wallet/index'
     ],
     window: {
       backgroundTextStyle: 'light',
