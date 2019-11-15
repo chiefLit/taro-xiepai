@@ -60,7 +60,7 @@ export default class Cart extends Component {
               icon: 'none'
             })
           } else {
-            let currCartList = cartList.filter((ele, i) => i !== index);
+            let currCartList = cartList.filter((ele: any, i: Number) => i !== index);
             this.setState({
               cartList: currCartList
             })
@@ -72,12 +72,12 @@ export default class Cart extends Component {
 
   tapItem(item: any) {
     let selectedList: Array<any> = [...this.state.selectedList]
-    let isSelectAll;
-    let exisiIndex = selectedList.findIndex((ele: any) => ele.id === item.id);
+    let isSelectAll: Boolean;
+    let exisiIndex: Number = selectedList.findIndex((ele: any) => ele.id === item.id);
     if (exisiIndex === -1) {
       selectedList.push(item)
     } else {
-      selectedList = selectedList.filter((ele, index) => index !== exisiIndex)
+      selectedList = selectedList.filter((ele: any, index) => index !== exisiIndex)
     }
     isSelectAll = selectedList.length === this.state.cartList.length
     this.setState({

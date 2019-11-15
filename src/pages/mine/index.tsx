@@ -23,7 +23,12 @@ export default class Mine extends Component {
     nickName: '',
     phone: '',
     avatarUrl: defaultAvatarUrl,
-    couponCount: '0 张'
+    couponCount: '0 张',
+    orderContentList: [
+      { iconClassName: 'iconfont icondaizhifu', name: '待支付', amount: 0 },
+      { iconClassName: 'iconfont iconjinhangzhong', name: '进行中', amount: 0 },
+      { iconClassName: 'iconfont iconyiwancheng', name: '已完成', amount: 0 },
+    ]
   }
 
   componentWillMount() {
@@ -31,7 +36,7 @@ export default class Mine extends Component {
   }
 
   async pullData() {
-    let data = await getMine()
+    let data = await getMine(null)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -39,78 +44,84 @@ export default class Mine extends Component {
       })
     } else {
       let avatarUrl = data.object.avatarUrl || this.state.avatarUrl
-      this.setState({
+      this.setState((preState: any) => ({
         avatarUrl,
         phone: data.object.phone,
         nickName: data.object.nickName,
-        couponCount: `${data.object.couponCount || 0} 张`
-      })
+        couponCount: `${data.object.couponCount || 0} 张`,
+        orderContentList: preState.orderContentList.map((ele: any, index: Number) => {
+          if (index === 0) ele.amount = data.object.waitPayOrderCount
+          if (index === 1) ele.amount = data.object.ongoingOrderCount
+          return ele
+        })
+      }))
     }
   }
 
-  orderContentList = [
-    { iconClassName: 'iconfont icondaizhifu', name: '待支付', },
-    { iconClassName: 'iconfont iconjinhangzhong', name: '进行中' },
-    { iconClassName: 'iconfont iconyiwancheng', name: '已完成' },
-  ]
+  // orderContentList = [
+  //   { iconClassName: 'iconfont icondaizhifu', name: '待支付', },
+  //   { iconClassName: 'iconfont iconjinhangzhong', name: '进行中' },
+  //   { iconClassName: 'iconfont iconyiwancheng', name: '已完成' },
+  // ]
 
   mineList1 = [
-    { 
-      iconClassName: 'iconfont icondaizhifu', 
-      name: '优惠券', 
-      isCoupon: true, 
-      color: 'rgba(48, 39, 39, 0.6)', 
+    {
+      iconClassName: 'iconfont icondaizhifu',
+      name: '优惠券',
+      isCoupon: true,
+      color: 'rgba(48, 39, 39, 0.6)',
       clickFn() {
         Taro.navigateTo({
           url: '/pages/couponList/index'
         })
-      } 
+      }
     },
-    { 
-      iconClassName: 'iconfont icondizhiguanli', 
-      name: '地址管理', 
+    {
+      iconClassName: 'iconfont icondizhiguanli',
+      name: '地址管理',
       value: '',
       clickFn: () => {
         Taro.navigateTo({
           url: '/pages/myAddress/index'
         })
-      } 
+      }
     },
   ]
 
   mineList2 = [
-    { 
-      iconClassName: 'iconfont iconchangjianwenti', 
+    {
+      iconClassName: 'iconfont iconchangjianwenti',
       name: '常见问题',
       clickFn: () => {
         Taro.navigateTo({
           url: '/pages/myAddress/index'
         })
-      } 
+      }
     },
-    { 
-      iconClassName: 'iconfont iconlianxiwomen', 
-      name: '联系我们', 
-      value: '187 5825 5201', 
+    {
+      iconClassName: 'iconfont iconlianxiwomen',
+      name: '联系我们',
+      value: '187 5825 5201',
       color: '#4A90E2',
       clickFn: () => {
         Taro.makePhoneCall({
           phoneNumber: '18758255201'
         })
-      } 
+      }
     },
-    { 
-      iconClassName: 'iconfont iconguanyuwomen', 
+    {
+      iconClassName: 'iconfont iconguanyuwomen',
       name: '关于我们',
       clickFn: () => {
         Taro.navigateTo({
           url: '/pages/myAddress/index'
         })
-      } 
+      }
     },
   ]
 
   render() {
+    let { orderContentList } = this.state;
     return (
       <View className='mine-wrapper'>
         <View className="user-contianer">
@@ -134,14 +145,16 @@ export default class Mine extends Component {
           </View>
           <View className="content-list">
             {
-              this.orderContentList.map((ele, index) => {
+              orderContentList.map((ele, index) => {
                 return (
                   <View className="list-item" onClick={() => {
                     Taro.navigateTo({
                       url: `/pages/orderList/index?index=${index}`
                     })
                   }} key={ele.name}>
-                    <View className={ele.iconClassName}></View>
+                    <View className={ele.iconClassName}>
+                      {ele.amount ? <View className="spot">{ele.amount}</View> : null}
+                    </View>
                     <View className="name">{ele.name}</View>
                   </View>
                 )
@@ -151,7 +164,7 @@ export default class Mine extends Component {
         </View>
         <View className="list-module">
           {
-            this.mineList1.map((ele, index) => {
+            this.mineList1.map((ele) => {
               return (
                 <View className="module-item" key={ele.name} onClick={ele.clickFn}>
                   <View className={ele.iconClassName}></View>
@@ -165,7 +178,7 @@ export default class Mine extends Component {
         </View>
         <View className="list-module">
           {
-            this.mineList2.map((ele, index) => {
+            this.mineList2.map((ele) => {
               return (
                 <View className="module-item" key={ele.name} onClick={ele.clickFn}>
                   <View className={ele.iconClassName}></View>

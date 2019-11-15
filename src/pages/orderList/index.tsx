@@ -15,10 +15,6 @@ export default class OrderList extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
-  constructor() {
-    super()
-  }
-
   config: Config = {
     navigationBarTitleText: '我的订单',
     enablePullDownRefresh: true
@@ -59,7 +55,15 @@ export default class OrderList extends Component {
   }
 
   componentWillMount() {
-    this.pullData(this.state.page0, 0, null)
+    let params: any = this.$router.params
+    if (params.index) {
+      this.setState({
+        current: Number(params.index)
+      })
+      this.pullData(this.state[`page${params.index}`], params.index, null)
+    } else {
+      this.pullData(this.state.page0, 0, null)
+    }
   }
 
   componentDidMount() { }

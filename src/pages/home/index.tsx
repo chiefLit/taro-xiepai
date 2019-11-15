@@ -38,7 +38,7 @@ export default class Home extends Component {
   }
 
   async pullData() {
-    let data = await getIndex()
+    let data = await getIndex(null)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -57,10 +57,10 @@ export default class Home extends Component {
 
   checkLogin() {
     Taro.checkSession({
-      success () {
+      success() {
         //session_key 未过期，并且在本生命周期一直有效
       },
-      fail () {
+      fail() {
         // session_key 已经失效，需要重新执行登录流程
         Taro.login() //重新登录
       }
@@ -79,13 +79,6 @@ export default class Home extends Component {
     { iconName: 'iconfont iconkaishixihu', line2: '开始洗护', line3: '第04步' },
     { iconName: 'iconfont iconwanchengbingjichu', line2: '完成并寄出', line3: '第05步' },
     { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' }
-  ]
-
-  qaList = [
-    {
-      q: '清洗周期是多久?',
-      a: '为了保护鞋子材质,我们都选择人工清洗,自然通 风阴干,洗涤周期一般为2-3天,配送周期为4-5天,一周内可以送回.'
-    }
   ]
 
   renderFaq() {
@@ -135,11 +128,11 @@ export default class Home extends Component {
             }}
             autoplay>
             {
-              articleList.map(ele => {
+              articleList.map((ele: any) => {
                 return (
                   <SwiperItem className="swiper-item" key={ele.id} onClick={() => {
                     ele.linkUrl && Taro.navigateTo({
-                      url: ele.linkUrl
+                      url: `/pages/wechatWebView/index?title=${ele.title}&url=${ele.linkUrl}`
                     })
                   }}>
                     <View className='' style={{ 'background': '#ccc' }}>
@@ -152,7 +145,7 @@ export default class Home extends Component {
           </Swiper>
           <View className="dots">
             {
-              articleList.map((ele, index) => {
+              articleList.map((ele: any, index: Number) => {
                 return (
                   <View className={index == bannerIndex ? 'curr dot-item' : 'dot-item'} key={ele.id}></View>
                 )
@@ -168,7 +161,7 @@ export default class Home extends Component {
           </View>
           <View className="daily-service">
             {
-              this.dailyServices.map(ele => {
+              this.dailyServices.map((ele) => {
                 return (
                   <View className="daily-item" key={ele.name} onClick={() => {
                     Taro.navigateTo({
@@ -225,9 +218,9 @@ export default class Home extends Component {
           </View>
           <View className="service-process">
             {
-              this.processList.map((ele, index) => {
+              this.processList.map((ele) => {
                 return (
-                  <View className="process-item" key={ele.iconName} key={ele.line2}>
+                  <View className="process-item" key={ele.iconName}>
                     <View className={ele.iconName}></View>
                     <View className="line2">{ele.line2}</View>
                     <View className="line3">{ele.line3}</View>
@@ -238,7 +231,7 @@ export default class Home extends Component {
           </View>
         </View>
         {/* 常见问题 */}
-        { faqList.length ? this.renderFaq() : null }
+        {faqList && faqList.length ? this.renderFaq() : null}
       </View>
     )
   }
