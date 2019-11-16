@@ -3,7 +3,8 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton } from 'taro-ui'
 
-import { washServiceList, washToOrderByCart } from '../../api/service'
+import { washServiceList, toCartByWash, toCashierByWash } from '../../api/service'
+import {STORAGE_NAME} from '../../config'
 
 export default class productWash extends Component {
 
@@ -48,8 +49,17 @@ export default class productWash extends Component {
     this.pullData()
   }
 
+  initData() {
+    this.setState((preState: any) => ({
+      chosenList: [preState.wayList[0]],
+      image0Url: '',
+      image1Url: '',
+      image2Url: ''
+    }))
+  }
+
   async pullData() {
-    let data = await washServiceList();
+    let data = await washServiceList(null);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message
@@ -166,10 +176,11 @@ export default class productWash extends Component {
 
   // 添加到购物车
   async addCart() {
+    this.setState({  showSelectedProduct: false })
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
-    let data: any = await washToOrderByCart({
+    let data: any = await toCartByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -178,20 +189,39 @@ export default class productWash extends Component {
         icon: 'none'
       })
     } else {
-      // 添加成功
-      // Taro.switchTab({
-      //   url: '/pages/cart/index'
-      // })
+      Taro.showToast({
+        title: '添加购物车成功',
+        icon: 'success'
+      })
+      this.initData();
     }
   }
 
-  submitOrder() {
-    if (!this.checkImageUpload()) return
-    let { showSelectedProduct, image0Url, image1Url, image2Url } = this.state;
-    let paramsString: String = `serviceItems=${JSON.stringify(showSelectedProduct)}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
-    Taro.navigateTo({
-      url: `/pages/orderEdit/index?${paramsString}`
+  async submitOrder() {
+    this.setState({  showSelectedProduct: false })
+    // if (!this.checkImageUpload()) return
+    let { chosenList, image0Url, image1Url, image2Url } = this.state;
+    let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
+    let data: any = await toCashierByWash({
+      serviceItemIds, image0Url, image1Url, image2Url
     })
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    }else {
+      Taro.setStorage({
+        key: STORAGE_NAME.orderToCashier,
+        data: data.object
+      }).then(() => {
+        this.initData()
+        // 添加成功
+        Taro.navigateTo({
+          url: `/pages/orderEdit/index?serviceItemIds=${serviceItemIds}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
+        })
+      })
+    }
   }
 
   randerSelectedProduct() {
@@ -289,7 +319,9 @@ export default class productWash extends Component {
               showSelectedProduct: !showSelectedProduct
             })
           }}>
-            <View className="iconfont iconxihuxiangmu"></View>
+            <View className="iconfont iconxihuxiangmu">
+              <View className="spot">{this.state.chosenList.length}</View>
+            </View>
             <Text>￥{this.mathSum(this.state.chosenList)}</Text>
           </View>
           <AtButton full className="addInCart" onClick={this.addCart.bind(this)}>加入购物车</AtButton>

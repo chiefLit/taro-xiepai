@@ -1,11 +1,13 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane } from 'taro-ui'
 import './index.less'
-
+import { AtDivider } from 'taro-ui'
 import { getCouponList } from '../../api/coupon'
-import iconYsx from '../../assets/images/yishixiao.png'
-import iconYsy from '../../assets/images/yishiyong.png'
+// import iconYsx from '../../assets/images/yishixiao.png'
+// import iconYsy from '../../assets/images/yishiyong.png'
+import noDataImage from '../../assets/images/no-data-coupon.png'
+
+import { STORAGE_NAME } from '../../config'
 
 export default class CouponList extends Component {
 
@@ -28,40 +30,27 @@ export default class CouponList extends Component {
 
   state = {
     current: 0,
-    page0: {
-      isActive: false,
-      params: {
-        status: 0,
-        currentPage: 1,
-        pageSize: 20
-      },
-      dataList: [],
-      pageInfo: {}
+    dataList: [],
+    pageInfo: {
+      totalPages: 0
     },
-    page1: {
-      isActive: false,
-      params: {
-        status: 0,
-        currentPage: 1,
-        pageSize: 20
-      },
-      dataList: [],
-      pageInfo: {}
-    },
-    page2: {
-      isActive: false,
-      params: {
-        status: 0,
-        currentPage: 1,
-        pageSize: 20
-      },
-      dataList: [],
-      pageInfo: {}
-    }
+    selectedCouponId: null
+  }
+
+  params = {
+    status: 0,
+    currentPage: 1,
+    pageSize: 20
   }
 
   componentWillMount() {
-    this.pullData(this.state.page0, 0, null)
+    this.pullData(null);
+    
+    // Taro.getStorage({ key: STORAGE_NAME.selectedCoupon }).then((res: any) => {
+      this.setState({
+        selectedCouponId: Number(this.$router.params.selectedId) || null
+      })
+    // })
   }
 
   /**
@@ -70,83 +59,44 @@ export default class CouponList extends Component {
    * @param index 页索引
    * @param callBack 回调
    */
-  async pullData(page: any, index: Number, callBack: any) {
-    let data = await getCouponList(page.params)
+  async pullData(callBack: any) {
+    let { dataList } = this.state
+    let data: any = await getCouponList(this.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
         icon: 'none'
       })
     } else {
-      let dataList: Array<any> = [];
-      if (page.params.currentPage === 1) {
-        dataList = [...data.object];
+      let list: Array<any>;
+      data.object = data.object || []
+      if (this.params.currentPage === 1) {
+        list = [...data.object];
       } else {
-        dataList = [...page.dataList, ...data.object];
+        list = [...dataList, ...data.object];
       }
       this.setState({
-        [`page${index}`]: {
-          ...page,
-          dataList,
-          pageInfo: data.page,
-          isActive: true
-        }
+        dataList: list,
+        pageInfo: data.page
       })
-      callBack && callBack()
     }
-  }
-
-
-  handleClick(index: Number) {
-    let currPageObj = this.state[`page${index}`]
-    this.setState({
-      current: index,
-      [`page${index}`]: {
-        ...currPageObj,
-        params: {
-          ...currPageObj.params,
-          currentPage: 1
-        }
-      }
-    })
-    if (!currPageObj.isActive) {
-      this.pullData(currPageObj, index, null)
-    }
+    callBack && callBack()
   }
 
   onPullDownRefresh() {
-    let { current } = this.state
-    let currPageObj = this.state[`page${current}`]
-    this.setState({
-      [`page${current}`]: {
-        ...currPageObj,
-        params: {
-          ...currPageObj.params,
-          currentPage: 1
-        }
-      }
-    })
-    this.pullData(currPageObj, current, Taro.stopPullDownRefresh)
+    this.params.currentPage = 1;
+    this.pullData(Taro.stopPullDownRefresh)
   }
 
   onReachBottom() {
-    let { current } = this.state
-    let currPageObj = this.state[`page${current}`]
-    if (currPageObj.params.currentPage < currPageObj.pageInfo.totalPages) {
-      this.setState({
-        [`page${current}`]: {
-          ...currPageObj,
-          params: {
-            ...currPageObj.params,
-            currentPage: currPageObj.params.currentPage++
-          }
-        }
-      })
-      this.pullData(currPageObj, current, null)
+    let { pageInfo } = this.state
+    if (this.params.currentPage < pageInfo.totalPages) {
+      this.params.currentPage++
+      this.pullData(null)
     }
   }
 
-  randerItem(item: any) {
+  randerItem(item: any, isActive: Boolean) {
     return (
       <View className="coupon-item">
         <View className="name">
@@ -157,36 +107,46 @@ export default class CouponList extends Component {
           <View className="line1">{item.name}</View>
           <View className="line2">{item.describe}</View>
         </View>
+        <View className={isActive ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
         <View className="left-icon circle-icon"></View>
         <View className="right-icon circle-icon"></View>
-        {item.status === 1 ? <Image src={iconYsy} className="state-icons"></Image> : null}
-        {item.status === 2 ? <Image src={iconYsx} className="state-icons"></Image> : null}
+        {/* {item.status === 1 ? <Image src={iconYsy} className="state-icons"></Image> : null}
+        {item.status === 2 ? <Image src={iconYsx} className="state-icons"></Image> : null} */}
       </View>
     )
   }
 
-  render() {
-    const tabList = [{ title: '未使用' }, { title: '已使用' }, { title: '已失效' }]
-    let { current, page0, page1, page2 } = this.state;
+  renderNoData() {
     return (
-      <View className='coupon-list-wrapper'>
-        <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
-          <AtTabsPane current={current} index={0} >
-            {
-              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
-            }
-          </AtTabsPane>
-          <AtTabsPane current={current} index={1}>
-            {
-              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
-            }
-          </AtTabsPane>
-          <AtTabsPane current={current} index={2}>
-            {
-              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
-            }
-          </AtTabsPane>
-        </AtTabs>
+      <View className="no-data-contianer">
+        <Image src={noDataImage}></Image>
+        <View className="value">还没有任何优惠劵呢</View>
+      </View>
+    );
+  }
+
+
+  render() {
+    let { dataList, selectedCouponId } = this.state;
+    return (
+      <View className='coupon-select-wrapper'>
+        {
+          dataList.length > 0 ?
+            dataList.map((ele: any) => {
+              let isActive: Boolean = ele.id === selectedCouponId
+              return <View key={ele.id} onClick={() => {
+                Taro.setStorage({ key: STORAGE_NAME.selectedCoupon, data: ele })
+                  .then(() => {
+                    this.setState({
+                      selectedCouponId: ele.id
+                    })
+                    Taro.navigateBack()
+                  })
+              }}> {this.randerItem(ele, isActive)} </View>
+            }) :
+            this.renderNoData()
+        }
+        {dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
       </View>
     )
   }

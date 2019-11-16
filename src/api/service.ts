@@ -12,7 +12,7 @@ export function washServiceList(data) {
 }
 
 // 订单-直接下单
-export function washToOrder(data) {
+export function toOrderByWash(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/to_order',
@@ -22,17 +22,16 @@ export function washToOrder(data) {
   return axios(config);
 }
 
-// 订单-购物车下单
-export function washToOrderByCart(data) {
+// 购物车-洗鞋-加入购物车
+export function toCartByWash(data) {
   const config = {
     method: 'post',
-    url: '/api/wxmp/order/to-order-by-cart',
-    mockData: require('../../mock/washToOrderByCart.json'),
+    url: '/api/wxmp/service/wash/to_cart',
+    mockData: require('../../mock/toCartByWash.json'),
     data: data
   }
   return axios(config);
 }
-
 
 // 订单-补充到店物流信息
 export function addExpressInfo(data) {
@@ -47,7 +46,7 @@ export function addExpressInfo(data) {
 
 
 // 收银台-from单品-洗鞋
-export function toCashier(data) {
+export function toCashierByWash(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/to_cashier',

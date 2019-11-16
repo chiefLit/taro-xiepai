@@ -11,7 +11,7 @@ export function getOrderList(data) {
   return axios(config);
 }
 
-// 订单-列表
+// 订单-详情
 export function getOrderDetail(data) {
   const config = {
     method: 'post',
@@ -39,6 +39,17 @@ export function toCashierByCart(data) {
     method: 'post',
     url: '/api/wxmp/order/to-cashier-by-cart',
     mockData: require('../../mock/toCashierByCart.json'),
+    data: data
+  }
+  return axios(config);
+}
+
+// 订单-购物车下单
+export function toOrderByCart(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/order/to-order-by-cart',
+    mockData: require('../../mock/toOrderByCart.json'),
     data: data
   }
   return axios(config);

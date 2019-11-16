@@ -1,9 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtButton } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtButton, AtDivider } from 'taro-ui'
 import './index.less'
 
 import { getOrderList } from '../../api/order'
+import noDataImage from '../../assets/images/no-data-order.png'
 
 export default class OrderList extends Component {
 
@@ -89,6 +90,10 @@ export default class OrderList extends Component {
       })
     } else {
       let dataList: Array<any> = [];
+      if (page.params.currentPage === 1 && (!data.object || data.object.length === 0)) {
+        callBack && callBack()
+        return
+      }
       if (page.params.currentPage === 1) {
         dataList = [...data.object];
       } else {
@@ -210,6 +215,20 @@ export default class OrderList extends Component {
     )
   }
 
+  renderNoData() {
+    return (
+      <View className="no-data-contianer">
+        <Image src={noDataImage}></Image>
+        <View className="value">暂无相关订单</View>
+        <AtButton type="primary" circle size="small" onClick={() => {
+          Taro.navigateTo({
+            url: '/pages/productWash/index'
+          })
+        }}>立即下单</AtButton>
+      </View>
+    )
+  }
+
   render() {
     const tabList = [{ title: '待支付' }, { title: '进行中' }, { title: '全部' }]
     let { current, page0, page1, page2 } = this.state;
@@ -218,18 +237,27 @@ export default class OrderList extends Component {
         <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={current} index={0} >
             {
-              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+              page0.dataList.length > 0 ? 
+              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+              this.renderNoData()
             }
+            { page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             {
-              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+              page1.dataList.length > 0 ? 
+              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+              this.renderNoData()
             }
+            { page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
             {
-              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+              page2.dataList.length > 0 ? 
+              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+              this.renderNoData()
             }
+            { page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
         </AtTabs>
       </View>

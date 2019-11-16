@@ -1,5 +1,6 @@
 {
   "code": 1,
+  "object0": null,
   "object": [
     {
       "id": 1,
@@ -84,5 +85,16 @@
       "endTime": 123123123,
       "closeReason": "关闭原因关闭原因关闭原因"
     }
-  ]
+  ],
+  "page": {
+    "currentPage": 1,
+    "pageRecords": 20,
+    "totalPages": 4,
+    "totalRecords": 0,
+    "startRecord": 0,
+    "nextPage": 1,
+    "previousPage": 1,
+    "hasNextPage": false,
+    "hasPreviousPage": false
+  }
 }

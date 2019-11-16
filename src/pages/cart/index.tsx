@@ -3,7 +3,9 @@ import { View, Text, Image, } from '@tarojs/components'
 import './index.less'
 import { AtButton, AtSwipeAction } from 'taro-ui'
 
-import { getCartList, washToCart, deleteCart } from '../../api/cart'
+import { getCartList, deleteCart } from '../../api/cart'
+import { toCashierByCart } from '../../api/order'
+import { STORAGE_NAME } from '../../config'
 
 export default class Cart extends Component {
 
@@ -102,6 +104,30 @@ export default class Cart extends Component {
     return sum
   }
 
+  // 结算
+  async settlement() {
+    let { selectedList } = this.state
+    if (!selectedList.length) return
+    let cartIds: Array<any> = selectedList.map((ele: any) => ele.id)
+    let data: any = await toCashierByCart({ cartIds })
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      Taro.setStorage({
+        key: STORAGE_NAME.orderToCashier,
+        data: data.object
+      }).then(() => {
+        // 添加成功
+        Taro.navigateTo({
+          url: `/pages/orderEdit/index?cartIds=${cartIds}`
+        })
+      })
+    }
+  }
+
   render() {
     let { cartList, selectedList, isSelectAll } = this.state;
     return (
@@ -158,11 +184,7 @@ export default class Cart extends Component {
             <Text>全选</Text>
           </View>
           <View className="sum-price">合计：<Text>￥ {this.calcTotalPrice(selectedList)}</Text></View>
-          <AtButton full onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/orderEdit/index'
-            })
-          }}>结算</AtButton>
+          <AtButton disabled={!selectedList.length} full onClick={this.settlement.bind(this)}>结算</AtButton>
         </View>
       </View>
     )

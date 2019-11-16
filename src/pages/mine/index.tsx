@@ -94,7 +94,7 @@ export default class Mine extends Component {
       name: '常见问题',
       clickFn: () => {
         Taro.navigateTo({
-          url: '/pages/myAddress/index'
+          url: '/pages/faqList/index'
         })
       }
     },

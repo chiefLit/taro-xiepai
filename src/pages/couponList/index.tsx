@@ -1,11 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
 import './index.less'
 
 import { getCouponList } from '../../api/coupon'
 import iconYsx from '../../assets/images/yishixiao.png'
 import iconYsy from '../../assets/images/yishiyong.png'
+import noDataImage from '../../assets/images/no-data-coupon.png'
 
 export default class CouponList extends Component {
 
@@ -16,10 +17,6 @@ export default class CouponList extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-
-  constructor() {
-    super()
-  }
 
   config: Config = {
     navigationBarTitleText: '优惠券',
@@ -79,6 +76,10 @@ export default class CouponList extends Component {
       })
     } else {
       let dataList: Array<any> = [];
+      if (page.params.currentPage === 1 && (!data.object || data.object.length === 0)) {
+        callBack && callBack()
+        return
+      }
       if (page.params.currentPage === 1) {
         dataList = [...data.object];
       } else {
@@ -165,6 +166,15 @@ export default class CouponList extends Component {
     )
   }
 
+  renderNoData() {
+    return (
+       <View className="no-data-contianer">
+         <Image src={noDataImage}></Image>
+         <View className="value">还没有任何优惠劵呢</View>
+       </View>
+    );
+  }
+
   render() {
     const tabList = [{ title: '未使用' }, { title: '已使用' }, { title: '已失效' }]
     let { current, page0, page1, page2 } = this.state;
@@ -173,18 +183,27 @@ export default class CouponList extends Component {
         <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={current} index={0} >
             {
-              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+              page0.dataList.length > 0 ? 
+              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+              this.renderNoData()
             }
+            { page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             {
-              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+              page1.dataList.length > 0 ? 
+              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+              this.renderNoData()
             }
+            { page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
             {
-              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>)
+              page2.dataList.length > 0 ? 
+              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+              this.renderNoData()
             }
+            { page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
         </AtTabs>
       </View>

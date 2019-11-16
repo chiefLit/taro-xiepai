@@ -22,12 +22,14 @@ export default class OrderDetail extends Component {
     orderDetail: {}
   }
 
-  componentWillMount() {
+  componentDidShow() {
     let params: any = this.$router.params
     // if (params.id) {
     this.pullData(params.id)
     // }
   }
+
+
 
   async pullData(orderId: any) {
     let data: any = await getOrderDetail({ orderId });
@@ -48,25 +50,27 @@ export default class OrderDetail extends Component {
   }
 
   render() {
-    let orderDetail: any = this.state.orderDetail
+    let { orderDetail } = this.state
     return (
       <View className='order-detail-wrapper'>
-        <View className="order-status">
+        <View className="order-status" onClick={() => {
+          if (orderDetail.status != 1) return
+          Taro.navigateTo({
+            url: `/pages/expressInfoEdit/index?id=${orderDetail.id}`
+          })
+        }}>
           <View className="status-value">{this.orderStatusToValue(orderDetail.status)}</View>
           {/* <View className="status-desc">{orderDetail.status}</View> */}
         </View>
 
         <View className="order-address">
           <View className="title">收货地址</View>
-          <View className="address-info" onClick={() => {
-            if (orderDetail.status !== undefined) return
-            console.log('选择地址')
-          }}>
+          <View className="address-info">
             <View className="left-box">
               <View className="name">{orderDetail.userAddressVo.linkName}  {orderDetail.userAddressVo.phone}</View>
               <View className="address">{orderDetail.userAddressVo.provinceName} {orderDetail.userAddressVo.cityName} {orderDetail.userAddressVo.countyName} {orderDetail.userAddressVo.address}</View>
             </View>
-            {orderDetail.status === undefined ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null}
+            {/* {orderDetail.status === 1 ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null} */}
           </View>
           <View className="dist-mode">
             <View className="mode-left">
@@ -164,7 +168,7 @@ export default class OrderDetail extends Component {
           {orderDetail.status === 1 ? <AtButton className="type2" full>填写快递信息</AtButton> : null}
           {orderDetail.status !== 0 && orderDetail.status !== 1 ? <AtButton className="type2" full>联系客服</AtButton> : null}
         </View>
-      </View>
+      </View >
     )
   }
 }

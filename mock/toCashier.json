@@ -7,15 +7,41 @@
         "cartId": 1,
         "userId": 1,
         "goodzId": 1,
-        "goodzTitle": "标题标题",
-        "goodzType": 0,
+        "goodzTitle": "商品标题",
+        "goodzType": 1,
         "quantity": "",
         "price": "",
-        "totalPrice": "",
-        "couponId": "",
-        "couponDiscountAmount": "",
-        "totalDiscountAmount": "",
-        "realPayPrice": "",
+        "totalPrice": "120.00",
+        "couponId": 1,
+        "couponDiscountAmount": 50,
+        "totalDiscountAmount": 50,
+        "realPayPrice": 70.00,
+        "serviceDetailList": [
+          {
+            "serviceId": 1,
+            "serviceName": "服务项目",
+            "price": 12.3
+          }
+        ],
+        "serviceImageList": [
+          { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 0 },
+          { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 1 },
+          { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 2 }
+        ]
+      },
+      {
+        "cartId": 2,
+        "userId": 1,
+        "goodzId": 2,
+        "goodzTitle": "商品标题",
+        "goodzType": 1,
+        "quantity": "",
+        "price": "",
+        "totalPrice": "120.00",
+        "couponId": 1,
+        "couponDiscountAmount": 50,
+        "totalDiscountAmount": 50,
+        "realPayPrice": 70.00,
         "serviceDetailList": [
           {
             "serviceId": 1,
@@ -31,9 +57,9 @@
       }
     ],
     "totalPrice": 123.12,
-    "couponId": 123,
-    "couponDiscountAmount": 123.12,
-    "totalDiscountAmount": 123.12,
-    "realPayPrice": 123.12
+    "couponId": 1,
+    "couponDiscountAmount": 30.12,
+    "totalDiscountAmount": 50.00,
+    "realPayPrice": 100.00
   }
 }

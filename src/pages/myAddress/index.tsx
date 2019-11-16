@@ -1,9 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { AtIcon, AtButton } from 'taro-ui'
 import './index.less'
 
 import { getAddressList } from '../../api/user'
+import noDataImage from '../../assets/images/no-data-address.png'
+
+import { STORAGE_NAME } from '../../config'
 
 export default class MyAddr extends Component {
 
@@ -24,7 +27,9 @@ export default class MyAddr extends Component {
 
   state = {
     addressList: [],
-    selectedAddressId: null
+    selectedAddressId: null,
+    // 是否为选择状态
+    isSelectStatus: false
   }
 
   async pullData() {
@@ -42,7 +47,10 @@ export default class MyAddr extends Component {
   }
 
   componentWillMount() {
-    // this.pullData()
+    this.setState({
+      isSelectStatus: this.$router.params.isSelectStatus || false,
+      selectedAddressId: Number(this.$router.params.selectedId) || null
+    })
   }
 
   componentDidShow() {
@@ -50,14 +58,10 @@ export default class MyAddr extends Component {
   }
 
   renderItem(item: any) {
-    let { selectedAddressId } = this.state;
+    let { selectedAddressId, isSelectStatus } = this.state;
     return (
-      <View className="list-item" onClick={() => {
-        this.setState({
-          selectedAddressId: item.id
-        })
-      }}>
-        <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
+      <View className="list-item" onClick={this.selectAddress.bind(this, item)}>
+        {isSelectStatus ? <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View> : null}
         <View className="info">
           <View className="line-first">
             <Text style={{ paddingRight: '60rpx' }}>{item.linkName}</Text>
@@ -67,63 +71,99 @@ export default class MyAddr extends Component {
             <Text>{item.provinceName}{item.cityName}{item.countyName}{item.address}</Text>
           </View>
         </View>
-        <AtIcon value="edit" size="15" color="#999"></AtIcon>
+        <AtIcon value="edit" size="15" color="#999" onClick={() => {
+          Taro.navigateTo({
+            url: `/pages/myAddressEdit/index?id=${item.id}`
+          })
+        }}></AtIcon>
       </View>
     )
   }
 
+  renderNoData() {
+    return (
+      <View className="no-data-contianer">
+        <Image src={noDataImage}></Image>
+        <View className="value">还没有收货地址呢</View>
+        <AtButton type="primary" size="small" circle onClick={() => {
+          Taro.navigateTo({
+            url: '/pages/myAddressEdit/index'
+          })
+        }}>立即添加</AtButton>
+      </View>
+    )
+  }
+
+  selectAddress(item: any) {
+    if (!this.state.isSelectStatus) return
+    this.setState({
+      selectedAddressId: item.id
+    })
+    Taro.setStorage({
+      key: STORAGE_NAME.selectedAddress,
+      data: item
+    }).then(() => {
+      Taro.navigateBack()
+    })
+  }
+
   render() {
-    let { addressList, selectedAddressId } = this.state;
+    let { addressList } = this.state;
     return (
       <View className='my-address-wrapper'>
-        <View className="module-list">
-          {
-            addressList.map((ele: any) => {
-              return (
-                <View key={ele.id} className="list-item">
-                  <View style={{ display: 'flex', flex: 1, alignItems: 'center' }} onClick={() => {
-                    if (selectedAddressId === ele.id) return
-                    this.setState({
-                      selectedAddressId: ele.id
-                    })
-                  }}>
-                    <View className={selectedAddressId === ele.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
-                    <View className="info">
-                      <View className="line-first">
-                        <Text style={{ paddingRight: '60rpx' }}>{ele.linkName}</Text>
-                        <Text>{ele.phone}</Text>
+        {
+          addressList.length > 0 ?
+            <View>
+              <View className="module-list">
+                {
+                  addressList.map((ele: any) => {
+                    return (
+                      <View key={ele.id}>
+                        {this.renderItem(ele)}
                       </View>
-                      <View className="line-second">
-                        <Text>{ele.provinceName}{ele.cityName}{ele.countyName}{ele.address}</Text>
-                      </View>
-                    </View>
-                  </View>
-                  <AtIcon value="edit" size="15" color="#999" onClick={() => {
+                      // <View key={ele.id} className="list-item">
+                      //   <View style={{ display: 'flex', flex: 1, alignItems: 'center' }} onClick={this.selectAddress.bind(this, ele)}>
+                      //     <View className={selectedAddressId === ele.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
+                      //     <View className="info">
+                      //       <View className="line-first">
+                      //         <Text style={{ paddingRight: '60rpx' }}>{ele.linkName}</Text>
+                      //         <Text>{ele.phone}</Text>
+                      //       </View>
+                      //       <View className="line-second">
+                      //         <Text>{ele.provinceName}{ele.cityName}{ele.countyName}{ele.address}</Text>
+                      //       </View>
+                      //     </View>
+                      //   </View>
+                      //   <AtIcon value="edit" size="15" color="#999" onClick={() => {
+                      //     Taro.navigateTo({
+                      //       url: `/pages/myAddressEdit/index?id=${ele.id}`
+                      //     })
+                      //   }}></AtIcon>
+                      // </View>
+                    )
+                  })
+                }
+              </View>
+
+              <View className="footer-cover"></View>
+              <View className="footer-contianer">
+                <AtButton
+                  className="add-button"
+                  type='primary'
+                  circle
+                  onClick={() => {
                     Taro.navigateTo({
-                      url: `/pages/myAddressEdit/index?id=${ele.id}`
+                      url: '/pages/myAddressEdit/index'
                     })
-                  }}></AtIcon>
-                </View>
-              )
-            })
-          }
-        </View>
-        <View className="footer-cover"></View>
-        <View className="footer-contianer">
-          <AtButton
-            className="add-button"
-            type='primary'
-            circle={true}
-            onClick={() => {
-              Taro.navigateTo({
-                url: '/pages/myAddressEdit/index'
-              })
-            }}
-          >
-            <AtIcon value='add' size='14' color='#fff'></AtIcon>
-            添加地址
-          </AtButton>
-        </View>
+                  }}
+                >
+                  <AtIcon value='add' size='14' color='#fff'></AtIcon>
+                  添加地址
+                </AtButton>
+              </View>
+            </View> :
+            this.renderNoData()
+        }
       </View>
     )
   }
