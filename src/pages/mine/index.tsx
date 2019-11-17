@@ -114,7 +114,7 @@ export default class Mine extends Component {
       name: '关于我们',
       clickFn: () => {
         Taro.navigateTo({
-          url: '/pages/myAddress/index'
+          url: '/pages/aboutus/index'
         })
       }
     },

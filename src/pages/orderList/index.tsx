@@ -4,6 +4,7 @@ import { AtTabs, AtTabsPane, AtButton, AtDivider } from 'taro-ui'
 import './index.less'
 
 import { getOrderList } from '../../api/order'
+import { orderStatusToValue } from '../../config'
 import noDataImage from '../../assets/images/no-data-order.png'
 
 export default class OrderList extends Component {
@@ -161,19 +162,18 @@ export default class OrderList extends Component {
     }
   }
 
-  orderStatusToValue(status: any) {
-    return { 0: "待支付", 1: "等待物流信息", 2: "运输到店途中", 3: "到店核验中", 4: "清洗中", 5: "清洗完成", 6: "寄回中", 7: "订单完成", 8: "退款中", 9: "已退款", "-1": "已取消", "-2": "已关闭" }[status]
-  }
-
   randerItem(item: any) {
-    let orderStatusToValue = this.orderStatusToValue;
     return (
       <View className="order-item">
         <View className="item-title">
           <Text>订单编号: {item.number}</Text>
-          <Text>{orderStatusToValue(item.status)}</Text>
+          <Text>{orderStatusToValue(item.status, 0)}</Text>
         </View>
-        <View className="item-content">
+        <View className="item-content" onClick={() => {
+          Taro.navigateTo({
+            url: `/pages/orderDetail/index?id=${item.id}`
+          })
+        }}>
           {
             item.orderSubVoList.map((ele: any) => {
               return <View className="produce-item" key={ele.id}>
@@ -200,16 +200,8 @@ export default class OrderList extends Component {
           }
         </View>
         <View className="item-footer">
-          {item.status === 0 ? <AtButton onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/orderDetail/index?id=${item.id}`
-            })
-          }}>去支付</AtButton> : null}
-          {item.status === 1 ? <AtButton onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/orderDetail/index?id=${item.id}`
-            })
-          }}>补充物流信息</AtButton> : null}
+          {item.status === 0 ? <AtButton>去支付</AtButton> : null}
+          {item.status === 1 ? <AtButton>补充物流信息</AtButton> : null}
         </View>
       </View>
     )
@@ -237,27 +229,27 @@ export default class OrderList extends Component {
         <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={current} index={0} >
             {
-              page0.dataList.length > 0 ? 
-              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
-              this.renderNoData()
+              page0.dataList.length > 0 ?
+                page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                this.renderNoData()
             }
-            { page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             {
-              page1.dataList.length > 0 ? 
-              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
-              this.renderNoData()
+              page1.dataList.length > 0 ?
+                page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                this.renderNoData()
             }
-            { page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
             {
-              page2.dataList.length > 0 ? 
-              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
-              this.renderNoData()
+              page2.dataList.length > 0 ?
+                page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                this.renderNoData()
             }
-            { page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
           </AtTabsPane>
         </AtTabs>
       </View>

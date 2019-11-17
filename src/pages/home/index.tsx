@@ -45,7 +45,6 @@ export default class Home extends Component {
         icon: 'none'
       })
     } else {
-      console.log(data.object)
       this.setState({
         articleList: data.object.articleList,
         bannerList: data.object.bannerList,

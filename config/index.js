@@ -26,16 +26,6 @@ const config = {
   },
   defineConstants: {
   },
-  copy: {
-    patterns: [
-      {
-        from: 'src/components/vant-weapp/wxs/',
-        to: 'dist/components/vant-weapp/wxs/'
-      }
-    ],
-    options: {
-    }
-  },
   weapp: {
     module: {
       postcss: {

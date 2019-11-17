@@ -4,6 +4,7 @@ import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
 
 import { getOrderDetail } from '../../api/order'
+import { orderStatusToValue } from '../../config'
 
 export default class OrderDetail extends Component {
 
@@ -19,7 +20,34 @@ export default class OrderDetail extends Component {
   }
 
   state = {
-    orderDetail: {}
+    orderDetail: {
+      id: null,
+      number: null,
+      userId: null,
+      deliverMode: "",
+      channel: "",
+      orderSubVoList: [],
+      totalPrice: "",
+      couponId: null,
+      couponAmount: null,
+      realPayPrice: null,
+      storeVo: {},
+      toStoreId: null,
+      toStoreExpressId: null,
+      toStoreExpressName: "",
+      toStoreExpressNumber: null,
+      toUserAddressId: null,
+      userAddressVo: {},
+      toUserExpressId: null,
+      toUserExpressName: "",
+      toUserExpressNumber: null,
+      status: null,
+      applyTime: null,
+      payChannel: null,
+      payTime: null,
+      endTime: null,
+      closeReason: ""
+    }
   }
 
   componentDidShow() {
@@ -45,10 +73,6 @@ export default class OrderDetail extends Component {
     }
   }
 
-  orderStatusToValue(status: any) {
-    return { 0: "待支付", 1: "等待物流信息", 2: "运输到店途中", 3: "到店核验中", 4: "清洗中", 5: "清洗完成", 6: "寄回中", 7: "订单完成", 8: "退款中", 9: "已退款", "-1": "已取消", "-2": "已关闭" }[status]
-  }
-
   render() {
     let { orderDetail } = this.state
     return (
@@ -59,8 +83,18 @@ export default class OrderDetail extends Component {
             url: `/pages/expressInfoEdit/index?id=${orderDetail.id}`
           })
         }}>
-          <View className="status-value">{this.orderStatusToValue(orderDetail.status)}</View>
-          {/* <View className="status-desc">{orderDetail.status}</View> */}
+          <View className="status-value">{orderStatusToValue(orderDetail.status, 0)}</View>
+          {
+            orderStatusToValue(orderDetail.status, 1) ?
+              <View className="status-desc">
+                {
+                  orderDetail.status === 2 ?
+                    orderDetail.closeReason :
+                    orderStatusToValue(orderDetail.status, 1)
+                }
+              </View> :
+              null
+          }
         </View>
 
         <View className="order-address">

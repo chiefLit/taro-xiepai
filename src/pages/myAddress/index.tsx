@@ -60,15 +60,17 @@ export default class MyAddr extends Component {
   renderItem(item: any) {
     let { selectedAddressId, isSelectStatus } = this.state;
     return (
-      <View className="list-item" onClick={this.selectAddress.bind(this, item)}>
-        {isSelectStatus ? <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View> : null}
-        <View className="info">
-          <View className="line-first">
-            <Text style={{ paddingRight: '60rpx' }}>{item.linkName}</Text>
-            <Text>{item.phone}</Text>
-          </View>
-          <View className="line-second">
-            <Text>{item.provinceName}{item.cityName}{item.countyName}{item.address}</Text>
+      <View className="list-item">
+        <View style={{ display:"flex", alignItems: 'center' }} onClick={this.selectAddress.bind(this, item)}>
+          {isSelectStatus ? <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View> : null}
+          <View className="info">
+            <View className="line-first">
+              <Text style={{ paddingRight: '60rpx' }}>{item.linkName}</Text>
+              <Text>{item.phone}</Text>
+            </View>
+            <View className="line-second">
+              <Text>{item.provinceName}{item.cityName}{item.countyName}{item.address}</Text>
+            </View>
           </View>
         </View>
         <AtIcon value="edit" size="15" color="#999" onClick={() => {

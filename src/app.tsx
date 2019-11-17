@@ -1,12 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import Home from './pages/home/index'
 import '@tarojs/async-await';
-
-import './app.scss'
 import './assets/iconfont/iconfont.css'
 
 import "taro-ui/dist/style/components/icon.scss";
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
+
+import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -25,26 +25,26 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      // 'pages/home/index',
-      // 'pages/wechatWebView/index',
-      // 'pages/orderSteps/index',
+      'pages/home/index',
+      'pages/aboutus/index',
+      'pages/wechatWebView/index',
+      'pages/orderSteps/index',
       'pages/expressInfoEdit/index',
-      // 'pages/faqList/index',
-      // 'pages/cart/index',
-      // 'pages/productWash/index',
-      // 'pages/orderEdit/index',
+      'pages/faqList/index',
+      'pages/cart/index',
+      'pages/productWash/index',
+      'pages/orderEdit/index',
       'pages/orderDetail/index',
-      // 'pages/orderList/index',
-      // 'pages/couponList/index',
-      // 'pages/couponSelect/index',
-      // 'pages/productMend/index',
-      // 'pages/mine/index',
-      // 'pages/servicePrice/index',
-      // 'pages/myAddress/index',
-      // 'pages/myAddressEdit/index',
-      // 'pages/editMailInfo/index',
-      // 'pages/setting/index',
-      // 'pages/wallet/index'
+      'pages/orderList/index',
+      'pages/couponList/index',
+      'pages/couponSelect/index',
+      'pages/productMend/index',
+      'pages/mine/index',
+      'pages/servicePrice/index',
+      'pages/myAddress/index',
+      'pages/myAddressEdit/index',
+      'pages/setting/index',
+      'pages/wallet/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -53,33 +53,36 @@ class App extends Component {
       navigationBarTextStyle: 'black',
       backgroundColor: "#fafafa"
     },
-    // tabBar: {
-    //   color: '#999999',
-    //   selectedColor: '#1a1a1a',
-    //   list: [
-    //     {
-    //       pagePath: 'pages/home/index',
-    //       iconPath: 'assets/images/tabbar/home_n.png',
-    //       selectedIconPath: 'assets/images/tabbar/home_s.png',
-    //       text: '首页'
-    //     },
-    //     {
-    //       pagePath: 'pages/cart/index',
-    //       iconPath: 'assets/images/tabbar/cart_n.png',
-    //       selectedIconPath: 'assets/images/tabbar/cart_s.png',
-    //       text: '购物车'
-    //     },
-    //     {
-    //       pagePath: 'pages/mine/index',
-    //       iconPath: 'assets/images/tabbar/mine_n.png',
-    //       selectedIconPath: 'assets/images/tabbar/mine_s.png',
-    //       text: '我的'
-    //     }
-    //   ]
-    // }
+    tabBar: {
+      color: '#999999',
+      selectedColor: '#1a1a1a',
+      list: [
+        {
+          pagePath: 'pages/home/index',
+          iconPath: 'assets/images/tabbar/home_n.png',
+          selectedIconPath: 'assets/images/tabbar/home_s.png',
+          text: '首页'
+        },
+        {
+          pagePath: 'pages/cart/index',
+          iconPath: 'assets/images/tabbar/cart_n.png',
+          selectedIconPath: 'assets/images/tabbar/cart_s.png',
+          text: '购物车'
+        },
+        {
+          pagePath: 'pages/mine/index',
+          iconPath: 'assets/images/tabbar/mine_n.png',
+          selectedIconPath: 'assets/images/tabbar/mine_s.png',
+          text: '我的'
+        }
+      ]
+    }
   }
 
-  componentDidMount() { }
+  async componentDidMount() {
+    let res: any = await Taro.login();
+    console.log(res)
+  }
 
   componentDidShow() { }
 
