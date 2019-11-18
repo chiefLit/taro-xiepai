@@ -19,13 +19,3 @@ export function deleteCart(data) {
   };
   return axios(config);
 }
-
-export function washToCart(data) {
-  const config = {
-    method: 'post',
-    url: '/api/wxmp/service/wash/to_cart',
-    mockData: require('../../mock/washToCart.json'),
-    data: data
-  };
-  return axios(config);
-}
