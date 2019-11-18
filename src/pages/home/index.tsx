@@ -1,10 +1,24 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+
 import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
 
 import { getIndex } from '../../api/common'
+import { add, minus } from '../../reducers/actions/counter'
+
+@connect(({ counter }) => ({
+  counter
+}), (dispatch) => ({
+  add() {
+    dispatch(add())
+  },
+  dec() {
+    dispatch(minus())
+  }
+}))
 
 export default class Home extends Component {
   constructor() {
@@ -152,8 +166,8 @@ export default class Home extends Component {
         </View>
         {/* 日常服务 */}
         <View className="module-contianer">
-          <View className="module-title">
-            <Text className="line1">日常服务</Text>
+          <View className="module-title" onClick={this.props.add}>
+            <Text className="line1">日常服务{this.props.counter.num}</Text>
             <Text className="line2">DAILY SERVICE</Text>
           </View>
           <View className="daily-service">
