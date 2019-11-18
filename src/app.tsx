@@ -1,12 +1,19 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import Home from './pages/home/index'
+import { Provider } from '@tarojs/redux'
 import '@tarojs/async-await';
-import './assets/iconfont/iconfont.css'
 
+import './assets/iconfont/iconfont.css'
 import "taro-ui/dist/style/components/icon.scss";
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
-
 import './app.scss'
+
+import Home from './pages/home/index'
+import configStore from './store'
+import { login } from './api/user'
+import { STORAGE_NAME } from './config'
+
+const store = configStore()
+
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -80,8 +87,25 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    let res: any = await Taro.login();
-    console.log(res)
+    // 微信登录
+    let wxRes: any = await Taro.login();
+    if (wxRes.code) {
+      // 业务登录
+      let data: any = await login({
+        code: wxRes.code
+      })
+      if (data.code !== 1) {
+        Taro.showToast({
+          title: data.message,
+          icon: 'none'
+        })
+      } else {
+        Taro.setStorage({
+          key: STORAGE_NAME.token,
+          data: data.object.accessToken
+        })
+      }
+    }
   }
 
   componentDidShow() { }
@@ -90,11 +114,15 @@ class App extends Component {
 
   componentDidCatchError() { }
 
+
+
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
   render() {
     return (
-      <Home />
+      <Provider store={store}>
+        <Home />
+      </Provider>
     )
   }
 }

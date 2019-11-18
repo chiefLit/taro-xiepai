@@ -3,6 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
 import { getMine } from '../../api/user'
+import {storeInfo} from '../../config'
 
 import './index.less'
 
@@ -101,11 +102,11 @@ export default class Mine extends Component {
     {
       iconClassName: 'iconfont iconlianxiwomen',
       name: '联系我们',
-      value: '187 5825 5201',
+      value: storeInfo.phone,
       color: '#4A90E2',
       clickFn: () => {
         Taro.makePhoneCall({
-          phoneNumber: '18758255201'
+          phoneNumber: String(storeInfo.phone)
         })
       }
     },

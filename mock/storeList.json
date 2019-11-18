@@ -4,7 +4,7 @@
   "object": [
     {
       "id": 1,
-      "name": "店名1",
+      "name": "鞋π(三宝店)",
       "provinceName": "浙江",
       "cityName": "杭州",
       "countyName": "余杭区",
@@ -12,23 +12,9 @@
       "linkMan": "联系人",
       "phone": "18815277265",
       "pictureUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg",
-      "gpsLocation": "省份城市",
+      "gpsLocation": "120.21937542,30.25924446",
       "businessHour": "7点到17点",
-      "describe": "描述描述描述描述描述描述描述描述描述描述描述描述描述"
-    },
-    {
-      "id": 2,
-      "name": "店名2",
-      "provinceName": "浙江",
-      "cityName": "杭州",
-      "countyName": "余杭区",
-      "address": "详细地址详细地址",
-      "linkMan": "联系人",
-      "phone": "18815277265",
-      "pictureUrl": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg",
-      "gpsLocation": "省份城市",
-      "businessHour": "7点到17点",
-      "describe": "描述描述描述描述描述描述描述描述描述描述描述描述描述"
+      "describe": "描述描述描,描述描述描述描述描述描述描述描述描述描述"
     }
   ],
   "map": {}

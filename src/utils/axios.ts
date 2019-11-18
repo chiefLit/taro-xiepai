@@ -1,11 +1,18 @@
 // 服务接口层封装
 import { axios } from 'taro-axios';
 
+import {STORAGE_NAME} from '../config'
+
 // import GConfig from '../config';
 
 // Add a request interceptor
 axios.interceptors.request.use(
-  config => {
+  async config => {
+    const res: any = await Taro.getStorage({
+      key: STORAGE_NAME.token
+    })
+    axios.defaults.headers['accessToken'] = res.data || ''
+
     // 移除空数据
     if (config.data) {
       for (const key in config.data) {

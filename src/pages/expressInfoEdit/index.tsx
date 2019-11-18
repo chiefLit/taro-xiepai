@@ -5,6 +5,7 @@ import { AtIcon, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 
 import { getExpressCompanyList } from '../../api/common'
 import { addExpressInfo } from '../../api/service'
+import {storeInfo} from '../../config'
 
 export default class ExpressInfo extends Component {
 
@@ -101,11 +102,11 @@ export default class ExpressInfo extends Component {
           <View className="module-content">
             <View className="iconfont icondizhiguanli"></View>
             <View className="address-info">
-              <View className="line1">鞋派 18758255201</View>
-              <View className="line2">浙江省 杭州市 拱墅区 学院北路50号</View>
+              <View className="line1">{storeInfo.storeName} {storeInfo.phone}</View>
+              <View className="line2">{storeInfo.provinceName} {storeInfo.cityName} {storeInfo.countyName} {storeInfo.address}</View>
             </View>
             <View className="copy-btn" onClick={() => {
-              Taro.setClipboardData({ data: '浙江省 杭州市 拱墅区 学院北路50号' })
+              Taro.setClipboardData({ data: `${storeInfo.provinceName} ${storeInfo.cityName} ${storeInfo.countyName} ${storeInfo.address}` })
             }}>复制</View>
           </View>
         </View>

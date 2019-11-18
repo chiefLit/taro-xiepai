@@ -2,6 +2,8 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.less'
 
+import { storeInfo } from '../../config'
+
 export default class Aboutus extends Component {
 
   /**
@@ -21,10 +23,10 @@ export default class Aboutus extends Component {
     return (
       <View className='aboutus-wrapper'>
         <View className="store-item">
-          <View className="title">鞋π(三宝文化店)</View>
+          <View className="title">{storeInfo.storeName}</View>
           <View className="content">
-            <Text>浙江省 杭州市 下城区 体育场路406号</Text>
-            <Text>联系方式:18758255201</Text>
+            <Text>{storeInfo.provinceName} {storeInfo.cityName} {storeInfo.countyName} {storeInfo.address}</Text>
+            <Text>联系方式:{storeInfo.phone}}</Text>
           </View>
         </View>
         <View className="footer-contianer">

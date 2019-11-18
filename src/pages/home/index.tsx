@@ -6,8 +6,6 @@ import xfImage from '../../assets/images/xf.png'
 
 import { getIndex } from '../../api/common'
 
-
-
 export default class Home extends Component {
   constructor() {
     super()

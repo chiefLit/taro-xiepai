@@ -1,6 +1,10 @@
-export const STORAGE_NAME = {
+// 本地存储
+export const STORAGE_NAME: any = {
   // 用户信息
   userInfo: "__USER_INFO__",
+
+  // 用户信息
+  token: "__USER_TOKEN__",
 
   // 已选择的优惠券
   selectedCoupon: "__COUPON_SELECTED__",
@@ -12,6 +16,7 @@ export const STORAGE_NAME = {
   orderToCashier: "__ORDER_TO_CASHIER__",
 }
 
+// 订单状态管理
 export const orderStatusToValue = (status: any, type: Number) => {
   if (status === undefined || status === null) {
     return "无状态"
@@ -34,3 +39,16 @@ export const orderStatusToValue = (status: any, type: Number) => {
   return statusVo[status][type]
 
 }
+
+// 默认店铺信息
+export const storeInfo: any = {
+  storeName: '鞋π(三宝文化店)',
+  phone: 18758255201,
+  provinceName: "浙江省",
+  cityName: "杭州市",
+  countyName: "下城区",
+  address: "体育场路406号",
+}
+
+// 客服电话
+export const customerServicePhone: Number = 18668223132
