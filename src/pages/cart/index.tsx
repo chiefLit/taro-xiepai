@@ -5,7 +5,6 @@ import { AtButton, AtSwipeAction } from 'taro-ui'
 
 import { getCartList, deleteCart } from '../../api/cart'
 import { toCashierByCart } from '../../api/order'
-import { STORAGE_NAME } from '../../config'
 
 import noDataImage from '../../assets/images/no-data-cart.png'
 
@@ -170,7 +169,10 @@ export default class Cart extends Component {
             }
           </View>
           <View className="cart-info">
-            <View className="info-name">{ele.goodzTitle}</View>
+            <View className="info-name">
+              <Text>{ele.goodzTitle}</Text>
+              <View className="info-right">快递配送</View>
+            </View>
             <View className="info-labels">
               {
                 ele.cartServiceDetailList.map((sub: any) => {
@@ -180,9 +182,8 @@ export default class Cart extends Component {
                 })
               }
             </View>
-            <View className="info-price">￥ {ele.totalPrice}</View>
+            <View className="info-price">￥{ele.totalPrice}</View>
           </View>
-          <View className="info-right">快递配送</View>
         </View>
       </AtSwipeAction>
     )
