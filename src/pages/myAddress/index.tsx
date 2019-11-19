@@ -123,25 +123,6 @@ export default class MyAddr extends Component {
                       <View key={ele.id}>
                         {this.renderItem(ele)}
                       </View>
-                      // <View key={ele.id} className="list-item">
-                      //   <View style={{ display: 'flex', flex: 1, alignItems: 'center' }} onClick={this.selectAddress.bind(this, ele)}>
-                      //     <View className={selectedAddressId === ele.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
-                      //     <View className="info">
-                      //       <View className="line-first">
-                      //         <Text style={{ paddingRight: '60rpx' }}>{ele.linkName}</Text>
-                      //         <Text>{ele.phone}</Text>
-                      //       </View>
-                      //       <View className="line-second">
-                      //         <Text>{ele.provinceName}{ele.cityName}{ele.countyName}{ele.address}</Text>
-                      //       </View>
-                      //     </View>
-                      //   </View>
-                      //   <AtIcon value="edit" size="15" color="#999" onClick={() => {
-                      //     Taro.navigateTo({
-                      //       url: `/pages/myAddressEdit/index?id=${ele.id}`
-                      //     })
-                      //   }}></AtIcon>
-                      // </View>
                     )
                   })
                 }
@@ -159,7 +140,7 @@ export default class MyAddr extends Component {
                     })
                   }}
                 >
-                  <AtIcon value='add' size='14' color='#fff'></AtIcon>
+                  {/* <AtIcon value='add' size='14' color='#fff'></AtIcon> */}
                   添加地址
                 </AtButton>
               </View>

@@ -1,18 +1,35 @@
 .home-wrapper {
   background: #fff;
   padding: 32rpx 0;
+
   .swiper-container {
-    margin: 0 32rpx 32rpx 32rpx;
+    // margin: 0 32rpx 32rpx 32rpx;
+    margin-bottom: 32rpx;
     position: relative;
 
     .swiper-box {
-      background: #fcfcfc;
+      // background: #fcfcfc;
       height: 275rpx;
     }
   }
 
+  .banner {
+    overflow: hidden;
+    // height: 168px;
+    transition: transform 500ms;
+    transform: scale(0.95, 0.9);
+    /* 因为非主图看不清，所以可以变形处理 */
+    // border-radius: 8px;
+    // box-shadow: 0px 6px 10px 0px rgba(179, 154, 139, 1);
+  }
+
+  .banner.active {
+    transform: scale(1, 1);
+  }
+
   .swiper-item {
-    background: #000;
+    // background: #000;
+    // width: 668rpx !important;
   }
 
   .dots {
@@ -139,6 +156,7 @@
       height: 72rpx;
       display: flex;
       font-weight: bold;
+
       View {
         flex: 1;
         color: #252A34;
@@ -232,18 +250,23 @@
     margin: 32rpx;
     background: #fafafa;
     padding: 24rpx 32rpx;
+
     .qa-item {
       margin-bottom: 32rpx;
+
       &:last-child {
         margin-bottom: 0;
       }
+
       padding-left: 50rpx;
+
       .item-q {
         font-size: 28rpx;
         color: #333;
         line-height: 1;
         position: relative;
-        &::before{
+
+        &::before {
           content: 'Q';
           font-size: 19rpx;
           width: 29rpx;
@@ -258,13 +281,15 @@
           left: -50rpx;
         }
       }
+
       .item-a {
         font-size: 28rpx;
         line-height: 37rpx;
         color: rgba(31, 31, 31, 0.5);
         margin-top: 33rpx;
         position: relative;
-        &::before{
+
+        &::before {
           content: 'A';
           font-size: 19rpx;
           width: 29rpx;

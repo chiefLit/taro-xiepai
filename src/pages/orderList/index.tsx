@@ -226,14 +226,14 @@ export default class OrderList extends Component {
     let { current, page0, page1, page2 } = this.state;
     return (
       <View className='order-list-wrapper'>
-        <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
+        <AtTabs height="87" current={current} swipeable={true} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={current} index={0} >
             {
               page0.dataList.length > 0 ?
                 page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
                 this.renderNoData()
             }
-            {page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {/* {page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             {
@@ -241,7 +241,7 @@ export default class OrderList extends Component {
                 page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
                 this.renderNoData()
             }
-            {page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {/* {page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
             {
@@ -249,7 +249,7 @@ export default class OrderList extends Component {
                 page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
                 this.renderNoData()
             }
-            {page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {/* {page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
         </AtTabs>
       </View>

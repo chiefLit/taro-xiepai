@@ -1,24 +1,24 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+// import { connect } from '@tarojs/redux'
 
 import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
 
 import { getIndex } from '../../api/common'
-import { add, minus } from '../../reducers/actions/counter'
+// import { add, minus } from '../../reducers/actions/counter'
 
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add() {
-    dispatch(add())
-  },
-  dec() {
-    dispatch(minus())
-  }
-}))
+// @connect(({ counter }) => ({
+//   counter
+// }), (dispatch) => ({
+//   add() {
+//     dispatch(add())
+//   },
+//   dec() {
+//     dispatch(minus())
+//   }
+// }))
 
 export default class Home extends Component {
   constructor() {
@@ -104,7 +104,7 @@ export default class Home extends Component {
               url: '/pages/faqList/index'
             })
           }}>
-            <Text>更多</Text>
+            <Text>全部</Text>
             <View className='at-icon at-icon-chevron-right'></View>
           </View>
         </View>
@@ -131,7 +131,7 @@ export default class Home extends Component {
         {/* swiper */}
         <View className='swiper-container'>
           <Swiper
-            className='swiper-box'
+            className='swiper-box bannerBox'
             circular
             onChange={(e) => {
               bannerIndex = e.detail.current
@@ -139,15 +139,15 @@ export default class Home extends Component {
             }}
             autoplay>
             {
-              articleList.map((ele: any) => {
+              articleList.map((ele: any, index: Number) => {
                 return (
                   <SwiperItem className="swiper-item" key={ele.id} onClick={() => {
                     ele.linkUrl && Taro.navigateTo({
                       url: `/pages/wechatWebView/index?title=${ele.title}&url=${ele.linkUrl}`
                     })
                   }}>
-                    <View className='' style={{ 'background': '#ccc' }}>
-                      <Image style={{ width: '100%' }} mode="aspectFill" src={ele.imageUrl}></Image>
+                    <View className={bannerIndex === index ? 'banner active': 'banner'} style={{ 'background': '#ccc' }}>
+                      <Image style={{ minWidth: '100%' }} mode="aspectFill" src={ele.imageUrl}></Image>
                     </View>
                   </SwiperItem>
                 )
@@ -166,10 +166,10 @@ export default class Home extends Component {
         </View>
         {/* 日常服务 */}
         <View className="module-contianer">
-          <View className="module-title" onClick={this.props.add}>
-            <Text className="line1">日常服务{this.props.counter.num}</Text>
+          {/* <View className="module-title">
+            <Text className="line1">日常服务</Text>
             <Text className="line2">DAILY SERVICE</Text>
-          </View>
+          </View> */}
           <View className="daily-service">
             {
               this.dailyServices.map((ele) => {
@@ -192,7 +192,7 @@ export default class Home extends Component {
         {/* 服务价目 */}
         <View className="module-contianer">
           <View className="module-title">
-            <Text className="line1">服务价目</Text>
+            <Text className="line1">服务价格</Text>
             <Text className="line2">SERVICE PRICE</Text>
             <View className="title-right-btn" onClick={() => {
               Taro.navigateTo({

@@ -24,7 +24,7 @@ export default class Mine extends Component {
     nickName: '',
     phone: '',
     avatarUrl: defaultAvatarUrl,
-    couponCount: '0 张',
+    couponCount: '0张',
     orderContentList: [
       { iconClassName: 'iconfont icondaizhifu', name: '待支付', amount: 0 },
       { iconClassName: 'iconfont iconjinhangzhong', name: '进行中', amount: 0 },
@@ -49,7 +49,7 @@ export default class Mine extends Component {
         avatarUrl,
         phone: data.object.phone,
         nickName: data.object.nickName,
-        couponCount: `${data.object.couponCount || 0} 张`,
+        couponCount: `${data.object.couponCount || 0}张`,
         orderContentList: preState.orderContentList.map((ele: any, index: Number) => {
           if (index === 0) ele.amount = data.object.waitPayOrderCount
           if (index === 1) ele.amount = data.object.ongoingOrderCount

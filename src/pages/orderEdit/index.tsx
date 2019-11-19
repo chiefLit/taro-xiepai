@@ -195,7 +195,8 @@ export default class OrderEdit extends Component {
             url: `/pages/myAddress/index?selectedId=${userAddressVo.id}&isSelectStatus=true`
           })
         }}>
-          <View className="iconfont icondizhiguanli"></View>
+          {/* <View className="iconfont icondizhiguanli"></View> */}
+          <View className='at-icon at-icon-add'></View>
           <View className="content">
             {
               !userAddressVo || !userAddressVo.id ?
