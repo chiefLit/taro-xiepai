@@ -7,6 +7,13 @@ import { getAddressList } from '../../api/user'
 import noDataImage from '../../assets/images/no-data-address.png'
 
 import { STORAGE_NAME } from '../../config'
+import { connect } from '@tarojs/redux'
+import { addSelectedAddress } from '../../reducers/actions/selectedAddress'
+
+@connect(
+  state => state,
+  { addSelectedAddress }
+)
 
 export default class MyAddr extends Component {
 
@@ -17,8 +24,8 @@ export default class MyAddr extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
   }
 
   config: Config = {
@@ -61,7 +68,7 @@ export default class MyAddr extends Component {
     let { selectedAddressId, isSelectStatus } = this.state;
     return (
       <View className="list-item">
-        <View style={{ display:"flex", alignItems: 'center' }} onClick={this.selectAddress.bind(this, item)}>
+        <View style={{ display: "flex", alignItems: 'center' }} onClick={this.selectAddress.bind(this, item)}>
           {isSelectStatus ? <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View> : null}
           <View className="info">
             <View className="line-first">
@@ -101,12 +108,9 @@ export default class MyAddr extends Component {
     this.setState({
       selectedAddressId: item.id
     })
-    Taro.setStorage({
-      key: STORAGE_NAME.selectedAddress,
-      data: item
-    }).then(() => {
-      Taro.navigateBack()
-    })
+    this.props.addSelectedAddress(item)
+
+    Taro.navigateBack()
   }
 
   render() {
@@ -140,7 +144,7 @@ export default class MyAddr extends Component {
                     })
                   }}
                 >
-                  {/* <AtIcon value='add' size='14' color='#fff'></AtIcon> */}
+                  <AtIcon value='add' size='14' color='#fff'></AtIcon>
                   添加地址
                 </AtButton>
               </View>

@@ -8,6 +8,14 @@ import { getCouponList } from '../../api/coupon'
 import noDataImage from '../../assets/images/no-data-coupon.png'
 
 import { STORAGE_NAME } from '../../config'
+import { connect } from '@tarojs/redux'
+
+import { addSelectedCoupon } from '../../reducers/actions/selectedCoupon'
+
+@connect(
+  state => state,
+  { addSelectedCoupon }
+)
 
 export default class CouponList extends Component {
 
@@ -19,8 +27,8 @@ export default class CouponList extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
   }
 
   config: Config = {
@@ -45,11 +53,11 @@ export default class CouponList extends Component {
 
   componentWillMount() {
     this.pullData(null);
-    
+
     // Taro.getStorage({ key: STORAGE_NAME.selectedCoupon }).then((res: any) => {
-      this.setState({
-        selectedCouponId: Number(this.$router.params.selectedId) || null
-      })
+    this.setState({
+      selectedCouponId: Number(this.$router.params.selectedId) || null
+    })
     // })
   }
 
@@ -96,6 +104,18 @@ export default class CouponList extends Component {
     }
   }
 
+  selectCoupon(item) {
+    this.props.addSelectedCoupon(item)
+    // this
+    // Taro.setStorage({ key: STORAGE_NAME.selectedCoupon, data: ele })
+    //   .then(() => {
+    //     this.setState({
+    //       selectedCouponId: ele.id
+    //     })
+    Taro.navigateBack()
+    // })
+  }
+
   randerItem(item: any, isActive: Boolean) {
     return (
       <View className="coupon-item">
@@ -134,15 +154,7 @@ export default class CouponList extends Component {
           dataList.length > 0 ?
             dataList.map((ele: any) => {
               let isActive: Boolean = ele.id === selectedCouponId
-              return <View key={ele.id} onClick={() => {
-                Taro.setStorage({ key: STORAGE_NAME.selectedCoupon, data: ele })
-                  .then(() => {
-                    this.setState({
-                      selectedCouponId: ele.id
-                    })
-                    Taro.navigateBack()
-                  })
-              }}> {this.randerItem(ele, isActive)} </View>
+              return <View key={ele.id} onClick={this.selectCoupon.bind(this, ele)}> {this.randerItem(ele, isActive)} </View>
             }) :
             this.renderNoData()
         }

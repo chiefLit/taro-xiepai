@@ -4,12 +4,13 @@ import {
   DELETE
 } from '../constants/selectedAddress'
 
-export const addAction = () => {
+export const addSelectedAddress = (data) => {
   return {
-    type: ADD
+    type: ADD,
+    data
   }
 }
-export const deleteAction = () => {
+export const deleteSelectedAddress = () => {
   return {
     type: DELETE
   }

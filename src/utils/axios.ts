@@ -3,8 +3,6 @@ import { axios } from 'taro-axios';
 
 import {STORAGE_NAME} from '../config'
 
-// import GConfig from '../config';
-
 // Add a request interceptor
 axios.interceptors.request.use(
   async config => {

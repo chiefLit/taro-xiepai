@@ -1,24 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
-// import { connect } from '@tarojs/redux'
 
 import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
 
 import { getIndex } from '../../api/common'
-// import { add, minus } from '../../reducers/actions/counter'
 
-// @connect(({ counter }) => ({
-//   counter
-// }), (dispatch) => ({
-//   add() {
-//     dispatch(add())
-//   },
-//   dec() {
-//     dispatch(minus())
-//   }
-// }))
 
 export default class Home extends Component {
   constructor() {
@@ -146,7 +134,7 @@ export default class Home extends Component {
                       url: `/pages/wechatWebView/index?title=${ele.title}&url=${ele.linkUrl}`
                     })
                   }}>
-                    <View className={bannerIndex === index ? 'banner active': 'banner'} style={{ 'background': '#ccc' }}>
+                    <View className={bannerIndex === index ? 'banner active' : 'banner'} style={{ 'background': '#ccc' }}>
                       <Image style={{ minWidth: '100%' }} mode="aspectFill" src={ele.imageUrl}></Image>
                     </View>
                   </SwiperItem>
@@ -191,8 +179,8 @@ export default class Home extends Component {
         </View>
         {/* 服务价目 */}
         <View className="module-contianer">
-          <View className="module-title">
-            <Text className="line1">服务价格</Text>
+          <View className="module-title" onClick={this.props.add}>
+          <Text className="line1">服务价格{this.props.counter.num}</Text>
             <Text className="line2">SERVICE PRICE</Text>
             <View className="title-right-btn" onClick={() => {
               Taro.navigateTo({

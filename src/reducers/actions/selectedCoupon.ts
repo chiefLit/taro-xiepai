@@ -4,12 +4,13 @@ import {
   DELETE
 } from '../constants/selectedCoupon'
 
-export const addAction = () => {
+export const addSelectedCoupon = (data) => {
   return {
-    type: ADD
+    type: ADD,
+    data
   }
 }
-export const deleteAction = () => {
+export const deleteSelectedCoupon = () => {
   return {
     type: DELETE
   }

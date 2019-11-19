@@ -9,6 +9,14 @@ import { STORAGE_NAME } from '../../config'
 
 import noDataImage from '../../assets/images/no-data-cart.png'
 
+import { connect } from '@tarojs/redux'
+import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
+
+@connect(
+  state => state,
+  { addOrderToCashier }
+)
+
 export default class Cart extends Component {
 
   /**
@@ -22,8 +30,8 @@ export default class Cart extends Component {
     navigationBarTitleText: '购物车'
   }
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
   }
 
   state = {
@@ -120,14 +128,10 @@ export default class Cart extends Component {
         icon: 'none'
       })
     } else {
-      Taro.setStorage({
-        key: STORAGE_NAME.orderToCashier,
-        data: data.object
-      }).then(() => {
-        // 添加成功
-        Taro.navigateTo({
-          url: `/pages/orderEdit/index?cartIds=${cartIds}`
-        })
+      this.props.addOrderToCashier(data.object)
+      // 添加成功
+      Taro.navigateTo({
+        url: `/pages/orderEdit/index?cartIds=${cartIds}`
       })
     }
   }

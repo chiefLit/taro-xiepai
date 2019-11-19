@@ -3,11 +3,18 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
 import addrLineImage from '../../assets/images/addr-line.png'
-// import { getOrderDetail } from '../../api/order'
-import { STORAGE_NAME } from '../../config'
 
 import { toOrderByCart, toCashierByCart } from '../../api/order'
 import { toOrderByWash, toCashierByWash } from '../../api/service'
+import { connect } from '@tarojs/redux'
+import { deleteOrderToCashier } from '../../reducers/actions/orderToCashier'
+import { deleteSelectedAddress } from '../../reducers/actions/selectedAddress'
+import { deleteSelectedCoupon } from '../../reducers/actions/selectedCoupon'
+
+@connect(
+  state => state,
+  { deleteOrderToCashier, deleteSelectedAddress, deleteSelectedCoupon }
+)
 
 export default class OrderEdit extends Component {
 
@@ -22,8 +29,8 @@ export default class OrderEdit extends Component {
     navigationBarTitleText: '订单确认'
   }
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.calcCoupon = this.calcCoupon.bind(this)
   }
 
@@ -59,12 +66,10 @@ export default class OrderEdit extends Component {
   componentWillMount() {
     let params: any = this.$router.params
     if (params.cartIds) {
-      console.log(params.cartIds)
       this.formCartParams = {
         cartIds: params.cartIds.split(",")
       }
     } else if (params.serviceItemIds) {
-      console.log(params.serviceItemIds)
       this.formWashProductParams = {
         serviceItemIds: params.serviceItemIds.split(","),
         image0Url: params.image0Url,
@@ -77,51 +82,32 @@ export default class OrderEdit extends Component {
         icon: 'none'
       })
     }
-    Taro.getStorage({ key: STORAGE_NAME.orderToCashier }).then((res: any) => {
-      if (res.data) {
-        this.setState({
-          orderDetail: res.data
-        })
-        Taro.removeStorage({ key: STORAGE_NAME.orderToCashier })
-      } else {
-        Taro.showToast({
-          title: '无订单信息',
-          icon: "none"
-        })
-      }
-    })
+
+    let orderDetail: any = this.props.orderToCashier.data || null
+
+    if (orderDetail) {
+      this.setState({
+        orderDetail: this.props.orderToCashier.data
+      })
+      this.props.deleteOrderToCashier()
+    } else {
+      Taro.showToast({
+        title: '无订单信息',
+        icon: "none"
+      })
+    }
   }
 
   componentDidShow() {
-    Taro.getStorage({
-      key: STORAGE_NAME.selectedAddress
-    }).then((res) => {
-      this.setState({
-        userAddressVo: res.data
-      })
-      Taro.removeStorage({ key: STORAGE_NAME.selectedAddress })
+    this.setState({
+      userAddressVo: this.props.selectedAddress.data
     })
-    Taro.getStorage({
-      key: STORAGE_NAME.selectedCoupon
-    }).then((res) => {
-      this.calcCoupon(res.data.id)
-      Taro.removeStorage({ key: STORAGE_NAME.selectedCoupon })
-    })
-  }
+    this.props.deleteSelectedAddress()
 
-  // async pullData(orderId) {
-  //   let data: any = await getOrderDetail({ orderId })
-  //   if (data.code !== 1) {
-  //     Taro.showToast({
-  //       title: data.message,
-  //       icon: 'none'
-  //     })
-  //   } else {
-  //     this.setState({
-  //       orderDetail: data.object
-  //     })
-  //   }
-  // }
+    let selectedCoupon: any = this.props.selectedCoupon.data
+    selectedCoupon.id && this.calcCoupon(selectedCoupon.id)
+    this.props.deleteSelectedCoupon()
+  }
 
   async calcCoupon(couponId: any) {
     let data: any

@@ -3,17 +3,8 @@ export const STORAGE_NAME: any = {
   // 用户信息
   userInfo: "__USER_INFO__",
 
-  // 用户信息
+  // token
   token: "__USER_TOKEN__",
-
-  // 已选择的优惠券
-  selectedCoupon: "__COUPON_SELECTED__",
-
-  // 已选择的地址信息
-  selectedAddress: "__ADDRESS_SELECTED__",
-
-  // 提交到 /pages/orderEdit/index 页面的参数
-  orderToCashier: "__ORDER_TO_CASHIER__",
 }
 
 // 订单状态管理

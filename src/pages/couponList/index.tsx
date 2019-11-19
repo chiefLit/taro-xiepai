@@ -187,7 +187,7 @@ export default class CouponList extends Component {
               page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
               this.renderNoData()
             }
-            { page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {/* { page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             {
@@ -195,7 +195,7 @@ export default class CouponList extends Component {
               page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
               this.renderNoData()
             }
-            { page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {/* { page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
             {
@@ -203,7 +203,7 @@ export default class CouponList extends Component {
               page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
               this.renderNoData()
             }
-            { page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+            {/* { page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
         </AtTabs>
       </View>
