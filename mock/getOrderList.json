@@ -34,6 +34,115 @@
             { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 1 },
             { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 2 }
           ]
+        },
+        {
+          "id": 1,
+          "cartId": 1,
+          "goodzId": 1,
+          "goodzTitle": "商品名称",
+          "goodzType": 1,
+          "quantity": "",
+          "price": "",
+          "totalPrice": 120.22,
+          "couponId": 1,
+          "couponDiscountAmount": 13.2,
+          "totalDiscountAmount": 12.2,
+          "realPayPrice": "",
+          "serviceDetailList": [
+            {
+              "serviceId": 1,
+              "serviceName": "服务项目",
+              "price": 12.3
+            }
+          ],
+          "serviceImageList": [
+            { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 0 },
+            { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 1 },
+            { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 2 }
+          ]
+        }
+      ],
+      "totalPrice": 100.22,
+      "couponId": 1,
+      "couponAmount": 122.22,
+      "realPayPrice": 100.22,
+      "storeVo": {
+        "id": 1,
+        "name": "店铺名称",
+        "provinceName": "",
+        "cityName": "",
+        "countyName": "",
+        "address": "",
+        "linkMan": "",
+        "phone": "",
+        "pictureUrl": "",
+        "gpsLocation": "",
+        "businessHour": "",
+        "describe": ""
+      },
+      "toStoreId": 1,
+      "toStoreExpressId": 1,
+      "toStoreExpressName": "顺丰",
+      "toStoreExpressNumber": "123123",
+      "toUserAddressId": 123123,
+      "userAddressVo": {
+        "id": 1,
+        "linkName": "",
+        "provinceId": "",
+        "provinceCode": "",
+        "provinceName": "浙江省",
+        "cityId": "",
+        "cityName": "杭州市",
+        "cityCode": "",
+        "countyId": "",
+        "countyCode": "",
+        "countyName": "下城区",
+        "address": "",
+        "phone": 1881231231,
+        "describe": "说明"
+      },
+      "toUserExpressId": "",
+      "toUserExpressName": "",
+      "toUserExpressNumber": "",
+      "status": 0,
+      "applyTime": 1,
+      "payChannel": 0,
+      "payTime": 1231231,
+      "endTime": 123123123,
+      "closeReason": "关闭原因关闭原因关闭原因"
+    },
+    {
+      "id": 1,
+      "number": "1231231231",
+      "userId": 1,
+      "deliverMode": 0,
+      "channel": 1,
+      "orderSubVoList": [
+        {
+          "id": 1,
+          "cartId": 1,
+          "goodzId": 1,
+          "goodzTitle": "商品名称",
+          "goodzType": 1,
+          "quantity": "",
+          "price": "",
+          "totalPrice": 120.22,
+          "couponId": 1,
+          "couponDiscountAmount": 13.2,
+          "totalDiscountAmount": 12.2,
+          "realPayPrice": "",
+          "serviceDetailList": [
+            {
+              "serviceId": 1,
+              "serviceName": "服务项目",
+              "price": 12.3
+            }
+          ],
+          "serviceImageList": [
+            { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 0 },
+            { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 1 },
+            { "url": "http://pic-bucket.ws.126.net/photo/0003/2019-11-06/ET9NESTA00AJ0003NOS.jpg", "aspect": 2 }
+          ]
         }
       ],
       "totalPrice": 100.22,

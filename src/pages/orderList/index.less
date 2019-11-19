@@ -15,13 +15,18 @@
     }
 
     .item-content {
-      padding: 36rpx 30rpx 0 30rpx;
+      padding: 6rpx 30rpx 0 30rpx;
     }
 
     .produce-item {
       display: flex;
       align-items: center;
-      margin-bottom: 30rpx;
+      // margin-bottom: 30rpx;
+      padding: 30rpx 0;
+      border-bottom: 1rpx solid #E6E6E6;
+      &:last-child {
+        border-bottom: 0rpx;
+      }
       Image {
         width: 120rpx;
         min-width: 120rpx;
@@ -73,14 +78,14 @@
       text-align: right;
       .at-button {
         display: inline-flex;
+        border-radius: 8rpx;
         height: 64rpx;
         line-height: 64rpx;
-        background: #ff3939;
-        color: #fff;
+        background: #fff;
+        color: #EB0200;
         font-size: 30rpx;
         padding: 0 26rpx;
-        border-color: #FF3939;
-        border-radius: 0;
+        border-color: #EB0200;
       }
     }
   }
