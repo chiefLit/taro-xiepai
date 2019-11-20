@@ -5,7 +5,7 @@ export function washServiceList(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/service_item_list',
-    mockData: require('../../mock/washServiceList.json'),
+    // mockData: require('../../mock/washServiceList.json'),
     data: data
   }
   return axios(config);
@@ -16,7 +16,7 @@ export function toOrderByWash(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/to_order',
-    mockData: require('../../mock/washToOrder.json'),
+    // mockData: require('../../mock/washToOrder.json'),
     data: data
   }
   return axios(config);
@@ -27,7 +27,7 @@ export function toCartByWash(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/to_cart',
-    mockData: require('../../mock/toCartByWash.json'),
+    // mockData: require('../../mock/toCartByWash.json'),
     data: data
   }
   return axios(config);
@@ -38,7 +38,7 @@ export function addExpressInfo(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/add-to-store-express-info',
-    mockData: require('../../mock/addExpressInfo.json'),
+    // mockData: require('../../mock/addExpressInfo.json'),
     data: data
   }
   return axios(config);
@@ -50,7 +50,7 @@ export function toCashierByWash(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/service/wash/to_cashier',
-    mockData: require('../../mock/toCashier.json'),
+    // mockData: require('../../mock/toCashier.json'),
     data: data
   }
   return axios(config);

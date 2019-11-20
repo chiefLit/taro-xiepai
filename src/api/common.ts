@@ -5,7 +5,7 @@ export function getIndex(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/index',
-    mockData: require('../../mock/getIndex.json'),
+    // mockData: require('../../mock/getIndex.json'),
     data: data
   }
   return axios(config);
@@ -16,7 +16,7 @@ export function getExpressCompanyList(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/express_company/list',
-    mockData: require('../../mock/getExpressCompanyList.json'),
+    // mockData: require('../../mock/getExpressCompanyList.json'),
     data: data
   }
   return axios(config);
@@ -27,7 +27,7 @@ export function getFaqlist(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/common/faqlist',
-    mockData: require('../../mock/getFaqlist.json'),
+    // mockData: require('../../mock/getFaqlist.json'),
     data: data
   }
   return axios(config);

@@ -26,7 +26,7 @@ export default class Aboutus extends Component {
           <View className="title">{storeInfo.storeName}</View>
           <View className="content">
             <Text>{storeInfo.provinceName} {storeInfo.cityName} {storeInfo.countyName} {storeInfo.address}</Text>
-            <Text>联系方式:{storeInfo.phone}}</Text>
+            <Text>联系方式:{storeInfo.phone}</Text>
           </View>
         </View>
         <View className="footer-contianer">

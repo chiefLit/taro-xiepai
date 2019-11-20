@@ -34,11 +34,11 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-    this.pullData()
+    // this.pullData()
   }
 
   async pullData() {
-    let data = await getIndex(null)
+    let data: any = await getIndex(null)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,

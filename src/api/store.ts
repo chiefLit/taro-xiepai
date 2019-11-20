@@ -5,7 +5,7 @@ export function storeList(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/store/list',
-    mockData: require('../../mock/storeList.json'),
+    // mockData: require('../../mock/storeList.json'),
     data: data
   }
   return axios(config);

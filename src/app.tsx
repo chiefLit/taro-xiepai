@@ -11,6 +11,7 @@ import Home from './pages/home/index'
 import configStore from './store'
 import { login } from './api/user'
 import { STORAGE_NAME } from './config'
+import storage from './utils/storage'
 
 const store = configStore()
 
@@ -87,25 +88,22 @@ class App extends Component {
     }
   }
 
-  async componentDidMount() {
-    // 微信登录
-    let wxRes: any = await Taro.login();
-    if (wxRes.code) {
-      // 业务登录
-      let data: any = await login({
-        code: wxRes.code
+
+
+  async componentWillMount() {
+    const token = storage.getStorage(STORAGE_NAME.token, null)
+    if (token && token.data) return
+
+    const wxRes: any = await Taro.login();
+    if (!wxRes.code) return
+
+    // 业务登录
+    let data: any = await login({ code: wxRes.code })
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
       })
-      if (data.code !== 1) {
-        Taro.showToast({
-          title: data.message,
-          icon: 'none'
-        })
-      } else {
-        Taro.setStorage({
-          key: STORAGE_NAME.token,
-          data: data.object.accessToken
-        })
-      }
     }
   }
 

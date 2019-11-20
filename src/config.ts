@@ -43,3 +43,12 @@ export const storeInfo: any = {
 
 // 客服电话
 export const customerServicePhone: Number = 18668223132
+
+export const DEFAULT_CONFIG = {
+  // 客服电话
+  customerServicePhone: 18668223132,
+  // 文件服务
+  fileBaseURL: 'https://dev-file.sneakerpai.com/',
+  // 普通服务
+  baseURL: 'https://dev-wxmp-api.sneakerpai.com/',
+}

@@ -54,11 +54,9 @@ export default class CouponList extends Component {
   componentWillMount() {
     this.pullData(null);
 
-    // Taro.getStorage({ key: STORAGE_NAME.selectedCoupon }).then((res: any) => {
     this.setState({
       selectedCouponId: Number(this.$router.params.selectedId) || null
     })
-    // })
   }
 
   /**
@@ -106,14 +104,7 @@ export default class CouponList extends Component {
 
   selectCoupon(item) {
     this.props.addSelectedCoupon(item)
-    // this
-    // Taro.setStorage({ key: STORAGE_NAME.selectedCoupon, data: ele })
-    //   .then(() => {
-    //     this.setState({
-    //       selectedCouponId: ele.id
-    //     })
     Taro.navigateBack()
-    // })
   }
 
   randerItem(item: any, isActive: Boolean) {

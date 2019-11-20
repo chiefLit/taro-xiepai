@@ -4,7 +4,7 @@ export function getCartList(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/cartList',
-    mockData: require('../../mock/getCartList.json'),
+    // mockData: require('../../mock/getCartList.json'),
     data: data
   };
   return axios(config);
@@ -14,7 +14,7 @@ export function deleteCart(data) {
   const config = {
     method: 'post',
     url: '/api/wxmp/cart/delete',
-    mockData: require('../../mock/deleteCart.json'),
+    // mockData: require('../../mock/deleteCart.json'),
     data: data
   };
   return axios(config);

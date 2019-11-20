@@ -4,7 +4,14 @@ import './index.less'
 import { AtButton } from 'taro-ui'
 
 import { washServiceList, toCartByWash, toCashierByWash } from '../../api/service'
-import {STORAGE_NAME} from '../../config'
+
+import { connect } from '@tarojs/redux'
+import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
+
+@connect(
+  state => state,
+  { addOrderToCashier }
+)
 
 export default class productWash extends Component {
 
@@ -19,8 +26,8 @@ export default class productWash extends Component {
     navigationBarTitleText: '球鞋清洗'
   }
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.operateData = this.operateData.bind(this)
     this.handleChoose = this.handleChoose.bind(this)
     this.chooseImage = this.chooseImage.bind(this)
@@ -59,7 +66,7 @@ export default class productWash extends Component {
   }
 
   async pullData() {
-    let data = await washServiceList(null);
+    let data: any = await washServiceList(null);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message
@@ -68,6 +75,7 @@ export default class productWash extends Component {
       this.operateData(data.object || [])
     }
   }
+
   // 获取数据之后操作数据
   operateData(List: any) {
     let wayList = List.filter(ele => {
@@ -176,7 +184,7 @@ export default class productWash extends Component {
 
   // 添加到购物车
   async addCart() {
-    this.setState({  showSelectedProduct: false })
+    this.setState({ showSelectedProduct: false })
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
@@ -198,8 +206,8 @@ export default class productWash extends Component {
   }
 
   async submitOrder() {
-    this.setState({  showSelectedProduct: false })
-    // if (!this.checkImageUpload()) return
+    this.setState({ showSelectedProduct: false })
+    if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
     let data: any = await toCashierByWash({
@@ -210,16 +218,12 @@ export default class productWash extends Component {
         title: data.message,
         icon: 'none'
       })
-    }else {
-      Taro.setStorage({
-        key: STORAGE_NAME.orderToCashier,
-        data: data.object
-      }).then(() => {
-        this.initData()
-        // 添加成功
-        Taro.navigateTo({
-          url: `/pages/orderEdit/index?serviceItemIds=${serviceItemIds}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
-        })
+    } else {
+      this.props.addOrderToCashier(data.object)
+      this.initData()
+      // 添加成功
+      Taro.navigateTo({
+        url: `/pages/orderEdit/index?serviceItemIds=${serviceItemIds}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
       })
     }
   }
