@@ -2,6 +2,8 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.less'
 
+import {DEFAULT_CONFIG} from '../../config'
+
 export default class ProductMend extends Component {
 
   /**
@@ -17,14 +19,6 @@ export default class ProductMend extends Component {
 
   componentWillMount() { }
 
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
   render() {
     return (
       <View className='product-mend-wrapper'>
@@ -32,9 +26,9 @@ export default class ProductMend extends Component {
           <Text>系统加紧开发中，有鞋子修复需求请电话联系：</Text>
           <Text className="phone" onClick={() => {
             Taro.makePhoneCall({
-              phoneNumber: '9876 9344'
+              phoneNumber: String(DEFAULT_CONFIG.customerServicePhone)
             })
-          }}>9876 9344</Text>
+          }}>{DEFAULT_CONFIG.customerServicePhone}</Text>
         </View>
       </View>
     )

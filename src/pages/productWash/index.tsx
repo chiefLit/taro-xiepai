@@ -95,6 +95,14 @@ export default class productWash extends Component {
 
   // 生成已选中数据
   handleChoose(type: Number, item: any) {
+    if (!item) {
+      this.setState((preState: any) => {
+        let chosenList = [...preState.chosenList]
+        chosenList = chosenList.filter((ele: any) => ele.classifyCode === '000001')
+        return { chosenList }
+      })
+      return
+    }
     // 删除
     let index1 = this.state.chosenList.findIndex((ele: any) => {
       return ele.id === item.id
@@ -285,6 +293,7 @@ export default class productWash extends Component {
             <Text className="title">选择护理项目</Text>
           </View>
           <View className="product-list">
+            <View className={chosenList.some((ele:any) => ele.classifyCode === '000002') ? 'product-item' : 'product-item active'}  onClick={this.handleChoose.bind(this, 2, null)}>无需护理</View>
             {
               productList.map((ele: any) => {
                 let isActive = chosenList.some((item: any) => item.id === ele.id)
