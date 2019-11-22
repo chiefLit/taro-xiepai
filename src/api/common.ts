@@ -23,12 +23,12 @@ export function getExpressCompanyList(data) {
 }
 
 // 常见问题列表
-export function getFaqlist(data) {
+export function getFaqlist() {
   const config = {
     method: 'post',
-    url: '/api/wxmp/common/faqlist',
+    url: '/api/wxmp/article/listByType',
     // mockData: require('../../mock/getFaqlist.json'),
-    data: data
+    data: { type: 1 }
   }
   return axios(config);
 }

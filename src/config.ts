@@ -48,7 +48,7 @@ export const DEFAULT_CONFIG = {
   // 客服电话
   customerServicePhone: 18668223132,
   // 文件服务
-  fileBaseURL: 'https://dev-file.sneakerpai.com/',
+  fileBaseURL: 'https://dev-file.sneakerpai.com/file/upload',
   // 普通服务
   baseURL: 'https://dev-wxmp-api.sneakerpai.com/',
 }

@@ -92,18 +92,18 @@ class App extends Component {
 
   async componentWillMount() {
     const token = storage.getStorage(STORAGE_NAME.token, null)
-    if (token && token.data) return
-
-    const wxRes: any = await Taro.login();
-    if (!wxRes.code) return
-
-    // 业务登录
-    let data: any = await login({ code: wxRes.code })
-    if (data.code !== 1) {
-      Taro.showToast({
-        title: data.message,
-        icon: 'none'
-      })
+    if (!token) {
+      // 获取微信code
+      const wxRes: any = await Taro.login();
+      if (!wxRes.code) return
+      // 登录
+      let data: any = await login({ wxCode: wxRes.code })
+      if (data.code !== 1) {
+        Taro.showToast({
+          title: data.message,
+          icon: 'none'
+        })
+      }
     }
   }
 

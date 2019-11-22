@@ -4,6 +4,7 @@ import './index.less'
 import { AtButton } from 'taro-ui'
 
 import { washServiceList, toCartByWash, toCashierByWash } from '../../api/service'
+import { DEFAULT_CONFIG } from '../../config'
 
 import { connect } from '@tarojs/redux'
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
@@ -79,11 +80,11 @@ export default class productWash extends Component {
   // 获取数据之后操作数据
   operateData(List: any) {
     let wayList = List.filter(ele => {
-      return ele.classify_code === '000001'
+      return ele.classifyCode === '000001'
     })
     let chosenList = [wayList[0]];
     let productList = List.filter(ele => {
-      return ele.classify_code === '000002'
+      return ele.classifyCode === '000002'
     })
     this.setState({
       wayList,
@@ -126,34 +127,29 @@ export default class productWash extends Component {
     return sum
   }
 
-  chooseImage(index: Number) {
+  async chooseImage(index: Number) {
     // 选择图片
-    Taro.chooseImage({
-      count: 1,
-      success: ({ tempFilePaths }) => {
-        Taro.showToast({
-          title: '暂未上传',
-          icon: 'none'
-        })
-        this.setState({
-          [`image${index}Url`]: tempFilePaths[0]
-        })
-        return;
-        // 上传图片
-        Taro.uploadFile({
-          url: '',
-          filePath: tempFilePaths[0],
-          name: 'file',
-          formData: {
-            'user': 'test'
-          },
-          success(res: any) {
-            const data = res.data
-            console.log(data)
-            //do something
-          }
-        })
-      }
+    let { tempFilePaths } = await Taro.chooseImage({
+      count: 1
+    })
+
+    if (!tempFilePaths.length) return
+
+    let uploadRes = await Taro.uploadFile({
+      url: DEFAULT_CONFIG.fileBaseURL,
+      filePath: tempFilePaths[0],
+      name: 'file'
+    })
+
+    if (!uploadRes) return
+
+    this.setState({
+      [`image${index}Url`]: JSON.parse(uploadRes.data).object.viewPath
+    })
+    
+    Taro.showToast({
+      title: '上传成功',
+      icon: 'none'
     })
   }
 

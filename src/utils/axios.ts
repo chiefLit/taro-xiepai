@@ -6,15 +6,26 @@ import storage from '../utils/storage'
 
 import { STORAGE_NAME, DEFAULT_CONFIG } from '../config'
 
-axios.defaults.headers.common['accessToken'] = storage.getStorage(STORAGE_NAME.token, null) || ''
+axios.defaults.headers['accessToken'] = storage.getStorage(STORAGE_NAME.token, null) || ''
 axios.defaults.baseURL = DEFAULT_CONFIG.baseURL
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+// axios.defaults.headers['Content-Type'] = 'multipart/form-data';
+
 
 // Add a request interceptor
 axios.interceptors.request.use(
 
-  async config => {
-    
+  async (config: any) => {
+    //时间戳
+    if (config.url.indexOf("bust=") === -1) {
+      if (config.url.indexOf("?") === -1) {
+        config.url += "?";
+      } else {
+        config.url += "&";
+      }
+      config.url += "bust=" + new Date().getTime();
+    }
+
     // 移除空数据
     if (config.data) {
       for (const key in config.data) {
@@ -28,20 +39,6 @@ axios.interceptors.request.use(
       }
     }
 
-    if (config.params) {
-      for (const key in config.params) {
-        if (
-          config.params[key] === null ||
-          config.params[key] === undefined ||
-          config.params[key] === ''
-        ) {
-          delete config.params[key];
-        }
-      }
-
-      config.params.t = new Date().getTime();
-      // config.url = config.url + '?t=' + new Date().getTime(); // 兼容ie Get请求缓存问题
-    }
     return config;
   },
   error => {
@@ -53,12 +50,17 @@ axios.interceptors.request.use(
 // Add a response interceptor
 axios.interceptors.response.use(
   async response => {
+    if (response.status === 402 || response.status === 401) {
+      await logout()
+      Taro.switchTab({ url: '/pages/mine/index' })
+      return
+    }
     if (response.status === 200 || response.status === 304) {
       const res = response.data;
       if (res.code === 401 || res.code === 402) {
         await logout()
         Taro.switchTab({ url: '/pages/mine/index' })
-        return response.data;
+        // return response.data;
       } else {
         return response.data;
       }
@@ -70,14 +72,15 @@ axios.interceptors.response.use(
     }
   },
   error => {
+    console.log(error)
     return {
       code: 0,
-      message: error
+      message: 'error'
     };
   }
 );
 
-export default function (config) {
+export default function (config: any) {
   config.data = config.data || {};
   // if (true && config.mockData) {
   //   // 骚操作
@@ -89,6 +92,6 @@ export default function (config) {
     config.params = config.data;
     delete config['data'];
   }
-  console.log(JSON.stringify(config));
+  // console.log(config);
   return axios(config);
 }

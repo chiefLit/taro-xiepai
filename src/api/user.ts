@@ -1,5 +1,5 @@
 import axios from '../utils/axios'
-import Taro from '@tarojs/taro'
+// import Taro from '@tarojs/taro'
 import { STORAGE_NAME } from '../config'
 import storage from '../utils/storage'
 
@@ -29,14 +29,11 @@ export function improveInfo(data) {
 export async function login(data) {
   const config = {
     method: 'post',
-    url: '/api/wxmp/user/login',
+    url: '/api/wxmp/user/login?wxCode=0211yWHT1Hicp41heJIT10uJHT11yWHe',
     // mockData: require('../../mock/login.json'),
     data: data
   }
   let loginRes: any = await axios(config);
-  Taro.showToast({
-    title: loginRes.message
-  })
   return new Promise(async resolve => {
     if (loginRes.code !== 1) {
       resolve({ code: 0, message: loginRes.message })
@@ -45,7 +42,6 @@ export async function login(data) {
         storage.setStorage(STORAGE_NAME.token, loginRes.object.accessToken)
         resolve({ code: 1 })
       } else {
-        console.error('登陆成功，未获取token')
         resolve({ code: 0, message: '登录异常' })
       }
     }

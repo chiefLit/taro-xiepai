@@ -34,7 +34,7 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-    // this.pullData()
+    this.pullData()
   }
 
   async pullData() {
@@ -45,11 +45,12 @@ export default class Home extends Component {
         icon: 'none'
       })
     } else {
+      data.object = data.object || {}
       this.setState({
-        articleList: data.object.articleList,
-        bannerList: data.object.bannerList,
-        couponList: data.object.couponList,
-        faqList: data.object.faqList
+        articleList: data.object.articleList || [],
+        bannerList: data.object.bannerList || [],
+        couponList: data.object.couponList || [],
+        faqList: data.object.faqList || []
       })
     }
   }
