@@ -16,6 +16,9 @@ axios.defaults.baseURL = DEFAULT_CONFIG.baseURL
 axios.interceptors.request.use(
 
   async (config: any) => {
+
+    axios.defaults.headers['accessToken'] = storage.getStorage(STORAGE_NAME.token, null) || ''
+
     //时间戳
     if (config.url.indexOf("bust=") === -1) {
       if (config.url.indexOf("?") === -1) {

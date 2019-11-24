@@ -29,7 +29,7 @@ export default class Mine extends Component {
   state = {
     userInfo: {
       id: null,
-      phone: "",
+      phone: null,
       nickName: "",
       avatarUrl: "",
       waitPayOrderCount: 2,
@@ -45,7 +45,9 @@ export default class Mine extends Component {
 
   componentWillMount() {
     const userInfo: any = storage.getStorage(STORAGE_NAME.userinfo, null)
-    this.setState({ userInfo })
+    if (userInfo && userInfo.id) {
+      this.setState({ userInfo })
+    }
     if (userInfo && userInfo.id && userInfo.phone) return
     this.pullData()
   }
@@ -71,6 +73,7 @@ export default class Mine extends Component {
 
   // 获取手机号码
   async onGetPhoneNumber(res: any) {
+    if (!res || !res.detail || !res.detail.encryptedData || !res.detail.iv) return
     let data: any = await improvePhone({
       encryptedData: res.detail.encryptedData,
       vi: res.detail.iv
@@ -132,7 +135,7 @@ export default class Mine extends Component {
             <View className="phone">{userInfo.phone}</View>
           </View>
         </View> :
-        <Button open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className="user-contianer user-button">
+        <Button open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className="user-contianer no-button-style">
           <Image className="head-portrait" mode="aspectFill" src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
           <View className="username">
             <View>登录/注册</View>
@@ -186,6 +189,8 @@ export default class Mine extends Component {
           moduleList.map((ele) => {
             return (
               <View className="module-item" key={ele.name} onClick={() => {
+                console.log(ele)
+                return
                 if (ele.skipUrl) {
                   Taro.navigateTo({
                     url: ele.skipUrl
@@ -213,8 +218,14 @@ export default class Mine extends Component {
     return (
       <View className='mine-wrapper'>
         {this.renderHeader()}
-        {userInfo.phone ? this.renderOrder() : null}
-        {userInfo.phone ? this.renderListModule(this.mineList1) : null}
+        {
+          userInfo.phone ? 
+          this.renderOrder() :
+          <Button className="no-button-style" open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)}>
+            { this.renderOrder() }
+          </Button>
+        }
+          {this.renderListModule(this.mineList1)}
         {this.renderListModule(this.mineList2)}
       </View>
     )

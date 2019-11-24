@@ -281,7 +281,7 @@ export default class OrderEdit extends Component {
         <View className="footer-contianer">
           <View className="total-price">
             <Text>合计：</Text>
-            <Text className="price">￥91.5</Text>
+            <Text className="price">￥{orderDetail.realPayPrice}</Text>
           </View>
           <AtButton full onClick={this.submitOrder.bind(this)}>立即下单</AtButton>
         </View>

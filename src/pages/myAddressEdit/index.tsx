@@ -92,7 +92,7 @@ export default class MyAddrEdit extends Component {
 
   render() {
     let { addressInfo } = this.state;
-    let fullAddress: String = `${addressInfo.provinceName} ${addressInfo.cityName} ${addressInfo.countyName}`;
+    let fullAddress: string = `${addressInfo.provinceName} ${addressInfo.cityName} ${addressInfo.countyName}`;
     return (
       <View className="my-address-edit-wrapper">
         <AtForm >
@@ -103,9 +103,9 @@ export default class MyAddrEdit extends Component {
             placeholder='请填写'
             value={addressInfo.linkName}
             onChange={(val: String) => {
-              this.setState({
-                addressInfo: { ...addressInfo, linkName: val }
-              })
+              this.setState((preState: any) => ({
+                addressInfo: { ...preState.addressInfo, linkName: val }
+              }))
             }}
           />
           <AtInput
@@ -115,9 +115,9 @@ export default class MyAddrEdit extends Component {
             placeholder='请填写'
             value={addressInfo.phone}
             onChange={(val: Number) => {
-              this.setState({
-                addressInfo: { ...addressInfo, linkNaphoneme: val }
-              })
+              this.setState((preState: any) => ({
+                addressInfo: { ...preState.addressInfo, phone: val }
+              }))
             }}
           />
           <Picker mode='region' onChange={(res) => {
@@ -147,10 +147,10 @@ export default class MyAddrEdit extends Component {
             type='text'
             placeholder='请填写'
             value={addressInfo.address}
-            onChange={(val) => {
-              this.setState({
-                addressInfo: { ...addressInfo, address: val }
-              })
+            onChange={(val: string) => {
+              this.setState((preState: any) => ({
+                addressInfo: { ...preState.addressInfo, address: val }
+              }))
             }}
           />
         </AtForm>

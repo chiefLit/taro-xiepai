@@ -226,7 +226,7 @@ export default class productWash extends Component {
       this.props.addOrderToCashier(data.object)
       this.initData()
       // 添加成功
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: `/pages/orderEdit/index?serviceItemIds=${serviceItemIds}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
       })
     }

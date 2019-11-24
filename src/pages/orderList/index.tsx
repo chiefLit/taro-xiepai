@@ -25,6 +25,7 @@ export default class OrderList extends Component {
   state = {
     current: 0,
     page0: {
+      index: 0,
       isActive: false,
       params: {
         status: 0,
@@ -35,6 +36,7 @@ export default class OrderList extends Component {
       pageInfo: {}
     },
     page1: {
+      index: 1,
       isActive: false,
       params: {
         status: 0,
@@ -45,6 +47,7 @@ export default class OrderList extends Component {
       pageInfo: {}
     },
     page2: {
+      index: 2,
       isActive: false,
       params: {
         status: 0,
@@ -56,7 +59,7 @@ export default class OrderList extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidShow() {
     let params: any = this.$router.params
     if (params.index) {
       this.setState({
@@ -68,14 +71,6 @@ export default class OrderList extends Component {
     }
   }
 
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
   /**
    * 
    * @param page 当前页对象
@@ -83,7 +78,7 @@ export default class OrderList extends Component {
    * @param callBack 回调
    */
   async pullData(page: any, index: Number, callBack: any) {
-    let data = await getOrderList(page.params)
+    let data: any = await getOrderList(page.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,

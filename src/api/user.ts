@@ -38,7 +38,7 @@ export async function login(data) {
     if (loginRes.code !== 1) {
       resolve({ code: 0, message: loginRes.message })
     } else {
-      if (loginRes.object.accessToken) {
+      if (loginRes.object && loginRes.object.accessToken) {
         storage.setStorage(STORAGE_NAME.token, loginRes.object.accessToken)
         resolve({ code: 1 })
       } else {

@@ -39,12 +39,12 @@ export default class Cart extends Component {
     isSelectAll: false
   }
 
-  componentWillMount() {
+  componentDidShow() {
     this.pullData()
   }
 
   async pullData() {
-    let data = await getCartList(null);
+    let data: any = await getCartList(null);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
