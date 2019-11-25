@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
-import { getMine, improvePhone, checkLogin } from '../../api/user'
+import { getMine, improvePhone, checkPhoneLogin } from '../../api/user'
 import { storeInfo, STORAGE_NAME } from '../../config'
 import storage from '../../utils/storage'
 import PopupAuthorization from '../../components/PopupAuthorization'
@@ -133,11 +133,9 @@ export default class Mine extends Component {
   }
 
   async handleEvents(url) {
-    // console.log(2123)
-    const isLogin: boolean = await checkLogin();
+    const isLogin: boolean = await checkPhoneLogin();
     if (isLogin) {
       url && Taro.navigateTo({url})
-      // callBack && callBack()
     } else {
       this.handlePopupAuthorization(true)
     }

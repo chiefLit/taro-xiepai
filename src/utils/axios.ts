@@ -55,7 +55,7 @@ axios.interceptors.response.use(
   async response => {
     if (response.status === 402 || response.status === 401) {
       await logout()
-      Taro.switchTab({ url: '/pages/mine/index' })
+      // Taro.switchTab({ url: '/pages/mine/index' })
       return
     }
     if (response.status === 200 || response.status === 304) {

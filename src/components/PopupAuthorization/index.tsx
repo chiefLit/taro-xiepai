@@ -2,9 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import './index.less'
 
-import { getMine, improvePhone } from '../../api/user'
-import storage from '../../utils/storage'
-import {STORAGE_NAME} from '../../config'
+import { getUserInfo, improvePhone } from '../../api/user'
 
 export default class PopupAuthorization extends Component {
 
@@ -37,20 +35,7 @@ export default class PopupAuthorization extends Component {
       })
       this.cancel()
     } else {
-      this.pullData()
-    }
-  }
-
-  async pullData() {
-    let data: any = await getMine(null)
-    if (data.code !== 1) {
-      Taro.showToast({
-        title: data.message,
-        icon: 'none'
-      })
-      this.cancel()
-    } else {
-      storage.setStorage(STORAGE_NAME.userInfo, data.object)
+      await getUserInfo()
       this.cancel()
     }
   }

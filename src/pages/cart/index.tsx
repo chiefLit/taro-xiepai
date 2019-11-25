@@ -15,7 +15,7 @@ import PopupAuthorization from '../../components/PopupAuthorization'
 
 
 // import { getIndex } from '../../api/common'
-import { checkLogin } from '../../api/user'
+import { checkPhoneLogin } from '../../api/user'
 
 @connect(
   state => state,
@@ -148,7 +148,7 @@ export default class Cart extends Component {
         <Image src={noDataImage}></Image>
         <View className="value">还没有任何优惠劵呢</View>
         <AtButton type="primary" size="small" circle onClick={async () => {
-          const isLogin: boolean = await checkLogin()
+          const isLogin: boolean = await checkPhoneLogin()
           if (isLogin) {
             Taro.navigateTo({
               url: '/pages/productWash/index'

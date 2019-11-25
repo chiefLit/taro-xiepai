@@ -8,7 +8,7 @@ import PopupAuthorization from '../../components/PopupAuthorization'
 
 
 import { getIndex } from '../../api/common'
-import { checkLogin } from '../../api/user'
+import { checkPhoneLogin } from '../../api/user'
 
 
 export default class Home extends Component {
@@ -162,7 +162,7 @@ export default class Home extends Component {
               this.dailyServices.map((ele) => {
                 return (
                   <View className="daily-item" key={ele.name} onClick={async () => {
-                    const res = await checkLogin();
+                    const res = await checkPhoneLogin();
                     if (res) {
                       Taro.navigateTo({
                         url: ele.url

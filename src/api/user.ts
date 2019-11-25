@@ -1,5 +1,5 @@
 import axios from '../utils/axios'
-// import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { STORAGE_NAME } from '../config'
 import storage from '../utils/storage'
 
@@ -29,7 +29,7 @@ export function improveInfo(data) {
 export async function login(data) {
   const config = {
     method: 'post',
-    url: '/api/wxmp/user/login?wxCode=0211yWHT1Hicp41heJIT10uJHT11yWHe',
+    url: '/api/wxmp/user/login',
     // mockData: require('../../mock/login.json'),
     data: data
   }
@@ -48,9 +48,9 @@ export async function login(data) {
   }).catch((e) => { })
 }
 
-// 判断登录
-export async function checkLogin() {
-  let userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null)
+// 判断手机号登录
+export async function checkPhoneLogin() {
+  const userInfo: any = await getUserInfo()
   if (userInfo && userInfo.phone) {
     return true
   } else {
@@ -65,6 +65,35 @@ export async function logout() {
     storage.removeStorage(STORAGE_NAME.token)
     resolve()
   })
+}
+
+// 获取用户信息
+export async function getUserInfo() {
+  const token = storage.getStorage(STORAGE_NAME.token, null)
+  const userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null);
+  if (token) {
+    if (userInfo && userInfo.id) {
+      return userInfo
+    } else {
+      const userData: any = await getMine()
+      if (userData.code === 1) {
+        storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+        return userData.object
+      } else {
+        return null
+      }
+    }
+  } else {
+    const wxRes: any = await Taro.login();
+    await login({ wxCode: wxRes.code })
+    const userData: any = await getMine()
+    if (userData.code === 1) {
+      storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+      return userData.object
+    } else {
+      return null
+    }
+  }
 }
 
 // 我-我的地址-列表
@@ -101,12 +130,20 @@ export function editAddress(data) {
 }
 
 // 我的
-export function getMine(data) {
+export async function getMine() {
   const config = {
     method: 'post',
     url: '/api/wxmp/user/home',
     // mockData: require('../../mock/getMine.json'),
-    data: data
+    data: null
   }
-  return axios(config);
+  
+  const userData: any = await axios(config)
+  if (userData && userData.code === 1) {
+    storage.setStorage(STORAGE_NAME.userInfo, userData.object)
+  }
+
+  return new Promise((resolve) => {
+    resolve(userData)
+  })
 }

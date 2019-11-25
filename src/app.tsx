@@ -9,9 +9,7 @@ import './app.scss'
 
 import Home from './pages/home/index'
 import configStore from './store'
-import { login, getMine } from './api/user'
-import { STORAGE_NAME } from './config'
-import storage from './utils/storage'
+import { checkPhoneLogin } from './api/user'
 
 const store = configStore()
 
@@ -88,45 +86,8 @@ class App extends Component {
     }
   }
 
-  // async componentWillMount() {
-  //   this.checkLogin()
-  // }
-
-  async checkLogin() {
-    const token = storage.getStorage(STORAGE_NAME.token, null)
-    if (!token) {
-      // 获取微信code
-      const wxRes: any = await Taro.login();
-      if (!wxRes.code) return
-      // 登录
-      let data: any = await login({ wxCode: wxRes.code })
-      if (data.code !== 1) {
-        Taro.showToast({
-          title: data.message,
-          icon: 'none'
-        })
-      } else {
-        this.getUserInfo()
-      }
-    } else {
-      this.getUserInfo()
-    }
-  }
-
-  async getUserInfo() {
-    let data: any = await getMine(null)
-    if (data.code !== 1) {
-      Taro.showToast({
-        title: data.message,
-        icon: 'none'
-      })
-    } else {
-      storage.setStorage(STORAGE_NAME.userInfo, data.object)
-    }
-  }
-
-  componentDidShow() {
-    this.checkLogin()
+  async componentDidShow() {
+    await checkPhoneLogin()
   }
 
   componentDidHide() { }
