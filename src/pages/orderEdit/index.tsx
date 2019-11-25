@@ -99,14 +99,21 @@ export default class OrderEdit extends Component {
   }
 
   componentDidShow() {
-    this.setState({
-      userAddressVo: this.props.selectedAddress.data
-    })
-    this.props.deleteSelectedAddress()
+    const selectedAddressData = this.props.selectedAddress.data
+    const selectedCouponData = this.props.selectedCoupon.data
 
-    let selectedCoupon: any = this.props.selectedCoupon.data
-    selectedCoupon.id && this.calcCoupon(selectedCoupon.id)
-    this.props.deleteSelectedCoupon()
+    if (selectedAddressData) {
+      this.setState({
+        userAddressVo: selectedAddressData
+      })
+      this.props.deleteSelectedAddress()
+    }
+    
+    if (selectedCouponData) {
+      let selectedCoupon: any = selectedCouponData
+      selectedCoupon.id && this.calcCoupon(selectedCoupon.id)
+      this.props.deleteSelectedCoupon()
+    }
   }
 
   async calcCoupon(couponId: any) {
