@@ -55,7 +55,7 @@ export default class Mine extends Component {
   }
 
   async pullData() {
-    let data: any = await getMine(null)
+    let data: any = await getMine()
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,

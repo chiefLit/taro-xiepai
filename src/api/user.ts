@@ -71,12 +71,12 @@ export async function logout() {
 export async function getUserInfo() {
   const token = storage.getStorage(STORAGE_NAME.token, null)
   const userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null);
-  if (token) {
+  if (token && token.length) {
     if (userInfo && userInfo.id) {
       return userInfo
     } else {
       const userData: any = await getMine()
-      if (userData.code === 1) {
+      if (userData && userData.code === 1) {
         storage.setStorage(STORAGE_NAME.userInfo, userData.object);
         return userData.object
       } else {
@@ -87,7 +87,7 @@ export async function getUserInfo() {
     const wxRes: any = await Taro.login();
     await login({ wxCode: wxRes.code })
     const userData: any = await getMine()
-    if (userData.code === 1) {
+    if (userData && userData.code === 1) {
       storage.setStorage(STORAGE_NAME.userInfo, userData.object);
       return userData.object
     } else {
@@ -137,13 +137,6 @@ export async function getMine() {
     // mockData: require('../../mock/getMine.json'),
     data: null
   }
-  
-  const userData: any = await axios(config)
-  if (userData && userData.code === 1) {
-    storage.setStorage(STORAGE_NAME.userInfo, userData.object)
-  }
 
-  return new Promise((resolve) => {
-    resolve(userData)
-  })
+  return axios(config)
 }

@@ -9,7 +9,7 @@ import './app.scss'
 
 import Home from './pages/home/index'
 import configStore from './store'
-import { checkPhoneLogin } from './api/user'
+import { getUserInfo } from './api/user'
 
 const store = configStore()
 
@@ -86,8 +86,8 @@ class App extends Component {
     }
   }
 
-  async componentDidShow() {
-    await checkPhoneLogin()
+  async componentWillMount() {
+    await getUserInfo()
   }
 
   componentDidHide() { }
