@@ -52,14 +52,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   async response => {
     if (response.status === 200 || response.status === 304) {
-      // const res = response.data;
-      // if (res.code === 401 || res.code === 402) {
-      //   await logout()
-      //   Taro.switchTab({ url: '/pages/home/index' })
-      //   // return response.data;
-      // } else {
+      const res = response.data;
+      if (res.code === 401 || res.code === 402) {
+        await logout()
+        // Taro.switchTab({ url: '/pages/home/index' })
+        // return response.data;
+      } else {
         return response.data;
-      // }
+      }
     } else {
       return {
         code: 0,

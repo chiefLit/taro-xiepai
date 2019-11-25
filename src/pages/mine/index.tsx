@@ -148,7 +148,7 @@ export default class Mine extends Component {
         <View className="user-contianer">
           <Image className="head-portrait" mode="aspectFill" src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
           <View className="username">
-            <View>{userInfo.nickName}</View>
+            {/* <View>{userInfo.nickName}</View> */}
             <View className="phone">{userInfo.phone}</View>
           </View>
         </View> :

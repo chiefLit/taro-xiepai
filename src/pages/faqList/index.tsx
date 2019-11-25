@@ -57,6 +57,7 @@ export default class FaqList extends Component {
           faqList.map((ele: any, index) => {
             return (
               <AtAccordion
+                isAnimation={false}
                 open={ele.open}
                 onClick={() => {
                   this.setState((preState: any) => {

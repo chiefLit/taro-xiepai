@@ -40,13 +40,15 @@ export default class OrderEdit extends Component {
     orderDetail: {
       userId: null,
       cashierSubVoList: [],
-      totalPrice: "",
+      totalPrice: 0,
       couponId: "",
-      couponDiscountAmount: "",
-      totalDiscountAmount: "",
-      realPayPrice: ""
+      couponDiscountAmount: 0,
+      totalDiscountAmount: 0,
+      realPayPrice: 0
     },
-    userAddressVo: {}
+    userAddressVo: {
+      id: null
+    }
   }
 
   // 来自洗鞋的参数
@@ -207,7 +209,7 @@ export default class OrderEdit extends Component {
 
         <View className="dist-mode">
           <View className="mode-left">
-            <View className="line1">配送方式</View>
+            <View className="line1">送鞋方式</View>
             <View className="line2">请在支付后寄出鞋子，并补全快递信息</View>
           </View>
           <View className="mode-right">
@@ -239,7 +241,7 @@ export default class OrderEdit extends Component {
                         }
                       </View>
                     </View>
-                    <View className="product-price">￥ {ele.totalPrice}</View>
+                    <View className="product-price">￥{ele.totalPrice.toFixed(2)}</View>
                   </View>
                 )
               })
@@ -265,7 +267,7 @@ export default class OrderEdit extends Component {
         <View className="order-price">
           <View className="module-list">
             <View className="key">商品总额</View>
-            <View className="value">￥ {orderDetail.totalPrice}</View>
+            <View className="value">￥{orderDetail.totalPrice.toFixed(2)}</View>
           </View>
           {/* <View className="module-list">
             <View className="key">运费</View>
@@ -277,18 +279,18 @@ export default class OrderEdit extends Component {
             })
           }}>
             <View className="key">优惠券</View>
-            <View className="value">-￥ {orderDetail.couponDiscountAmount}</View>
+            <View className="value">-￥{orderDetail.couponDiscountAmount.toFixed(2)}</View>
           </View>
           <View className="module-list">
             <View className="key">实际支付</View>
-            <View className="value red">￥ {orderDetail.realPayPrice}</View>
+            <View className="value red">￥{orderDetail.realPayPrice.toFixed(2)}</View>
           </View>
         </View>
         <View className="footer-cover"></View>
         <View className="footer-contianer">
           <View className="total-price">
             <Text>合计：</Text>
-            <Text className="price">￥{orderDetail.realPayPrice}</Text>
+            <Text className="price">￥{orderDetail.realPayPrice.toFixed(2)}</Text>
           </View>
           <AtButton full onClick={this.submitOrder.bind(this)}>立即下单</AtButton>
         </View>

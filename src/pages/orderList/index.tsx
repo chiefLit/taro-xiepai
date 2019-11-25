@@ -189,7 +189,7 @@ export default class OrderList extends Component {
                     }
                   </View>
                 </View>
-                <View className="order-price">￥ {item.realPayPrice}</View>
+                <View className="order-price">￥{item.realPayPrice.tofixed(2)}</View>
               </View>
             })
           }

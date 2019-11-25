@@ -26,14 +26,17 @@ export default class Aboutus extends Component {
           <View className="title">{storeInfo.storeName}</View>
           <View className="content">
             <Text>{storeInfo.provinceName} {storeInfo.cityName} {storeInfo.countyName} {storeInfo.address}</Text>
-            <Text>联系方式:{storeInfo.phone}</Text>
+            <View>联系方式: <Text className="phone" onClick={() => {
+              Taro.makePhoneCall({
+                phoneNumber: String(storeInfo.phone)
+              })
+            }}>{storeInfo.phone}</Text></View>
           </View>
         </View>
         <View className="footer-contianer">
           {/* <View> */}
           <Text>杭州丝内刻科技有限公司</Text>
           <Text>享有本服务最终解释权</Text>
-
           {/* </View> */}
         </View>
       </View>

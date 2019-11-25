@@ -119,7 +119,7 @@ export default class Cart extends Component {
     list.map((ele: any) => {
       sum += ele.totalPrice
     })
-    return sum
+    return sum.toFixed(2)
   }
 
   // 结算
@@ -200,7 +200,7 @@ export default class Cart extends Component {
                 })
               }
             </View>
-            <View className="info-price">￥{ele.totalPrice}</View>
+            <View className="info-price">￥{ele.totalPrice.toFixed(2)}</View>
           </View>
         </View>
       </AtSwipeAction>
@@ -236,7 +236,7 @@ export default class Cart extends Component {
                   <View className={isSelectAll ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
                   <Text>全选</Text>
                 </View>
-                <View className="sum-price">合计：<Text>￥ {this.calcTotalPrice(selectedList)}</Text></View>
+                <View className="sum-price">合计：<Text>￥{this.calcTotalPrice(selectedList)}</Text></View>
                 <AtButton disabled={!selectedList.length} full onClick={this.settlement.bind(this)}>结算</AtButton>
               </View>
             </View> :
