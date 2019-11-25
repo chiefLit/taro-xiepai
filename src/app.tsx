@@ -9,7 +9,7 @@ import './app.scss'
 
 import Home from './pages/home/index'
 import configStore from './store'
-import { login } from './api/user'
+import { login, getMine } from './api/user'
 import { STORAGE_NAME } from './config'
 import storage from './utils/storage'
 
@@ -88,9 +88,11 @@ class App extends Component {
     }
   }
 
+  // async componentWillMount() {
+  //   this.checkLogin()
+  // }
 
-
-  async componentWillMount() {
+  async checkLogin() {
     const token = storage.getStorage(STORAGE_NAME.token, null)
     if (!token) {
       // 获取微信code
@@ -103,17 +105,33 @@ class App extends Component {
           title: data.message,
           icon: 'none'
         })
+      } else {
+        this.getUserInfo()
       }
+    } else {
+      this.getUserInfo()
     }
   }
 
-  componentDidShow() { }
+  async getUserInfo() {
+    let data: any = await getMine(null)
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      storage.setStorage(STORAGE_NAME.userInfo, data.object)
+    }
+  }
+
+  componentDidShow() {
+    this.checkLogin()
+  }
 
   componentDidHide() { }
 
   componentDidCatchError() { }
-
-
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数

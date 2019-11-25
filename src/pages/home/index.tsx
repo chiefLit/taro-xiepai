@@ -4,8 +4,11 @@ import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
 import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
+import PopupAuthorization from '../../components/PopupAuthorization'
+
 
 import { getIndex } from '../../api/common'
+import {checkLogin} from '../../api/user'
 
 
 export default class Home extends Component {
@@ -30,7 +33,8 @@ export default class Home extends Component {
     articleList: [],
     bannerList: [],
     couponList: [],
-    faqList: []
+    faqList: [],
+    showPopupAuthorization: false
   }
 
   componentWillMount() {
@@ -53,18 +57,6 @@ export default class Home extends Component {
         faqList: data.object.faqList || []
       })
     }
-  }
-
-  checkLogin() {
-    Taro.checkSession({
-      success() {
-        //session_key 未过期，并且在本生命周期一直有效
-      },
-      fail() {
-        // session_key 已经失效，需要重新执行登录流程
-        Taro.login() //重新登录
-      }
-    })
   }
 
   dailyServices = [
@@ -113,8 +105,14 @@ export default class Home extends Component {
     );
   }
 
+  handlePopupAuthorization(state: boolean) {
+    this.setState({
+      showPopupAuthorization: state
+    })
+  }
+
   render() {
-    let { articleList, bannerIndex, faqList } = this.state;
+    let { articleList, bannerIndex, faqList, showPopupAuthorization } = this.state;
     return (
       <View className='home-wrapper'>
         {/* swiper */}
@@ -163,10 +161,15 @@ export default class Home extends Component {
             {
               this.dailyServices.map((ele) => {
                 return (
-                  <View className="daily-item" key={ele.name} onClick={() => {
-                    Taro.navigateTo({
-                      url: ele.url
-                    })
+                  <View className="daily-item" key={ele.name} onClick={async () => {
+                    const res = await checkLogin();
+                    if (res) {
+                      Taro.navigateTo({
+                        url: ele.url
+                      })
+                    } else {
+                      this.handlePopupAuthorization(true)
+                    }
                   }}>
                     <View className="name">{ele.name}</View>
                     <View className="price">￥ <Text>{ele.price}</Text></View>
@@ -181,7 +184,7 @@ export default class Home extends Component {
         {/* 服务价目 */}
         <View className="module-contianer">
           <View className="module-title" onClick={this.props.add}>
-          <Text className="line1">服务价格{this.props.counter.num}</Text>
+            <Text className="line1">服务价格{this.props.counter.num}</Text>
             <Text className="line2">SERVICE PRICE</Text>
             <View className="title-right-btn" onClick={() => {
               Taro.navigateTo({
@@ -232,6 +235,9 @@ export default class Home extends Component {
         </View>
         {/* 常见问题 */}
         {faqList && faqList.length ? this.renderFaq() : null}
+        {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
+          this.handlePopupAuthorization(res)
+        }} /> : null}
       </View>
     )
   }

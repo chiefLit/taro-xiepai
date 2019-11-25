@@ -48,6 +48,16 @@ export async function login(data) {
   }).catch((e) => { })
 }
 
+// 判断登录
+export async function checkLogin() {
+  let userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null)
+  if (userInfo && userInfo.phone) {
+    return true
+  } else {
+    return false
+  }
+}
+
 // 登出
 export async function logout() {
   return new Promise(async resolve => {

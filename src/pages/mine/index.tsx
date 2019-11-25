@@ -2,9 +2,10 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
-import { getMine, improvePhone } from '../../api/user'
+import { getMine, improvePhone, checkLogin } from '../../api/user'
 import { storeInfo, STORAGE_NAME } from '../../config'
 import storage from '../../utils/storage'
+import PopupAuthorization from '../../components/PopupAuthorization'
 
 import './index.less'
 
@@ -40,7 +41,8 @@ export default class Mine extends Component {
       { iconClassName: 'iconfont icondaizhifu', name: '待支付', amount: 0 },
       { iconClassName: 'iconfont iconjinhangzhong', name: '进行中', amount: 0 },
       { iconClassName: 'iconfont iconyiwancheng', name: '已完成', amount: 0 },
-    ]
+    ],
+    showPopupAuthorization: false
   }
 
   componentWillMount() {
@@ -124,6 +126,23 @@ export default class Mine extends Component {
     },
   ]
 
+  handlePopupAuthorization(state: boolean) {
+    this.setState({
+      showPopupAuthorization: state
+    })
+  }
+
+  async handleEvents(url) {
+    // console.log(2123)
+    const isLogin: boolean = await checkLogin();
+    if (isLogin) {
+      url && Taro.navigateTo({url})
+      // callBack && callBack()
+    } else {
+      this.handlePopupAuthorization(true)
+    }
+  }
+
   renderHeader() {
     const { userInfo } = this.state
     return (
@@ -151,9 +170,7 @@ export default class Mine extends Component {
         <View className="order-header">
           <View className="title">我的订单</View>
           <View className="header-right-btn" onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/orderList/index'
-            })
+            this.handleEvents('/pages/orderList/index')
           }}>
             <Text>查看全部</Text>
             <View className='at-icon at-icon-chevron-right'></View>
@@ -163,11 +180,9 @@ export default class Mine extends Component {
           {
             orderContentList.map((ele, index) => {
               return (
-                <View className="list-item" onClick={() => {
-                  Taro.navigateTo({
-                    url: `/pages/orderList/index?index=${index}`
-                  })
-                }} key={ele.name}>
+                <View className="list-item" key={ele.name} onClick={() => {
+                  this.handleEvents(`/pages/orderList/index?index=${index}`)
+                }} >
                   <View className={ele.iconClassName}>
                     {ele.amount ? <View className="spot">{ele.amount}</View> : null}
                   </View>
@@ -189,8 +204,6 @@ export default class Mine extends Component {
           moduleList.map((ele) => {
             return (
               <View className="module-item" key={ele.name} onClick={() => {
-                console.log(ele)
-                return
                 if (ele.skipUrl) {
                   Taro.navigateTo({
                     url: ele.skipUrl
@@ -214,19 +227,39 @@ export default class Mine extends Component {
   }
 
   render() {
-    let { userInfo } = this.state;
+    let { userInfo, showPopupAuthorization } = this.state;
     return (
       <View className='mine-wrapper'>
         {this.renderHeader()}
         {
-          userInfo.phone ? 
-          this.renderOrder() :
-          <Button className="no-button-style" open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)}>
-            { this.renderOrder() }
-          </Button>
+          userInfo.phone ?
+            this.renderOrder() :
+            <Button className="no-button-style" open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)}>
+              {this.renderOrder()}
+            </Button>
         }
-          {this.renderListModule(this.mineList1)}
+
+        <View className="list-module">
+          {
+            this.mineList1.map((ele: any) => {
+              return (
+                <View className="module-item" key={ele.name} onClick={() => {
+                  this.handleEvents(ele.skipUrl)
+                }}>
+                  <View className={ele.iconClassName}></View>
+                  <View className="name">{ele.name}</View>
+                  <View className="right-value" style={{ color: ele.color }}>{ele.isCoupon ? `${userInfo.couponCount}张` : ele.value}</View>
+                  <View className='at-icon at-icon-chevron-right'></View>
+                </View>
+              )
+            })
+          }
+        </View>
+        {/* {this.renderListModule(this.mineList1)} */}
         {this.renderListModule(this.mineList2)}
+        {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
+          this.handlePopupAuthorization(res)
+        }} /> : null}
       </View>
     )
   }
