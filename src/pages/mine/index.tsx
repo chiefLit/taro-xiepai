@@ -45,8 +45,8 @@ export default class Mine extends Component {
     showPopupAuthorization: false
   }
 
-  componentWillMount() {
-    const userInfo: any = storage.getStorage(STORAGE_NAME.userinfo, null)
+  componentDidShow() {
+    const userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null)
     if (userInfo && userInfo.id) {
       this.setState({ userInfo })
     }
