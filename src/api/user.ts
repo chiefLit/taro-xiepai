@@ -68,11 +68,11 @@ export async function logout() {
 }
 
 // 获取用户信息
-export async function getUserInfo() {
+export async function getUserInfo(isForce: boolean) {
   const token = storage.getStorage(STORAGE_NAME.token, null)
   const userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null);
   if (token && token.length) {
-    if (userInfo && userInfo.id) {
+    if (userInfo && userInfo.id && !isForce) {
       return userInfo
     } else {
       const userData: any = await getMine()
@@ -138,5 +138,9 @@ export async function getMine() {
     data: null
   }
 
-  return axios(config)
+  const userData: any = await axios(config)
+  return new Promise((resolve) => {
+    storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+    resolve(userData)
+  })
 }

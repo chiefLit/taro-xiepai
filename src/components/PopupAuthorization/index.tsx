@@ -35,7 +35,7 @@ export default class PopupAuthorization extends Component {
       })
       this.cancel()
     } else {
-      await getUserInfo()
+      await getUserInfo(true)
       this.cancel()
     }
   }

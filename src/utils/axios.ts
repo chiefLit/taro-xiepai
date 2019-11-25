@@ -1,5 +1,5 @@
 // 服务接口层封装
-// import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { axios } from 'taro-axios';
 import { logout } from '../api/user'
 import storage from '../utils/storage'
