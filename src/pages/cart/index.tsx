@@ -11,6 +11,12 @@ import noDataImage from '../../assets/images/no-data-cart.png'
 import { connect } from '@tarojs/redux'
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
 
+import PopupAuthorization from '../../components/PopupAuthorization'
+
+
+// import { getIndex } from '../../api/common'
+import { checkLogin } from '../../api/user'
+
 @connect(
   state => state,
   { addOrderToCashier }
@@ -36,7 +42,8 @@ export default class Cart extends Component {
   state = {
     cartList: [],
     selectedList: [],
-    isSelectAll: false
+    isSelectAll: false,
+    showPopupAuthorization: false
   }
 
   componentDidShow() {
@@ -62,9 +69,9 @@ export default class Cart extends Component {
     Taro.showModal({
       // title: '提示',
       content: '确定删除？',
-      success: async (res) => {
+      success: async (res: any) => {
         if (res.confirm) {
-          let data = await deleteCart({ id })
+          let data: any = await deleteCart({ id })
           if (data.code !== 1) {
             Taro.showToast({
               title: data.message,
@@ -140,13 +147,24 @@ export default class Cart extends Component {
       <View className="no-data-contianer">
         <Image src={noDataImage}></Image>
         <View className="value">还没有任何优惠劵呢</View>
-        <AtButton type="primary" size="small" circle onClick={() => {
-          Taro.navigateTo({
-            url: '/pages/productWash/index'
-          })
+        <AtButton type="primary" size="small" circle onClick={async () => {
+          const isLogin: boolean = await checkLogin()
+          if (isLogin) {
+            Taro.navigateTo({
+              url: '/pages/productWash/index'
+            })
+          } else {
+            this.handlePopupAuthorization(true)
+          }
         }}>立即下单</AtButton>
       </View>
     )
+  }
+
+  handlePopupAuthorization(state: boolean) {
+    this.setState({
+      showPopupAuthorization: state
+    })
   }
 
   renderCartItem(ele: any, index: Number) {
@@ -190,7 +208,7 @@ export default class Cart extends Component {
   }
 
   render() {
-    let { cartList, selectedList, isSelectAll } = this.state;
+    let { cartList, selectedList, isSelectAll, showPopupAuthorization } = this.state;
     return (
       <View className='cart-wrapper'>
         {
@@ -224,6 +242,9 @@ export default class Cart extends Component {
             </View> :
             this.renderNoData()
         }
+        {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
+          this.handlePopupAuthorization(res)
+        }} /> : null}
       </View>
     )
   }

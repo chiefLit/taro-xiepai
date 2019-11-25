@@ -8,7 +8,7 @@ import PopupAuthorization from '../../components/PopupAuthorization'
 
 
 import { getIndex } from '../../api/common'
-import {checkLogin} from '../../api/user'
+import { checkLogin } from '../../api/user'
 
 
 export default class Home extends Component {
