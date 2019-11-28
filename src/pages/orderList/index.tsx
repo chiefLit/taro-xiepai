@@ -207,11 +207,11 @@ export default class OrderList extends Component {
       <View className="no-data-contianer">
         <Image src={noDataImage}></Image>
         <View className="value">暂无相关订单</View>
-        <AtButton type="primary" circle size="small" onClick={() => {
+        {/* <AtButton type="primary" circle size="small" onClick={() => {
           Taro.navigateTo({
             url: '/pages/productWash/index'
           })
-        }}>立即下单</AtButton>
+        }}>立即下单</AtButton> */}
       </View>
     )
   }

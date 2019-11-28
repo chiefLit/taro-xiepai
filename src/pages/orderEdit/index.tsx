@@ -161,7 +161,7 @@ export default class OrderEdit extends Component {
     params.couponId = this.state.orderDetail.couponId
     params.toUserAddressId = this.state.userAddressVo.id
     params.deliverMode = 1
-    console.log(params)
+    // console.log(params)
     let data: any;
     if (this.formCartParams.cartIds.length) {
       data = await toOrderByCart(params)
@@ -191,7 +191,7 @@ export default class OrderEdit extends Component {
           })
         }}>
           {/* <View className="iconfont icondizhiguanli"></View> */}
-          <View className='at-icon at-icon-add'></View>
+          <View className='at-icon at-icon-add-circle'></View>
           <View className="content">
             {
               !userAddressVo || !userAddressVo.id ?

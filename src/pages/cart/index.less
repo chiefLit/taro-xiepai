@@ -1,5 +1,21 @@
 .cart-wrapper {
-  .scroll-view {
+  // .scroll-view {
+  //   margin: 0rpx 32rpx 32rpx 32rpx;
+  //   border-radius: 21rpx;
+  //   min-height: 233rpx;
+  //   width: 686rpx;
+  //   &:first-child{
+  //     margin-top: 32rpx;
+  //   }
+  // }
+  .cart-item {
+    width: 686rpx;
+    min-height: 233rpx;
+    background: #fff;
+    // display: flex;
+    position: relative;
+    padding: 32rpx;
+
     margin: 0rpx 32rpx 32rpx 32rpx;
     border-radius: 21rpx;
     min-height: 233rpx;
@@ -8,14 +24,34 @@
       margin-top: 32rpx;
     }
   }
-  .cart-item {
-    width: 686rpx;
-    min-height: 233rpx;
-    background: #fff;
+
+  .item-header {
+    width: 100%;
     display: flex;
-    position: relative;
-    padding: 53rpx 32rpx 30rpx 32rpx;
+    justify-content: space-between;
+    margin-bottom: 32rpx;
+    .info-name {
+      font-size: 30rpx;
+      line-height: 40rpx;
+      color: #000;
+      // padding-bottom: 24rpx;
+    }
+    .info-right {
+      float: right;
+      font-size: 20rpx;
+      border: 1rpx solid #666;
+      border-radius: 8rpx;
+      padding: 0 11rpx;
+      line-height: 39rpx;
+      height: 39rpx;
+      color: #666;
+    }
   }
+
+  .item-content {
+    display: flex;
+  }
+
   .iconfont {
     font-size: 37rpx;
     color: #D8D9D9;
@@ -25,6 +61,10 @@
       color: #302727;
     }
   }
+  .icon-box {
+    align-self: center;
+  }
+
   .image-box {
     width: 133rpx;
     height: 133rpx;
@@ -42,16 +82,6 @@
       line-height: 1;
       color: #000;
       padding-bottom: 24rpx;
-      .info-right {
-        float: right;
-        font-size: 20rpx;
-        border: 1rpx solid #666;
-        border-radius: 8rpx;
-        padding: 0 11rpx;
-        line-height: 39rpx;
-        height: 39rpx;
-        color: #666;
-      }
     }
     .info-labels {
       display: flex;
@@ -68,6 +98,13 @@
         margin-bottom: 16rpx;
       }
     }
+  }
+  .delete-btn {
+    align-self: center;
+    font-size: 26rpx;
+    color: #EB0200;
+    line-height: 40rpx;
+    padding-left: 10rpx;
   }
   .info-price {
     font-weight: bold;

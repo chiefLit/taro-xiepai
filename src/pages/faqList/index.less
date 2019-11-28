@@ -2,6 +2,8 @@
   background: #fff;
 
   .at-accordion__header {
+    height: 96rpx;
+
     &::after {
       border-color: #fff;
     }
@@ -16,8 +18,14 @@
   .content {
     color: #999;
     font-size: 26rpx;
-    line-height: 40rpx;
-    padding: 22rpx 30rpx;
+    line-height: 36rpx;
+    padding: 16rpx 30rpx;
+  }
+
+  .at-accordion__arrow {
+    .at-icon {
+      font-size: 30rpx;
+    }
   }
 
   .at-accordion__content {
@@ -30,5 +38,6 @@
       -ms-transform: scale(0.2);
       transform: scale(0.2);
     }
+
   }
 }

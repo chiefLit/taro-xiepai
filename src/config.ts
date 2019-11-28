@@ -34,7 +34,7 @@ export const orderStatusToValue = (status: any, type: Number) => {
 // 默认店铺信息
 export const storeInfo: any = {
   storeName: '鞋π(三宝文化店)',
-  phone: 18758255201,
+  phone: '186 6822 3132',
   provinceName: "浙江省",
   cityName: "杭州市",
   countyName: "下城区",
@@ -42,11 +42,11 @@ export const storeInfo: any = {
 }
 
 // 客服电话
-export const customerServicePhone: Number = 18668223132
+export const customerServicePhone = '186 6822 3132'
 
 export const DEFAULT_CONFIG = {
   // 客服电话
-  customerServicePhone: 18668223132,
+  customerServicePhone: '186 6822 3132',
   // 文件服务
   fileBaseURL: 'https://dev-file.sneakerpai.com/file/upload',
   // 普通服务

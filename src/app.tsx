@@ -36,6 +36,7 @@ class App extends Component {
       'pages/wechatWebView/index',
       'pages/orderSteps/index',
       'pages/expressInfoEdit/index',
+      'pages/expressSteps/index',
       'pages/faqList/index',
       'pages/cart/index',
       'pages/productWash/index',

@@ -1,0 +1,93 @@
+.express-steps-wrapper {
+  padding: 40rpx 30rpx;
+  .step-item {
+    display: flex;
+    position: relative;
+    &.active {
+      .item-date {
+        .line1 {
+          color: #1a1a1a;
+        }
+      }
+      .item-point {
+        .line {
+          background: #1a1a1a;
+        }
+      }
+      .item-express {
+        .title {
+          color: #1a1a1a;
+        }
+        .desc {
+          color: #1a1a1a;
+        }
+      }
+    }
+  }
+  .item-date {
+    position: relative;
+    width: 143rpx;
+    min-width: 143rpx;
+    color: #888;
+    // text-align: center;
+    .line1 {
+      font-size: 26rpx;
+    }
+    .line2 {
+      font-size: 24rpx;
+    }
+  }
+  .item-point {
+    position: absolute;
+    left: 103rpx;
+    top: 0;
+    bottom: -15rpx;
+    width: 40rpx;
+    .iconfont {
+      position: relative;
+      font-size: 40rpx;
+      color: #1a1a1a;
+      background: #fff;
+      z-index: 2;
+    }
+    .line {
+      position: absolute;
+      height: 100%;
+      width: 4rpx;
+      margin: 0 auto;
+      left: 50%;
+      top: 0;
+      bottom: -17rpx;
+      margin-left: -2rpx;
+      background: #ccc;
+      z-index: 1;
+    }
+    .circle {
+      border-radius: 9rpx;
+      width: 18rpx;
+      height: 18rpx;
+      background: #ccc;
+      margin: 20px 11rpx;
+    }
+  }
+  .item-express {
+    flex: 1;
+    padding-left: 42rpx;
+    padding-bottom: 46rpx;
+    .title {
+      font-size: 32rpx;
+      color: #999;
+      line-height: 1;
+    }
+    .desc {
+      color: #888;
+      padding-top: 18rpx;
+      font-size: 26rpx;
+      line-height: 32rpx;
+    }
+  }
+}
+
+page {
+  background: #fff;
+}

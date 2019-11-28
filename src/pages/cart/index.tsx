@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image, } from '@tarojs/components'
 import './index.less'
-import { AtButton, AtSwipeAction } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 
 import { getCartList, deleteCart } from '../../api/cart'
 import { toCashierByCart } from '../../api/order'
@@ -169,14 +169,17 @@ export default class Cart extends Component {
 
   renderCartItem(ele: any, index: Number) {
     return (
-
-      <AtSwipeAction className="scroll-view"
-        options={[{ text: "删除", style: { backgroundColor: '#FF3939' } }]}
-        onClick={this.deleteItem.bind(this, ele.id, index)}
-        key={ele.id}
-      >
-        <View className='cart-item' onClick={this.tapItem.bind(this, ele, index)}>
+      <View className='cart-item'>
+        <View className="item-header">
+          <View className="info-name">
+            <Text>{ele.goodzTitle}</Text>
+          </View>
+          <View className="info-right">快递配送</View>
+        </View>
+        <View className="item-content">
+          <View className="icon-box" onClick={this.tapItem.bind(this, ele, index)}>
           {this.randerIcon(ele)}
+          </View>
           <View className="image-box">
             {
               ele.cartServiceImageList.map((imgItem: any) => {
@@ -187,10 +190,6 @@ export default class Cart extends Component {
             }
           </View>
           <View className="cart-info">
-            <View className="info-name">
-              <Text>{ele.goodzTitle}</Text>
-              <View className="info-right">快递配送</View>
-            </View>
             <View className="info-labels">
               {
                 ele.cartServiceDetailList.map((sub: any) => {
@@ -202,8 +201,9 @@ export default class Cart extends Component {
             </View>
             <View className="info-price">￥{ele.totalPrice.toFixed(2)}</View>
           </View>
+          <View className="delete-btn" onClick={this.deleteItem.bind(this, ele.id)}>删除</View>
         </View>
-      </AtSwipeAction>
+      </View>
     )
   }
 
