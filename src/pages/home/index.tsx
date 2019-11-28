@@ -183,8 +183,8 @@ export default class Home extends Component {
         </View>
         {/* 服务价目 */}
         <View className="module-contianer">
-          <View className="module-title" onClick={this.props.add}>
-            <Text className="line1">服务价格{this.props.counter.num}</Text>
+          <View className="module-title">
+            <Text className="line1">服务价格</Text>
             <Text className="line2">SERVICE PRICE</Text>
             <View className="title-right-btn" onClick={() => {
               Taro.navigateTo({
