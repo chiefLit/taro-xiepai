@@ -140,7 +140,7 @@ export default class ExpressInfo extends Component {
           <View>注:请不要邮寄您的原装鞋盒，以免损坏。</View>
           <View>最好在快递包裹内附带纸条，写上您的平台注册手机号码，方便我们区分和联系您。如有其他要求也可以写在纸条上。</View>
         </View>
-        <View className="footer-contianer" >
+        <View className="footer-container" >
           <AtButton type="primary" full onClick={this.addExpressInfo.bind(this)}>确认并提交</AtButton>
         </View>
         <AtActionSheet isOpened={showExpressCompanyList} cancelText='取消'>

@@ -145,14 +145,14 @@ export default class Mine extends Component {
     const { userInfo } = this.state
     return (
       userInfo.phone ?
-        <View className="user-contianer">
+        <View className="user-container">
           <Image className="head-portrait" mode="aspectFill" src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
           <View className="username">
             {/* <View>{userInfo.nickName}</View> */}
             <View className="phone">{userInfo.phone}</View>
           </View>
         </View> :
-        <Button open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className="user-contianer no-button-style">
+        <Button open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className="user-container no-button-style">
           <Image className="head-portrait" mode="aspectFill" src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
           <View className="username">
             <View>登录/注册</View>
@@ -164,7 +164,7 @@ export default class Mine extends Component {
   renderOrder() {
     const { orderContentList } = this.state
     return (
-      <View className="order-contianer">
+      <View className="order-container">
         <View className="order-header">
           <View className="title">我的订单</View>
           <View className="header-right-btn" onClick={() => {

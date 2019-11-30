@@ -33,7 +33,7 @@ export default class Aboutus extends Component {
             }}>{storeInfo.phone}</Text></View>
           </View>
         </View>
-        <View className="footer-contianer">
+        <View className="footer-container">
           {/* <View> */}
           <Text>杭州丝内刻科技有限公司</Text>
           <Text>享有本服务最终解释权</Text>

@@ -129,7 +129,7 @@ export default class CouponList extends Component {
 
   renderNoData() {
     return (
-      <View className="no-data-contianer">
+      <View className="no-data-container">
         <Image src={noDataImage}></Image>
         <View className="value">还没有任何优惠劵呢</View>
       </View>

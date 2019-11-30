@@ -76,7 +76,7 @@ export default class Home extends Component {
   renderFaq() {
     let { faqList } = this.state;
     return (
-      <View className="module-contianer">
+      <View className="module-container">
         <View className="module-title">
           <Text className="line1">常见问题</Text>
           <Text className="line2">Q&A</Text>
@@ -152,7 +152,7 @@ export default class Home extends Component {
           </View>
         </View>
         {/* 日常服务 */}
-        <View className="module-contianer">
+        <View className="module-container">
           {/* <View className="module-title">
             <Text className="line1">日常服务</Text>
             <Text className="line2">DAILY SERVICE</Text>
@@ -182,7 +182,7 @@ export default class Home extends Component {
           </View>
         </View>
         {/* 服务价目 */}
-        <View className="module-contianer">
+        <View className="module-container">
           <View className="module-title">
             <Text className="line1">服务价格</Text>
             <Text className="line2">SERVICE PRICE</Text>
@@ -214,7 +214,7 @@ export default class Home extends Component {
           </View>
         </View>
         {/* 服务流程 */}
-        <View className="module-contianer">
+        <View className="module-container">
           <View className="module-title">
             <Text className="line1">服务流程</Text>
             <Text className="line2">SERVICE PROCESS</Text>

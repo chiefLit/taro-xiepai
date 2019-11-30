@@ -42,7 +42,7 @@ export default class FirstOrder extends Component {
     return (
       <View className='first-order-wrapper'>
         <View className="banner"></View>
-        <View className="contianer">
+        <View className="container">
           {
             this.articleList.map((ele: any) => {
               return (

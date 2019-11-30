@@ -287,7 +287,7 @@ export default class OrderEdit extends Component {
           </View>
         </View>
         <View className="footer-cover"></View>
-        <View className="footer-contianer">
+        <View className="footer-container">
           <View className="total-price">
             <Text>合计：</Text>
             <Text className="price">￥{orderDetail.realPayPrice.toFixed(2)}</Text>

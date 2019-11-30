@@ -144,7 +144,7 @@ export default class Cart extends Component {
 
   renderNoData() {
     return (
-      <View className="no-data-contianer">
+      <View className="no-data-container">
         <Image src={noDataImage}></Image>
         <View className="value">还没有任何优惠劵呢</View>
         <AtButton type="primary" size="small" circle onClick={async () => {
@@ -224,7 +224,7 @@ export default class Cart extends Component {
                 })
               }
               <View className="footer-cover"></View>
-              <View className="footer-contianer">
+              <View className="footer-container">
                 <View className="select-all" onClick={() => {
                   this.setState((preState: any) => {
                     return {

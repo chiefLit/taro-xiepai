@@ -235,7 +235,7 @@ export default class productWash extends Component {
   randerSelectedProduct() {
     const { chosenList } = this.state
     return (
-      <View className="popup-contianer">
+      <View className="popup-container">
         <View className="popup-mask" onClick={() => {
           this.setState({
             showSelectedProduct: false
@@ -272,7 +272,7 @@ export default class productWash extends Component {
     let { wayList, productList, chosenList, showSelectedProduct, image0Url, image1Url, image2Url } = this.state
     return (
       <View className='product-wash-wrapper'>
-        <View className="module-contianer">
+        <View className="module-container">
           <View className="module-title">
             <Text className="title">选择清洗方式</Text>
           </View>
@@ -288,7 +288,7 @@ export default class productWash extends Component {
           </View>
           <View className="way-tips">注:普通清洗-仅清洗皮质球鞋,中级清洗-仅清洗反皮/麂皮/绒皮,高级清洗-仅清洗特殊面料/ow系列</View>
         </View>
-        <View className="module-contianer">
+        <View className="module-container">
           <View className="module-title">
             <Text className="title">选择护理项目</Text>
           </View>
@@ -304,7 +304,7 @@ export default class productWash extends Component {
             }
           </View>
         </View>
-        <View className="module-contianer">
+        <View className="module-container">
           <View className="module-title">
             <Text className="title">拍摄球鞋照片</Text>
             <Text className="subTitle">便于我们确认您爱鞋的情况</Text>
@@ -322,7 +322,7 @@ export default class productWash extends Component {
           </View>
         </View>
         <View className="footer-cover"></View>
-        <View className="footer-contianer">
+        <View className="footer-container">
           <View className="priceSum" onClick={() => {
             this.setState({
               showSelectedProduct: !showSelectedProduct

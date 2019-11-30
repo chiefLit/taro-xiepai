@@ -154,7 +154,7 @@ export default class MyAddrEdit extends Component {
             }}
           />
         </AtForm>
-        <View className="footer-contianer">
+        <View className="footer-container">
           <AtButton className="submit-button" onClick={this.submitAddress.bind(this)} type="primary">保存地址</AtButton>
           {/* <AtButton full className="delete-button" onClick={this.deleteAddress.bind(this)} type="secondary">删除地址</AtButton> */}
         </View>

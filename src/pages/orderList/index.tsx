@@ -204,7 +204,7 @@ export default class OrderList extends Component {
 
   renderNoData() {
     return (
-      <View className="no-data-contianer">
+      <View className="no-data-container">
         <Image src={noDataImage}></Image>
         <View className="value">暂无相关订单</View>
         {/* <AtButton type="primary" circle size="small" onClick={() => {

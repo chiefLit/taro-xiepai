@@ -91,7 +91,7 @@ export default class MyAddr extends Component {
 
   renderNoData() {
     return (
-      <View className="no-data-contianer">
+      <View className="no-data-container">
         <Image src={noDataImage}></Image>
         <View className="value">还没有收货地址呢</View>
         <AtButton type="primary" size="small" circle onClick={() => {
@@ -133,7 +133,7 @@ export default class MyAddr extends Component {
               </View>
 
               <View className="footer-cover"></View>
-              <View className="footer-contianer">
+              <View className="footer-container">
                 <AtButton
                   className="add-button"
                   type='primary'

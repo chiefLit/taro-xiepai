@@ -48,7 +48,7 @@ export default class PopupAuthorization extends Component {
     return (
       <View className='popup-authorization-wrapper'>
         <View className="popup-mask"></View>
-        <View className="popup-contianer">
+        <View className="popup-container">
           <View className="popup-title">提示</View>
           <View className="popup-content">请授权手机号</View>
           <View className="popup-footer">
