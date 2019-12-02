@@ -13,6 +13,7 @@
 		"coverView": true,
 		"nodeModules": false,
 		"autoAudits": false,
+		"uglifyFileName": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
@@ -25,6 +26,6 @@
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"libVersion": "2.9.3",
+	"libVersion": "2.9.4",
 	"condition": {}
 }

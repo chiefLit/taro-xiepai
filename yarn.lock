@@ -337,10 +337,10 @@
   resolved "https://registry.npm.taobao.org/@nodelib/fs.stat/download/@nodelib/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha1-K1o6s/kYzKSKjHVMCBaOPwPrphs=
 
-"@tarojs/async-await@^1.3.22":
-  version "1.3.22"
-  resolved "https://registry.npmjs.org/@tarojs/async-await/-/async-await-1.3.22.tgz#536f43aff67340c390613f38970ecc7ec90f6e5e"
-  integrity sha512-zSO/Qqwa1P9ukoxVkxFHxNikE/iBoFQEgEGRNsmirfp18XgJMZYgXSZ/ON0cd0l9EwIYbUjcVE10NWIGBDToSw==
+"@tarojs/async-await@^1.3.26":
+  version "1.3.26"
+  resolved "https://registry.npm.taobao.org/@tarojs/async-await/download/@tarojs/async-await-1.3.26.tgz#eccd8741b7009dd7a81204078c865383245624f5"
+  integrity sha1-7M2HQbcAndeoEgQHjIZTgyRWJPU=
   dependencies:
     promise-polyfill "^7.1.2"
     regenerator-runtime "^0.11.1"
@@ -1697,6 +1697,13 @@ babel-plugin-transform-regenerator@^6.22.0:
   integrity sha1-4HA2lvveJ/Cj78rPi03KL3s6jy8=
   dependencies:
     regenerator-transform "^0.10.0"
+
+babel-plugin-transform-runtime@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.npm.taobao.org/babel-plugin-transform-runtime/download/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
+  integrity sha1-iEkNRGUC6puOfvsP4J7E2ZR5se4=
+  dependencies:
+    babel-runtime "^6.22.0"
 
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"

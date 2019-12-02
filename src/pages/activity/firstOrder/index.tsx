@@ -46,7 +46,7 @@ export default class FirstOrder extends Component {
           {
             this.articleList.map((ele: any) => {
               return (
-                <View className="item" key={ele}>
+                <View className="item" key={ele.title}>
                   <View className="title">{ele.title}</View>
                   <View className="content">
                     {
