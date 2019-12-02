@@ -30,11 +30,11 @@ export default class ServicePrice extends Component {
     let priceList = [
       { content: '普通清洗', price: '49', desc: '仅清洗皮质球鞋' },
       { content: '中级清洗', price: '69', desc: '反皮/麂皮/绒皮' },
-      { content: '高级清洗', price: '69', desc: '特殊面料/OW系列' },
+      { content: '高级清洗', price: '109', desc: '特殊面料/OW系列' },
       { content: '防水处理', price: '29', desc: '-' },
       { content: '半掌贴底', price: '69', desc: '-' },
       { content: '全掌贴底', price: '129', desc: '-' },
-      { content: '去氧化(普通底)', price: '29', desc: '-' },
+      { content: '去氧化(普通底)', price: '79', desc: '-' },
       { content: '塑封', price: '15', desc: '-' },
       { content: '去霉/去色/染色处理', price: '49', desc: '-' },
       { content: '防氧化', price: '69', desc: '-' },

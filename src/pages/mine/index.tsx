@@ -50,7 +50,7 @@ export default class Mine extends Component {
     if (userInfo && userInfo.id) {
       this.setState({ userInfo })
     }
-    if (userInfo && userInfo.id && userInfo.phone) return
+    // if (userInfo && userInfo.id && userInfo.phone) return
     this.pullData()
   }
 

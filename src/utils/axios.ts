@@ -88,6 +88,5 @@ export default function (config: any) {
     config.params = config.data;
     delete config['data'];
   }
-  // console.log(config);
   return axios(config);
 }

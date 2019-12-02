@@ -1,9 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtButton, AtDivider } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtButton } from 'taro-ui'
 import './index.less'
 
-import { getOrderList } from '../../api/order'
+import * as orderApi from '../../api/order'
 import { orderStatusToValue } from '../../config'
 import noDataImage from '../../assets/images/no-data-order.png'
 
@@ -28,7 +28,7 @@ export default class OrderList extends Component {
       index: 0,
       isActive: false,
       params: {
-        status: 0,
+        globalStatus: 0,
         currentPage: 1,
         pageSize: 20
       },
@@ -39,7 +39,7 @@ export default class OrderList extends Component {
       index: 1,
       isActive: false,
       params: {
-        status: 0,
+        globalStatus: 1,
         currentPage: 1,
         pageSize: 20
       },
@@ -50,7 +50,6 @@ export default class OrderList extends Component {
       index: 2,
       isActive: false,
       params: {
-        status: 0,
         currentPage: 1,
         pageSize: 20
       },
@@ -78,7 +77,7 @@ export default class OrderList extends Component {
    * @param callBack 回调
    */
   async pullData(page: any, index: Number, callBack: any) {
-    let data: any = await getOrderList(page.params)
+    let data: any = await orderApi.getOrderList(page.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -90,6 +89,7 @@ export default class OrderList extends Component {
         callBack && callBack()
         return
       }
+
       if (page.params.currentPage === 1) {
         dataList = [...data.object];
       } else {
@@ -164,11 +164,7 @@ export default class OrderList extends Component {
           <Text>订单编号: {item.number}</Text>
           <Text>{orderStatusToValue(item.status, 0)}</Text>
         </View>
-        <View className="item-content" onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/orderDetail/index?id=${item.id}`
-          })
-        }}>
+        <View className="item-content">
           {
             item.orderSubVoList.map((ele: any) => {
               return <View className="produce-item" key={ele.id}>
@@ -189,12 +185,22 @@ export default class OrderList extends Component {
                     }
                   </View>
                 </View>
-                <View className="order-price">￥{item.realPayPrice.tofixed(2)}</View>
+                <View className="order-price">￥{item.realPayAmount ? item.realPayAmount.toFixed(2) : item.realPayPrice}</View>
               </View>
             })
           }
         </View>
         <View className="item-footer">
+          {/* {item.status === 0 ? <AtButton onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/orderDetail/index?id=${item.id}`
+            })
+          }}>去支付</AtButton> : null}
+          {item.status === 1 ? <AtButton onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/expressInfoEdit/index?id=${item.id}`
+            })
+          }}>补充物流信息</AtButton> : null} */}
           {item.status === 0 ? <AtButton>去支付</AtButton> : null}
           {item.status === 1 ? <AtButton>补充物流信息</AtButton> : null}
         </View>
@@ -225,7 +231,11 @@ export default class OrderList extends Component {
           <AtTabsPane current={current} index={0} >
             {
               page0.dataList.length > 0 ?
-                page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                page0.dataList.map((ele: any) => <View key={ele.id} onClick={() => {
+                  Taro.navigateTo({
+                    url: `/pages/orderDetail/index?id=${ele.id}`
+                  })
+                }}> {this.randerItem(ele)} </View>) :
                 this.renderNoData()
             }
             {/* {page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
@@ -233,7 +243,11 @@ export default class OrderList extends Component {
           <AtTabsPane current={current} index={1}>
             {
               page1.dataList.length > 0 ?
-                page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                page1.dataList.map((ele: any) => <View key={ele.id} onClick={() => {
+                  Taro.navigateTo({
+                    url: `/pages/orderDetail/index?id=${ele.id}`
+                  })
+                }}> {this.randerItem(ele)} </View>) :
                 this.renderNoData()
             }
             {/* {page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
@@ -241,7 +255,11 @@ export default class OrderList extends Component {
           <AtTabsPane current={current} index={2}>
             {
               page2.dataList.length > 0 ?
-                page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                page2.dataList.map((ele: any) => <View key={ele.id} onClick={() => {
+                  Taro.navigateTo({
+                    url: `/pages/orderDetail/index?id=${ele.id}`
+                  })
+                }}> {this.randerItem(ele)} </View>) :
                 this.renderNoData()
             }
             {/* {page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}

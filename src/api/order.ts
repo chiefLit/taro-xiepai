@@ -54,3 +54,25 @@ export function toOrderByCart(data) {
   }
   return axios(config);
 }
+
+// 订单-订单支付
+export function toOrderById(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/order/order-to-pay',
+    // mockData: require('../../mock/toOrderByCart.json'),
+    data: data
+  }
+  return axios(config);
+}
+
+// 订单-取消订单
+export function orderCancel(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/order/cancel',
+    // mockData: require('../../mock/toOrderByCart.json'),
+    data: data
+  }
+  return axios(config);
+}

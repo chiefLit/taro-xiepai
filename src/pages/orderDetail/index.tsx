@@ -3,8 +3,9 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
 
-import { getOrderDetail } from '../../api/order'
-import { orderStatusToValue } from '../../config'
+import * as orderApi from '../../api/order'
+import { DEFAULT_CONFIG, orderStatusToValue } from '../../config'
+import * as utils from '../../utils/index'
 
 export default class OrderDetail extends Component {
 
@@ -27,10 +28,10 @@ export default class OrderDetail extends Component {
       deliverMode: "",
       channel: "",
       orderSubVoList: [],
-      totalPrice: "",
+      totalPrice: 0,
       couponId: null,
-      couponAmount: null,
-      realPayPrice: null,
+      couponAmount: 0,
+      realPayPrice: 0,
       storeVo: {},
       toStoreId: null,
       toStoreExpressId: null,
@@ -60,7 +61,7 @@ export default class OrderDetail extends Component {
 
 
   async pullData(orderId: any) {
-    let data: any = await getOrderDetail({ orderId });
+    let data: any = await orderApi.getOrderDetail({ orderId });
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -69,6 +70,67 @@ export default class OrderDetail extends Component {
     } else {
       this.setState({
         orderDetail: data.object
+      })
+    }
+  }
+  // { getOrderDetail, orderCancel, toOrderById }
+  async orderCancel() {
+    Taro.showModal({
+      // title: '提示',
+      content: '确定取消订单？',
+      success: async (res: any) => {
+        if (res.confirm) {
+          let data: any = await orderApi.orderCancel({
+            orderId: this.state.orderDetail.id
+          });
+          if (data.code !== 1) {
+            Taro.showToast({
+              title: data.message,
+              icon: 'none'
+            })
+          } else {
+            Taro.showToast({
+              title: '订单已取消',
+              icon: 'none'
+            }).then(() => {
+              Taro.navigateBack();
+            })
+          }
+        }
+      }
+    })
+  }
+
+  async toOrderById() {
+    let data: any = await orderApi.toOrderById({
+      orderId: this.state.orderDetail.id
+    });
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      Taro.requestPayment({
+        timeStamp: data.object.clientPayMap.timeStamp,
+        nonceStr: data.object.clientPayMap.nonceStr,
+        package: data.object.clientPayMap.package,
+        signType: data.object.clientPayMap.signType,
+        paySign: data.object.clientPayMap.paySign,
+        success: () => {
+          Taro.showToast({
+            title: "支付成功",
+            icon: "none"
+          }).then(() => {
+            this.pullData(this.$router.params.id)
+          })
+        },
+        fail() {
+          Taro.showToast({
+            title: "支付失败",
+            icon: "none"
+          })
+        }
       })
     }
   }
@@ -139,7 +201,7 @@ export default class OrderDetail extends Component {
                       </View>
                     </View>
 
-                    <View className="product-price">￥ {ele.totalPrice}</View>
+                    <View className="product-price">￥{ele.totalPrice.toFixed(2)}</View>
                   </View>
                 )
               })
@@ -162,7 +224,7 @@ export default class OrderDetail extends Component {
         <View className="order-price">
           <View className="module-list">
             <View className="key">商品总额</View>
-            <View className="value">￥ {orderDetail.totalPrice}</View>
+            <View className="value">￥{orderDetail.totalPrice.toFixed(2)}</View>
           </View>
           {/* <View className="module-list">
             <View className="key">运费</View>
@@ -170,13 +232,16 @@ export default class OrderDetail extends Component {
           </View> */}
           <View className="module-list">
             <View className="key">优惠券</View>
-
-            <View className="value">{orderDetail.couponId ? `-￥ ${orderDetail.couponAmount}` : `未使用`}</View>
+            <View className="value">{orderDetail.couponId ? `-￥${orderDetail.couponAmount.toFixed(2)}` : `未使用`}</View>
           </View>
-          <View className="module-list">
-            <View className="key">实际支付</View>
-            <View className="value red">￥ {orderDetail.realPayPrice}</View>
-          </View>
+          {
+            orderDetail.status !== 0 ?
+              <View className="module-list">
+                <View className="key">实际支付</View>
+                <View className="value red">￥{orderDetail.realPayPrice.toFixed(2)}</View>
+              </View> :
+              null
+          }
         </View>
 
         <View className="order-infomation">
@@ -186,21 +251,33 @@ export default class OrderDetail extends Component {
           </View>
           <View className="module-list">
             <View className="key">订单日期</View>
-            <View className="value">{orderDetail.applyTime}</View>
+            <View className="value">{utils.parseTime(orderDetail.applyTime, null)}</View>
           </View>
-          <View className="module-list">
-            <View className="key">支付方式</View>
-            <View className="value">{orderDetail.payChannel === 0 ? "微信支付" : ""}</View>
-          </View>
+          {
+            orderDetail.status !== 0 ?
+              <View className="module-list">
+                <View className="key">支付方式</View>
+                <View className="value">{orderDetail.payChannel === 0 ? "微信支付" : ""}</View>
+              </View> :
+              null
+          }
         </View>
 
         <View className="footer-cover"></View>
 
         <View className="order-footer">
-          {orderDetail.status === 0 || orderDetail.status === 1 ? <AtButton className="type1" full>取消订单</AtButton> : null}
-          {orderDetail.status === 0 ? <AtButton className="type2" full>立即支付</AtButton> : null}
-          {orderDetail.status === 1 ? <AtButton className="type2" full>填写快递信息</AtButton> : null}
-          {orderDetail.status !== 0 && orderDetail.status !== 1 ? <AtButton className="type2" full>联系客服</AtButton> : null}
+          {orderDetail.status === 0 || orderDetail.status === 1 ? <AtButton className="type1" full onClick={this.orderCancel.bind(this)}>取消订单</AtButton> : null}
+          {orderDetail.status === 0 ? <AtButton className="type2" full onClick={this.toOrderById.bind(this)}>立即支付</AtButton> : null}
+          {orderDetail.status === 1 ? <AtButton className="type2" full onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/expressInfoEdit/index?id=${orderDetail.id}`
+            })
+          }}>填写快递信息</AtButton> : null}
+          {orderDetail.status !== 0 && orderDetail.status !== 1 ? <AtButton className="type2" full onClick={() => {
+            Taro.makePhoneCall({
+              phoneNumber: String(DEFAULT_CONFIG.customerServicePhone)
+            })
+          }}>联系客服</AtButton> : null}
         </View>
       </View >
     )

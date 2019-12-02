@@ -174,9 +174,32 @@ export default class OrderEdit extends Component {
         icon: "none"
       })
     } else {
-      Taro.showToast({
-        title: "下单成功",
-        icon: "none"
+      Taro.requestPayment({
+        timeStamp: data.object.clientPayMap.timeStamp,
+        nonceStr: data.object.clientPayMap.nonceStr,
+        package: data.object.clientPayMap.package,
+        signType: data.object.clientPayMap.signType,
+        paySign: data.object.clientPayMap.paySign,
+        success() {
+          Taro.showToast({
+            title: "支付成功",
+            icon: "none"
+          }).then(() => {
+            Taro.redirectTo({
+              url: `/pages/orderList/index?index=1`
+            })
+          })
+        },
+        fail() {
+          Taro.showToast({
+            title: "支付失败",
+            icon: "none"
+          }).then(() => {
+            Taro.redirectTo({
+              url: `/pages/orderList/index`
+            })
+          })
+        }
       })
     }
   }
