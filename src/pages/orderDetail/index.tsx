@@ -4,6 +4,7 @@ import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
 
 import * as orderApi from '../../api/order'
+import * as commonApi from '../../api/common'
 import { DEFAULT_CONFIG, orderStatusToValue } from '../../config'
 import * as utils from '../../utils/index'
 
@@ -103,7 +104,7 @@ export default class OrderDetail extends Component {
 
   async toOrderById() {
     let data: any = await orderApi.toOrderById({
-      orderId: this.state.orderDetail.id
+      orderId: 
     });
     if (data.code !== 1) {
       Taro.showToast({
@@ -117,23 +118,45 @@ export default class OrderDetail extends Component {
         package: data.object.clientPayMap.package,
         signType: data.object.clientPayMap.signType,
         paySign: data.object.clientPayMap.paySign,
-        success: () => {
-          Taro.showToast({
+        success: (res) => {
+          this.userPayResult({
+            payOrderId: this.state.orderDetail.id,
+            result: 'SUCCESS',
+            resultDesc: res
+          }, Taro.showToast({
             title: "支付成功",
             icon: "none"
           }).then(() => {
             this.pullData(this.$router.params.id)
-          })
+          }))
         },
-        fail() {
-          Taro.showToast({
+        fail: (res) => {
+          this.userPayResult({
+            payOrderId: this.state.orderDetail.id,
+            result: 'FAIL',
+            resultDesc: res
+          }, Taro.showToast({
             title: "支付失败",
             icon: "none"
-          })
+          }))
         }
       })
     }
   }
+
+  async userPayResult(params: any, callBack) {
+    const data: any = await commonApi.userPayResult(params);
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      callBack && callBack()
+    }
+  }
+
+
 
   render() {
     let { orderDetail } = this.state

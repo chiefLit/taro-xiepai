@@ -6,6 +6,7 @@ import addrLineImage from '../../assets/images/addr-line.png'
 
 import { toOrderByCart, toCashierByCart } from '../../api/order'
 import { toOrderByWash, toCashierByWash } from '../../api/service'
+import * as commonApi from '../../api/common'
 import { connect } from '@tarojs/redux'
 import { deleteOrderToCashier } from '../../reducers/actions/orderToCashier'
 import { deleteSelectedAddress } from '../../reducers/actions/selectedAddress'
@@ -161,7 +162,7 @@ export default class OrderEdit extends Component {
     params.couponId = this.state.orderDetail.couponId
     params.toUserAddressId = this.state.userAddressVo.id
     params.deliverMode = 1
-    // console.log(params)
+    
     let data: any;
     if (this.formCartParams.cartIds.length) {
       data = await toOrderByCart(params)
@@ -180,29 +181,46 @@ export default class OrderEdit extends Component {
         package: data.object.clientPayMap.package,
         signType: data.object.clientPayMap.signType,
         paySign: data.object.clientPayMap.paySign,
-        success() {
-          Taro.showToast({
+        success: (res) => {
+          this.userPayResult({
+            payOrderId: data.object.payOrderId,
+            result: 'SUCCESS',
+            resultDesc: res
+          }, Taro.showToast({
             title: "支付成功",
             icon: "none"
           }).then(() => {
-            Taro.redirectTo({
-              url: `/pages/orderList/index?index=1`
-            })
-          })
+            Taro.redirectTo({ url: `/pages/orderList/index?index=1` })
+          }))
         },
-        fail() {
-          Taro.showToast({
+        fail(res) {
+          this.userPayResult({
+            payOrderId: data.object.payOrderId,
+            result: 'SUCCESS',
+            resultDesc: res
+          }, Taro.showToast({
             title: "支付失败",
             icon: "none"
           }).then(() => {
-            Taro.redirectTo({
-              url: `/pages/orderList/index`
-            })
-          })
+            Taro.redirectTo({ url: `/pages/orderList/index?index=0` })
+          }))
         }
       })
     }
   }
+
+  async userPayResult(params: any, callBack) {
+    const data: any = await commonApi.userPayResult(params);
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      callBack && callBack()
+    }
+  }
+
 
   render() {
     let { orderDetail, userAddressVo } = this.state;

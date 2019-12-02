@@ -32,3 +32,15 @@ export function getFaqlist() {
   }
   return axios(config);
 }
+
+
+// 订单-支付-确认支付结果上报
+export function userPayResult(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/pay/user-pay-result',
+    // mockData: require('../../mock/getFaqlist.json'),
+    data
+  }
+  return axios(config);
+}
