@@ -146,7 +146,7 @@ export default class Cart extends Component {
     return (
       <View className="no-data-container">
         <Image src={noDataImage}></Image>
-        <View className="value">还没有任何优惠劵呢</View>
+        <View className="value">还没有任何订单呢</View>
         <AtButton type="primary" size="small" circle onClick={async () => {
           const isLogin: boolean = await checkPhoneLogin()
           if (isLogin) {

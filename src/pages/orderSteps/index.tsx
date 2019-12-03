@@ -2,7 +2,8 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import './index.less'
 
-import { findOrderLog } from '../../api/order'
+import * as orderApi from '../../api/order'
+import * as utils from '../../utils/index'
 
 export default class OrderSteps extends Component {
 
@@ -23,18 +24,18 @@ export default class OrderSteps extends Component {
 
   componentWillMount() {
     let params: any = this.$router.params;
-    // if (params.id) {
+    if (params.id) {
       this.pullData(params.id)
-    // } else {
-    //   Taro.showToast({
-    //     title: "无订单ID",
-    //     icon: "none"
-    //   })
-    // }
+    } else {
+      Taro.showToast({
+        title: "无订单ID",
+        icon: "none"
+      })
+    }
   }
 
   async pullData(orderId: string) {
-    let data: any = await findOrderLog({ orderId })
+    let data: any = await orderApi.findOrderLog({ orderId })
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -42,7 +43,7 @@ export default class OrderSteps extends Component {
       })
     } else {
       this.setState({
-        stepList: data.object
+        stepList: [...data.object].reverse()
       })
     }
   }
@@ -52,19 +53,29 @@ export default class OrderSteps extends Component {
     return (
       <View className='order-steps-wrapper'>
         {
-          stepList.map((ele: any) => {
+          stepList.map((ele: any, index: Number) => {
             return (
-              <View className={ele.status === 1 ? "steps-item active" : "steps-item"} key={ele.orderId}>
-                <View className="dots">
-                  {
-                    ele.status === 1 ?
-                      <View className="iconfont icongouxuan"></View> :
-                      <View className="circle"></View>
-                  }
+              <View className={index === 0 ? 'active step-item' : "step-item"} key={ele}>
+                <View className="item-date">
+                  <View className="line1">{utils.parseTime(ele.operateTime, '{m}-{d}')}</View>
+                  <View className="line2">{utils.parseTime(ele.operateTime, '{h}:{i}')}</View>
                 </View>
-                <View className="item-content">
+                <View className="item-point">
+                  {index === 0 ? <View className="circle"></View> : <View className="iconfont icongouxuan"></View>}
+                  {index !== stepList.length - 1 ? <View className='line'></View> : null}
+                </View>
+                <View className="item-express">
                   <View className="title">{ele.operate}</View>
-                  <View className="desc">{ele.remark}</View>
+                  <View className="desc" onClick={() => {
+                    // if (ele.status === 2 || ele.status === 6) {
+                    //   const url = 'https://www.kdniao.com/JSInvoke/MSearchResult.aspx?expCode=YTO&expNo=YT4065793763601&sortType=DESC&color=rgb(46,114,251)'
+                    //   const title = '快递详情'
+                    //   Taro.navigateTo({
+                    //     url: `/pages/wechatWebView/index?url=${url}&title=${title}`
+                    //   })
+                    // }
+                    // }}>{ele.remark}</View>
+                  }}>{ele.remark} {ele.status === 2 || ele.status === 6 ? '>' : null}</View>
                 </View>
               </View>
             )

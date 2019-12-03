@@ -44,3 +44,15 @@ export function userPayResult(data) {
   }
   return axios(config);
 }
+
+
+// 第三方快递信息
+export function getKdInfo(data) {
+  const config = {
+    method: 'get',
+    url: 'https://www.kdniao.com/JSInvoke/MSearchResult.aspx?expCode=YTO&expNo=YT4065793763601&sortType=DESC&color=rgb(46,114,251)',
+    // mockData: require('../../mock/getFaqlist.json'),
+    data
+  }
+  return axios(config);
+}

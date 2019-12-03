@@ -60,8 +60,6 @@ export default class OrderDetail extends Component {
     // }
   }
 
-
-
   async pullData(orderId: any) {
     let data: any = await orderApi.getOrderDetail({ orderId });
     if (data.code !== 1) {
@@ -75,6 +73,7 @@ export default class OrderDetail extends Component {
       })
     }
   }
+
   // { getOrderDetail, orderCancel, toOrderById }
   async orderCancel() {
     Taro.showModal({
@@ -164,9 +163,8 @@ export default class OrderDetail extends Component {
     return (
       <View className='order-detail-wrapper'>
         <View className="order-status" onClick={() => {
-          if (orderDetail.status != 1) return
           Taro.navigateTo({
-            url: `/pages/expressInfoEdit/index?id=${orderDetail.id}`
+            url: `/pages/orderSteps/index?id=${orderDetail.id}`
           })
         }}>
           <View className="status-value">{orderStatusToValue(orderDetail.status, 0)}</View>
@@ -206,7 +204,7 @@ export default class OrderDetail extends Component {
             {
               orderDetail.orderSubVoList.map((ele: any) => {
                 return (
-                  <View className="service-item" key={ele}>
+                  <View className="service-item" key={ele.id}>
                     {
                       ele.serviceImageList.map((imageItem: any) => {
                         return imageItem.aspect === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null

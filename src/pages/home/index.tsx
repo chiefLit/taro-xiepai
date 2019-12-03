@@ -7,7 +7,7 @@ import xfImage from '../../assets/images/xf.png'
 import PopupAuthorization from '../../components/PopupAuthorization'
 
 
-import { getIndex } from '../../api/common'
+import * as commonApi from '../../api/common'
 import { checkPhoneLogin } from '../../api/user'
 
 
@@ -39,10 +39,11 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.pullData()
+    this.getKdInfo()
   }
 
   async pullData() {
-    let data: any = await getIndex(null)
+    let data: any = await commonApi.getIndex(null)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -57,6 +58,11 @@ export default class Home extends Component {
         faqList: data.object.faqList || []
       })
     }
+  }
+
+  async getKdInfo(){
+    const data = await commonApi.getKdInfo(null)
+    console.log(data)
   }
 
   dailyServices = [

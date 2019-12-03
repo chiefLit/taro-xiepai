@@ -1,45 +1,89 @@
 .order-steps-wrapper {
-  padding: 40rpx 60rpx;
-  .steps-item {
+  padding: 40rpx 30rpx;
+  .step-item {
     display: flex;
-  }
-  .steps-item.active {
-    .item-content {
-      .title {
-        color: #1a1a1a;
+    position: relative;
+    &.active {
+      .item-date {
+        .line1 {
+          color: #1a1a1a;
+        }
+      }
+      .item-point {
+        .line {
+          background: #1a1a1a;
+        }
+      }
+      .item-express {
+        .title {
+          color: #1a1a1a;
+        }
+        .desc {
+          color: #1a1a1a;
+        }
       }
     }
   }
-  .dots {
+  .item-date {
+    position: relative;
+    width: 143rpx;
+    min-width: 143rpx;
+    color: #888;
+    // text-align: center;
+    .line1 {
+      font-size: 26rpx;
+    }
+    .line2 {
+      font-size: 24rpx;
+    }
+  }
+  .item-point {
+    position: absolute;
+    left: 103rpx;
+    top: 0;
+    bottom: -15rpx;
     width: 40rpx;
-    height: 40rpx;
-    font-size: 40rpx;
-    margin-right: 40rpx;
+    .iconfont {
+      position: relative;
+      font-size: 40rpx;
+      color: #ccc;
+      background: #fff;
+      z-index: 2;
+    }
+    .line {
+      position: absolute;
+      height: 100%;
+      width: 4rpx;
+      margin: 0 auto;
+      left: 50%;
+      top: 20rpx;
+      bottom: -17rpx;
+      margin-left: -2rpx;
+      background: #ccc;
+      z-index: 1;
+    }
+    .circle {
+      border-radius: 9rpx;
+      width: 18rpx;
+      height: 18rpx;
+      background: #1a1a1a;
+      margin: 20px 11rpx;
+    }
   }
-  .iconfont {
-    font-size: 40rpx;
-    color: #1a1a1a;
-  }
-  .circle {
-    border-radius: 50%;
-    width: 18rpx;
-    height: 18rpx;
-    border-radius: 50%;
-    margin: 11rpx;
-    background: #ccc;
-  }
-  .item-content {
-    margin-bottom: 70rpx;
+  .item-express {
+    flex: 1;
+    padding-left: 42rpx;
+    padding-bottom: 46rpx;
     .title {
-      font-size: 30rpx;
-      line-height: 42rpx;
+      font-size: 32rpx;
       color: #999;
+      line-height: 1;
     }
     .desc {
+      color: #888;
+      padding-top: 18rpx;
       font-size: 26rpx;
-      color: rgba(136, 136, 136, 0.6);
-      line-height: 38rpx;
-      margin-top: 16rpx;
+      line-height: 32rpx;
     }
   }
 }

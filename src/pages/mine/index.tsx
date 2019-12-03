@@ -66,7 +66,7 @@ export default class Mine extends Component {
         userInfo: data.object,
         orderContentList: preState.orderContentList.map((ele: any, index: Number) => {
           if (index === 0) ele.amount = data.object.waitPayOrderCount
-          if (index === 1) ele.amount = data.object.ongoingOrderCount
+          if (index === 1) ele.amount = data.object.processingOrderCount
           return ele
         })
       }))
