@@ -4,9 +4,11 @@ import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
 import addrLineImage from '../../assets/images/addr-line.png'
 
-import { toOrderByCart, toCashierByCart } from '../../api/order'
-import { toOrderByWash, toCashierByWash } from '../../api/service'
+import * as orderApi from '../../api/order'
+import * as serviceApi from '../../api/service'
 import * as commonApi from '../../api/common'
+import * as userApi from '../../api/user'
+
 import { connect } from '@tarojs/redux'
 import { deleteOrderToCashier } from '../../reducers/actions/orderToCashier'
 import { deleteSelectedAddress } from '../../reducers/actions/selectedAddress'
@@ -38,6 +40,7 @@ export default class OrderEdit extends Component {
   state = {
     // 订单是否已生成
     isOrderGenerated: false,
+    hasNoAddress: false,
     orderDetail: {
       userId: null,
       cashierSubVoList: [],
@@ -104,7 +107,7 @@ export default class OrderEdit extends Component {
   componentDidShow() {
     const selectedAddressData = this.props.selectedAddress.data
     const selectedCouponData = this.props.selectedCoupon.data
-    
+
     if (selectedAddressData && selectedAddressData.id) {
       this.setState({
         userAddressVo: selectedAddressData
@@ -117,17 +120,20 @@ export default class OrderEdit extends Component {
       selectedCoupon.id && this.calcCoupon(selectedCoupon.id)
       this.props.deleteSelectedCoupon()
     }
+
+    this.getAddressList()
   }
 
+  // 请求接口计算价格
   async calcCoupon(couponId: any) {
     let data: any
     if (this.formCartParams.cartIds.length) {
-      data = await toCashierByCart({
+      data = await orderApi.toCashierByCart({
         ...this.formCartParams,
         couponId
       })
     } else {
-      data = await toCashierByWash({
+      data = await serviceApi.toCashierByWash({
         ...this.formWashProductParams,
         couponId
       })
@@ -144,6 +150,7 @@ export default class OrderEdit extends Component {
     }
   }
 
+  // 提交订单
   async submitOrder() {
     if (!this.state.userAddressVo || !this.state.userAddressVo.id) {
       Taro.showToast({
@@ -162,12 +169,12 @@ export default class OrderEdit extends Component {
     params.couponId = this.state.orderDetail.couponId
     params.toUserAddressId = this.state.userAddressVo.id
     params.deliverMode = 1
-    
+
     let data: any;
     if (this.formCartParams.cartIds.length) {
-      data = await toOrderByCart(params)
+      data = await orderApi.toOrderByCart(params)
     } else {
-      data = await toOrderByWash(params)
+      data = await serviceApi.toOrderByWash(params)
     }
     if (data.code !== 1) {
       Taro.showToast({
@@ -209,6 +216,7 @@ export default class OrderEdit extends Component {
     }
   }
 
+  // 提交支付结果
   async userPayResult(params: any, callBack) {
     const data: any = await commonApi.userPayResult(params);
     if (data.code !== 1) {
@@ -221,18 +229,40 @@ export default class OrderEdit extends Component {
     }
   }
 
+  // 地址列表
+  async getAddressList() {
+    const data: any = await userApi.getAddressList(null)
+    if (data.code === 1) {
+      if (data.object && data.object.length > 0) {
+        this.setState({ hasNoAddress: false })
+      } else {
+        this.setState({ hasNoAddress: true })
+      }
+    }
+  }
+
 
   render() {
-    let { orderDetail, userAddressVo } = this.state;
+    let { orderDetail, userAddressVo, hasNoAddress } = this.state;
     return (
       <View className='order-edit-wrapper'>
         <View className="address-info" onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/myAddress/index?selectedId=${userAddressVo.id}&isSelectStatus=true`
-          })
+          if (hasNoAddress) {
+            Taro.navigateTo({
+              url: `/pages/myAddressEdit/index?isSelectStatus=true`
+            })
+          } else {
+            Taro.navigateTo({
+              url: `/pages/myAddress/index?selectedId=${userAddressVo.id}&isSelectStatus=true`
+            })
+          }
         }}>
           {/* <View className="iconfont icondizhiguanli"></View> */}
-          <View className='at-icon at-icon-add-circle'></View>
+          {
+            !userAddressVo || !userAddressVo.id ?
+              <View className='at-icon at-icon-add-circle'></View> :
+              null
+          }
           <View className="content">
             {
               !userAddressVo || !userAddressVo.id ?

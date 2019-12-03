@@ -6,6 +6,14 @@ import { View, Input, Text, Picker } from '@tarojs/components'
 
 import { getAddressList, addAddress, editAddress } from '../../api/user'
 
+import { connect } from '@tarojs/redux'
+import { addSelectedAddress } from '../../reducers/actions/selectedAddress'
+
+@connect(
+  state => state,
+  { addSelectedAddress }
+)
+
 export default class MyAddrEdit extends Component {
 
   /**
@@ -49,7 +57,7 @@ export default class MyAddrEdit extends Component {
   }
 
   async submitAddress() {
-    let {addressId, addressInfo} = this.state
+    let { addressId, addressInfo } = this.state
     let data: any;
     if (addressId) {
       data = await editAddress({ ...addressInfo })
@@ -62,10 +70,14 @@ export default class MyAddrEdit extends Component {
         icon: 'none'
       })
     } else {
-      Taro.showToast({
-        title: addressId ? '修改成功' : '新增成功',
-        icon: 'none'
-      })
+      if (this.$router.params.isSelectStatus) {
+        this.props.addSelectedAddress(data.object)
+      } else {
+        Taro.showToast({
+          title: addressId ? '修改成功' : '新增成功',
+          icon: 'none'
+        })
+      }
       Taro.navigateBack()
     }
   }
@@ -155,7 +167,7 @@ export default class MyAddrEdit extends Component {
           />
         </AtForm>
         <View className="footer-container">
-          <AtButton className="submit-button" onClick={this.submitAddress.bind(this)} type="primary">保存地址</AtButton>
+          <AtButton className="submit-button" onClick={this.submitAddress.bind(this)} type="primary">{this.$router.params.isSelectStatus ? '添加并保存' : '保存地址'}</AtButton>
           {/* <AtButton full className="delete-button" onClick={this.deleteAddress.bind(this)} type="secondary">删除地址</AtButton> */}
         </View>
       </View >

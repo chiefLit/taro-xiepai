@@ -6,7 +6,7 @@ import './index.less'
 import { getAddressList } from '../../api/user'
 import noDataImage from '../../assets/images/no-data-address.png'
 
-import { STORAGE_NAME } from '../../config'
+// import { STORAGE_NAME } from '../../config'
 import { connect } from '@tarojs/redux'
 import { addSelectedAddress } from '../../reducers/actions/selectedAddress'
 

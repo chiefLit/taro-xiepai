@@ -32,6 +32,7 @@ export default class OrderDetail extends Component {
       totalPrice: 0,
       couponId: null,
       couponAmount: 0,
+      realPayAmount: 0,
       realPayPrice: 0,
       storeVo: {},
       toStoreId: null,
@@ -104,7 +105,7 @@ export default class OrderDetail extends Component {
 
   async toOrderById() {
     let data: any = await orderApi.toOrderById({
-      orderId: 
+      orderId: this.state.orderDetail.id
     });
     if (data.code !== 1) {
       Taro.showToast({
@@ -173,7 +174,7 @@ export default class OrderDetail extends Component {
             orderStatusToValue(orderDetail.status, 1) ?
               <View className="status-desc">
                 {
-                  orderDetail.status === 2 ?
+                  orderDetail.status === -2 ?
                     orderDetail.closeReason :
                     orderStatusToValue(orderDetail.status, 1)
                 }
@@ -237,7 +238,7 @@ export default class OrderDetail extends Component {
           <View className="module-list">
             <View className="key">优惠券</View>
             <View className="value">
-              {orderDetail.couponId ? <Text>-￥ {orderDetail.couponAmount}</Text> : null}
+              {orderDetail.couponId ? <Text>-￥{orderDetail.couponAmount}</Text> : '未使用'}
               {/* <Text>暂无可用</Text> */}
             </View>
             {orderDetail.status === undefined ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null}
@@ -261,7 +262,7 @@ export default class OrderDetail extends Component {
             orderDetail.status !== 0 ?
               <View className="module-list">
                 <View className="key">实际支付</View>
-                <View className="value red">￥{orderDetail.realPayPrice.toFixed(2)}</View>
+                <View className="value red">￥{orderDetail.realPayAmount.toFixed(2)}</View>
               </View> :
               null
           }

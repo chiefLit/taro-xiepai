@@ -4,7 +4,7 @@ import './index.less'
 import { AtIcon, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 
 import { getExpressCompanyList } from '../../api/common'
-import { addExpressInfo } from '../../api/service'
+import * as orderApi from '../../api/order'
 import {storeInfo} from '../../config'
 
 export default class ExpressInfo extends Component {
@@ -70,7 +70,7 @@ export default class ExpressInfo extends Component {
       Taro.showToast({ title: '请填写单号', icon: 'none' })
       return
     }
-    let data: any = await addExpressInfo({
+    let data: any = await orderApi.addExpressInfo({
       orderId: this.$router.params.id,
       toStoreId: 1,
       toStoreExpressId: this.state.selectedExpressCompany.id,

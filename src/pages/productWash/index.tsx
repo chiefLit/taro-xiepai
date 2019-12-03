@@ -192,7 +192,7 @@ export default class productWash extends Component {
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
-    let data: any = await toCartByWash({
+    const data: any = await toCartByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -201,11 +201,21 @@ export default class productWash extends Component {
         icon: 'none'
       })
     } else {
-      Taro.showToast({
-        title: '添加购物车成功',
-        icon: 'success'
+      Taro.showModal({
+        title: '添加成功',
+        content: '已添加进购物车，是否继续添加订单？',
+        cancelText: '返回首页',
+        confirmText: '继续添加',
+        success: (res) => { 
+          if (res.cancel) {
+            Taro.switchTab({
+              url: '/pages/home/index'
+            })
+          } else {
+            this.initData();
+          }
+        }
       })
-      this.initData();
     }
   }
 

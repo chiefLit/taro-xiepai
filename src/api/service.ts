@@ -33,18 +33,6 @@ export function toCartByWash(data) {
   return axios(config);
 }
 
-// 订单-补充到店物流信息
-export function addExpressInfo(data) {
-  const config = {
-    method: 'post',
-    url: '/api/wxmp/service/wash/add-to-store-express-info',
-    // mockData: require('../../mock/addExpressInfo.json'),
-    data: data
-  }
-  return axios(config);
-}
-
-
 // 收银台-from单品-洗鞋
 export function toCashierByWash(data) {
   const config = {

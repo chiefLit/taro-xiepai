@@ -76,3 +76,15 @@ export function orderCancel(data) {
   }
   return axios(config);
 }
+
+// 订单-补充到店物流信息
+export function addExpressInfo(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/order/add-to-store-express-info',
+    // mockData: require('../../mock/addExpressInfo.json'),
+    data: data
+  }
+  return axios(config);
+}
+
