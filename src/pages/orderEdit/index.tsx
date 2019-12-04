@@ -197,7 +197,7 @@ export default class OrderEdit extends Component {
             title: "支付成功",
             icon: "none"
           }).then(() => {
-            Taro.redirectTo({ url: `/pages/orderList/index?index=1` })
+            Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
           }))
         },
         fail(res) {
@@ -209,7 +209,7 @@ export default class OrderEdit extends Component {
             title: "支付失败",
             icon: "none"
           }).then(() => {
-            Taro.redirectTo({ url: `/pages/orderList/index?index=0` })
+            Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
           }))
         }
       })

@@ -8,7 +8,7 @@ import PopupAuthorization from '../../components/PopupAuthorization'
 
 
 import * as commonApi from '../../api/common'
-import { checkPhoneLogin } from '../../api/user'
+import * as userApi from '../../api/user'
 
 
 export default class Home extends Component {
@@ -129,9 +129,15 @@ export default class Home extends Component {
               articleList.map((ele: any, index: Number) => {
                 return (
                   <SwiperItem className="swiper-item" key={ele.id} onClick={() => {
-                    ele.linkUrl && Taro.navigateTo({
-                      url: `/pages/wechatWebView/index?title=${ele.title}&url=${ele.linkUrl}`
-                    })
+                    if (ele.linkType === 1) {
+                      ele.linkUrl && Taro.navigateTo({
+                        url: ele.linkUrl
+                      })
+                    } else {
+                      ele.linkUrl && Taro.navigateTo({
+                        url: `/pages/wechatWebView/index?title=${ele.title}&url=${ele.linkUrl}`
+                      })
+                    }
                   }}>
                     <View className={bannerIndex === index ? 'banner active' : 'banner'} style={{ 'background': '#ccc' }}>
                       <Image style={{ minWidth: '100%' }} mode="aspectFill" src={ele.imageUrl}></Image>
@@ -162,7 +168,7 @@ export default class Home extends Component {
               this.dailyServices.map((ele) => {
                 return (
                   <View className="daily-item" key={ele.name} onClick={async () => {
-                    const res = await checkPhoneLogin();
+                    const res = await userApi.checkPhoneLogin();
                     if (res) {
                       Taro.navigateTo({
                         url: ele.url

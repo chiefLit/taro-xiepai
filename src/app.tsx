@@ -88,7 +88,7 @@ class App extends Component {
   }
 
   async componentWillMount() {
-    await getUserInfo()
+    await getUserInfo(false)
   }
 
   componentDidHide() { }
