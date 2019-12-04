@@ -67,14 +67,10 @@ export default class OrderSteps extends Component {
                 <View className="item-express">
                   <View className="title">{ele.operate}</View>
                   <View className="desc" onClick={() => {
-                    // if (ele.status === 2 || ele.status === 6) {
-                    //   const url = 'https://www.kdniao.com/JSInvoke/MSearchResult.aspx?expCode=YTO&expNo=YT4065793763601&sortType=DESC&color=rgb(46,114,251)'
-                    //   const title = '快递详情'
-                    //   Taro.navigateTo({
-                    //     url: `/pages/wechatWebView/index?url=${url}&title=${title}`
-                    //   })
-                    // }
-                    // }}>{ele.remark}</View>
+                    if (ele.status !== 2 && ele.status !== 6) return
+                    Taro.navigateTo({
+                      url: `/pages/expressSteps/index?id=${this.$router.params.id}&trend=${{ 2: 0, 6: 1 }[ele.status]}`
+                    })
                   }}>{ele.remark} {ele.status === 2 || ele.status === 6 ? '>' : null}</View>
                 </View>
               </View>

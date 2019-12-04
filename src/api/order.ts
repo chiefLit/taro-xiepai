@@ -88,3 +88,16 @@ export function addExpressInfo(data) {
   return axios(config);
 }
 
+// 订单-查看物流信息
+export function findOrderExpressLog(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/order/find-order-express-log',
+    // mockData: require('../../mock/addExpressInfo.json'),
+    data: data
+  }
+  return axios(config);
+}
+
+
+

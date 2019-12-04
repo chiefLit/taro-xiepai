@@ -39,7 +39,6 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.pullData()
-    this.getKdInfo()
   }
 
   async pullData() {
@@ -58,11 +57,6 @@ export default class Home extends Component {
         faqList: data.object.faqList || []
       })
     }
-  }
-
-  async getKdInfo(){
-    const data = await commonApi.getKdInfo(null)
-    console.log(data)
   }
 
   dailyServices = [
