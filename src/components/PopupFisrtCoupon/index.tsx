@@ -24,8 +24,8 @@ export default class FirstCoupon extends Component {
     return (
       <View className='popup-first-coupon-wrapper'>
         <View className="mask-module"></View>
-        <View className="content-module" onClick={receive.bind(this)}>
-          <AtIcon value='close' size='20' color='#fff' onClick={cancel.bind(this)}></AtIcon>
+        <View className="content-module" onClick={receive}>
+          <AtIcon value='close' size='20' color='#fff' onClick={cancel}></AtIcon>
           <Image className="coupon-card" src={couponCardImage}></Image>
           <View className="cover-box">
           </View>
