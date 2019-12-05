@@ -1,0 +1,124 @@
+.popup-first-coupon-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+
+  .mask-module {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  at-icon {
+    z-index: 1;
+    position: absolute;
+    top: -100rpx;
+    right: -10rpx;
+    color: #fff;
+    // font-size: 50rpx;
+    width: 50rpx;
+    height: 50rpx;
+  }
+
+  .content-module {
+    position: relative;
+    height: 535rpx;
+    width: 500rpx;
+    border-radius: 12rpx;
+    background: #910000;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -267rpx 0 0 -250rpx;
+
+    .coupon-card {
+      position: absolute;
+      top: -38rpx;
+      left: 50%;
+      margin-left: -226rpx;
+      height: 173rpx;
+      width: 452rpx;
+    }
+
+    .cover-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 450rpx;
+      border-top: 45rpx solid transparent;
+      border-left: 250rpx solid #E13838;
+      border-right: 250rpx solid #E13838;
+    }
+
+    .conpon-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      // height: 100%;
+
+      .price-box {
+        display: flex;
+        color: #FFE8BD;
+        justify-content: center;
+        align-items: flex-end;
+        margin-bottom: 43rpx;
+
+        .unit {
+          font-size: 53px;
+          font-family: Arial-Black, Arial;
+          font-weight: 900;
+          color: rgba(255, 232, 189, 1);
+          line-height: 53px;
+          background: linear-gradient(180deg, rgba(254, 255, 254, 1) 0%, rgba(254, 226, 187, 1) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .price {
+          font-size: 80px;
+          font-family: Arial-Black, Arial;
+          font-weight: 900;
+          color: rgba(255, 232, 189, 1);
+          line-height: 80px;
+          background: linear-gradient(180deg, rgba(254, 255, 254, 1) 0%, rgba(254, 226, 187, 1) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      }
+
+      .desc {
+        font-size: 40px;
+        font-family: Arial-Black, Arial;
+        font-weight: 900;
+        color: rgba(254, 248, 234, 1);
+        line-height: 57px;
+        text-align: center;
+        margin-bottom: 39rpx;
+      }
+
+      .button {
+        margin: 0 auto;
+        width: 427rpx;
+        height: 89rpx;
+        background: linear-gradient(90deg, rgba(247, 233, 200, 1) 0%, rgba(245, 213, 159, 1) 100%);
+        border-radius: 5px;
+
+        font-size: 32px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color: rgba(63, 35, 13, 1);
+        line-height: 45px;
+        text-align: center;
+        padding: 23rpx 0;
+        margin-bottom: 43rpx;
+      }
+    }
+  }
+}

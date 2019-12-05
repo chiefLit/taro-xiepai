@@ -42,7 +42,7 @@ class App extends Component {
       'pages/productWash/index',
       'pages/orderEdit/index',
       'pages/orderDetail/index',
-      'pages/activity/firstOrder/index',
+      'pages/activity/firstLogin/index',
       'pages/orderList/index',
       'pages/couponList/index',
       'pages/couponSelect/index',

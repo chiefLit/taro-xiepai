@@ -5,6 +5,7 @@ import './index.less'
 import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
 import PopupAuthorization from '../../components/PopupAuthorization'
+import PopupFisrtCoupon from '../../components/PopupFisrtCoupon'
 
 
 import * as commonApi from '../../api/common'
@@ -34,7 +35,8 @@ export default class Home extends Component {
     bannerList: [],
     couponList: [],
     faqList: [],
-    showPopupAuthorization: false
+    showPopupAuthorization: false,
+    showPopupFisrtCoupon: false
   }
 
   componentWillMount() {
@@ -60,8 +62,8 @@ export default class Home extends Component {
   }
 
   dailyServices = [
-    { name: '清洗球鞋', price: '49', imageUrl: qxImage, url: '/pages/productWash/index' },
-    { name: '修复球鞋', price: '64', imageUrl: xfImage, url: '/pages/productMend/index' }
+    { name: '清洗球鞋', price: '49', desc: '手工洗鞋', imageUrl: qxImage, url: '/pages/productWash/index' },
+    { name: '修复球鞋', price: '64', desc: '极致修复', imageUrl: xfImage, url: '/pages/productMend/index' }
   ]
 
   processList = [
@@ -112,7 +114,7 @@ export default class Home extends Component {
   }
 
   render() {
-    let { articleList, bannerIndex, faqList, showPopupAuthorization } = this.state;
+    let { articleList, bannerIndex, faqList, showPopupAuthorization, showPopupFisrtCoupon } = this.state;
     return (
       <View className='home-wrapper'>
         {/* swiper */}
@@ -179,7 +181,7 @@ export default class Home extends Component {
                   }}>
                     <View className="name">{ele.name}</View>
                     <View className="price">￥ <Text>{ele.price}</Text></View>
-                    <View className="desc">最低</View>
+                    <View className="desc">{ele.desc}</View>
                     <Image className="" src={ele.imageUrl} mode="aspectFit"></Image>
                   </View>
                 )
@@ -244,6 +246,17 @@ export default class Home extends Component {
         {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
           this.handlePopupAuthorization(res)
         }} /> : null}
+
+        {showPopupFisrtCoupon ? <PopupFisrtCoupon cancel={() => {
+          this.setState({
+            showPopupFisrtCoupon: false
+          })
+        }} receive={() => {
+          this.setState({
+            showPopupFisrtCoupon: false
+          })
+          console.log(2312)
+        }}/> : null}
       </View>
     )
   }
