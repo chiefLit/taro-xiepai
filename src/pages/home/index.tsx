@@ -7,10 +7,12 @@ import xfImage from '../../assets/images/xf.png'
 import PopupAuthorization from '../../components/PopupAuthorization'
 import PopupFisrtCoupon from '../../components/PopupFisrtCoupon'
 
-
 import * as commonApi from '../../api/common'
 import * as userApi from '../../api/user'
+import * as couponApi from '../../api/coupon'
 
+import storage from '../../utils/storage'
+import { STORAGE_NAME } from '../../config'
 
 export default class Home extends Component {
   constructor() {
@@ -29,6 +31,7 @@ export default class Home extends Component {
   }
 
   state = {
+    userInfo: {},
     bannerIndex: 0,
 
     articleList: [],
@@ -36,11 +39,13 @@ export default class Home extends Component {
     couponList: [],
     faqList: [],
     showPopupAuthorization: false,
-    showPopupFisrtCoupon: false
+    showPopupFisrtCoupon: false,
+    firstLoginCouponId: null,
   }
 
   componentWillMount() {
     this.pullData()
+    // this.firstLoginActivity()
   }
 
   async pullData() {
@@ -75,36 +80,47 @@ export default class Home extends Component {
     { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' }
   ]
 
-  renderFaq() {
-    let { faqList } = this.state;
-    return (
-      <View className="module-container">
-        <View className="module-title">
-          <Text className="line1">常见问题</Text>
-          <Text className="line2">Q&A</Text>
-          <View className="title-right-btn" onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/faqList/index'
-            })
-          }}>
-            <Text>全部</Text>
-            <View className='at-icon at-icon-chevron-right'></View>
-          </View>
-        </View>
-        <View className="qa">
-          {
-            faqList.map((ele: any) => {
-              return (
-                <View className="qa-item" key={ele.id}>
-                  <View className="item-q">{ele.title}</View>
-                  <View className="item-a">{ele.content}</View>
-                </View>
-              )
-            })
-          }
-        </View>
-      </View>
-    );
+  // 判断是否领取首次登陆优惠券
+  async firstLoginActivity() {
+    const disableShowPopupFisrtCoupon = storage.getStorage(STORAGE_NAME.disableShowPopupFisrtCoupon, null)
+    if (disableShowPopupFisrtCoupon) return
+    const userInfo = await userApi.getUserInfo(true)
+    if (userInfo.id) {
+      const data: any = await couponApi.getCouponSchemeList({ putLocation: 'index' })
+      if (data.code === 1) {
+        const firstLoginCoupon = data.object[0]
+        if (firstLoginCoupon.currentUserDrawStatus === 0) {
+          this.setState({
+            firstLoginCouponId: firstLoginCoupon.id,
+            showPopupFisrtCoupon: true,
+            userInfo
+          })
+        }
+      }
+    }
+  }
+  // 领取首次登陆优惠券
+  async getFirstLoginCoupon(callBack) {
+    const data: any = await couponApi.getCoupon({ schemeId: this.state.firstLoginCouponId })
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none'
+      })
+    } else {
+      if (this.state.userInfo.phone) {
+        Taro.showToast({
+          title: '领取成功，快去使用优惠券吧',
+          icon: 'none'
+        })
+      } else {
+        Taro.showToast({
+          title: '领取成功，登录后使用',
+          icon: 'none'
+        })
+      }
+    }
+    callBack && callBack()
   }
 
   handlePopupAuthorization(state: boolean) {
@@ -248,16 +264,50 @@ export default class Home extends Component {
         }} /> : null}
 
         {showPopupFisrtCoupon ? <PopupFisrtCoupon cancel={() => {
+          storage.setStorage(STORAGE_NAME.disableShowPopupFisrtCoupon, true)
           this.setState({
             showPopupFisrtCoupon: false
           })
         }} receive={() => {
-          this.setState({
-            showPopupFisrtCoupon: false
+          this.getFirstLoginCoupon(() => {
+            this.setState({
+              showPopupFisrtCoupon: false
+            })
           })
-          console.log(2312)
-        }}/> : null}
+        }} /> : null}
       </View>
     )
+  }
+
+  renderFaq() {
+    let { faqList } = this.state;
+    return (
+      <View className="module-container">
+        <View className="module-title">
+          <Text className="line1">常见问题</Text>
+          <Text className="line2">Q&A</Text>
+          <View className="title-right-btn" onClick={() => {
+            Taro.navigateTo({
+              url: '/pages/faqList/index'
+            })
+          }}>
+            <Text>全部</Text>
+            <View className='at-icon at-icon-chevron-right'></View>
+          </View>
+        </View>
+        <View className="qa">
+          {
+            faqList.map((ele: any) => {
+              return (
+                <View className="qa-item" key={ele.id}>
+                  <View className="item-q">{ele.title}</View>
+                  <View className="item-a">{ele.content}</View>
+                </View>
+              )
+            })
+          }
+        </View>
+      </View>
+    );
   }
 }
