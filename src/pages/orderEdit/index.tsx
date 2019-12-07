@@ -203,7 +203,7 @@ export default class OrderEdit extends Component {
         fail: (res) => {
           this.userPayResult({
             payOrderId: data.object.payOrderId,
-            result: 'SUCCESS',
+            result: 'FAIL',
             resultDesc: JSON.stringify(res)
           }, Taro.showToast({
             title: "支付失败",

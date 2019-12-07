@@ -9,8 +9,6 @@ import './app.scss'
 
 import Home from './pages/home/index'
 import configStore from './store'
-import * as userApi from './api/user'
-import * as couponApi from './api/coupon'
 
 const store = configStore()
 
@@ -65,6 +63,7 @@ class App extends Component {
     tabBar: {
       color: '#999999',
       selectedColor: '#1a1a1a',
+      borderStyle: 'white',
       list: [
         {
           pagePath: 'pages/home/index',
@@ -87,25 +86,6 @@ class App extends Component {
       ]
     }
   }
-
-  // async componentWillMount() {
-  //   const userInfo = await userApi.getUserInfo(true)
-  //   if (userInfo.id) {
-  //     const data: any = await couponApi.getCouponSchemeList({ putLocation: 'index'})
-  //     if (data.code !== 1) {
-  //       Taro.showToast({
-  //         title: data.message,
-  //         icon: 'none'
-  //       })
-  //     } else {
-  //       let couponSchemeList = data.object
-  //       let firstLoginCoupon = couponSchemeList[0]
-  //       if (firstLoginCoupon.currentUserDrawStatus === 0) {
-  //         this.
-  //       }
-  //     }
-  //   }
-  // }
 
   componentDidHide() { }
 
