@@ -45,7 +45,7 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.pullData()
-    // this.firstLoginActivity()
+    this.firstLoginActivity()
   }
 
   async pullData() {
@@ -100,8 +100,8 @@ export default class Home extends Component {
     }
   }
   // 领取首次登陆优惠券
-  async getFirstLoginCoupon(callBack) {
-    const data: any = await couponApi.getCoupon({ schemeId: this.state.firstLoginCouponId })
+  async drawFirstLoginCoupon(callBack) {
+    const data: any = await couponApi.drawCoupon({ schemeId: this.state.firstLoginCouponId })
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -269,7 +269,7 @@ export default class Home extends Component {
             showPopupFisrtCoupon: false
           })
         }} receive={() => {
-          this.getFirstLoginCoupon(() => {
+          this.drawFirstLoginCoupon(() => {
             this.setState({
               showPopupFisrtCoupon: false
             })

@@ -112,10 +112,10 @@ export default class CouponList extends Component {
       <View className="coupon-item">
         <View className="name">
           <Text className="num">{item.type === 1 ? item.discountRate : item.faceAmount}</Text>
-          <Text className="unit"> {item.type === 1 ? '折' : '%'}</Text>
+          <Text className="unit"> {item.type === 1 ? '%' : '元'}</Text>
         </View>
         <View className="info">
-          <View className="line1">{item.name}</View>
+          <View className="line1">{item.title}</View>
           <View className="line2">{item.describe}</View>
         </View>
         <View className={isActive ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
@@ -149,7 +149,7 @@ export default class CouponList extends Component {
             }) :
             this.renderNoData()
         }
-        {dataList.length > 0 ? <AtDivider content='没有更多了' /> : null}
+        {/* {dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
       </View>
     )
   }

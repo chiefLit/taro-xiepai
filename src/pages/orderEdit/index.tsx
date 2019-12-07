@@ -192,7 +192,7 @@ export default class OrderEdit extends Component {
           this.userPayResult({
             payOrderId: data.object.payOrderId,
             result: 'SUCCESS',
-            resultDesc: res
+            resultDesc: JSON.stringify(res)
           }, Taro.showToast({
             title: "支付成功",
             icon: "none"
@@ -200,11 +200,11 @@ export default class OrderEdit extends Component {
             Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
           }))
         },
-        fail(res) {
+        fail: (res) => {
           this.userPayResult({
             payOrderId: data.object.payOrderId,
             result: 'SUCCESS',
-            resultDesc: res
+            resultDesc: JSON.stringify(res)
           }, Taro.showToast({
             title: "支付失败",
             icon: "none"

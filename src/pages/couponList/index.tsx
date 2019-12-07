@@ -68,7 +68,7 @@ export default class CouponList extends Component {
    * @param callBack 回调
    */
   async pullData(page: any, index: Number, callBack: any) {
-    let data = await getCouponList(page.params)
+    let data: any = await getCouponList(page.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -152,10 +152,10 @@ export default class CouponList extends Component {
       <View className="coupon-item">
         <View className="name">
           <Text className="num">{item.type === 1 ? item.discountRate : item.faceAmount}</Text>
-          <Text className="unit"> {item.type === 1 ? '折' : '%'}</Text>
+          <Text className="unit">{item.type === 1 ? '%' : '元'}</Text>
         </View>
         <View className="info">
-          <View className="line1">{item.name}</View>
+          <View className="line1">{item.title}</View>
           <View className="line2">{item.describe}</View>
         </View>
         <View className="left-icon circle-icon"></View>

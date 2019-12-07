@@ -122,7 +122,7 @@ export default class OrderDetail extends Component {
           this.userPayResult({
             payOrderId: this.state.orderDetail.id,
             result: 'SUCCESS',
-            resultDesc: res
+            resultDesc: JSON.stringify(res)
           }, Taro.showToast({
             title: "支付成功",
             icon: "none"
@@ -134,7 +134,7 @@ export default class OrderDetail extends Component {
           this.userPayResult({
             payOrderId: this.state.orderDetail.id,
             result: 'FAIL',
-            resultDesc: res
+            resultDesc: JSON.stringify(res)
           }, Taro.showToast({
             title: "支付失败",
             icon: "none"
