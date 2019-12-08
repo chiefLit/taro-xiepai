@@ -63,7 +63,7 @@ export default class FirstOrder extends Component {
 
   // 判断是否领取首次登陆优惠券
   async firstLoginActivity() {
-    const userInfo = await userApi.getUserInfo(true)
+    const userInfo = await userApi.getUserInfo(false)
     const data: any = await couponApi.getCouponSchemeList({ putLocation: 'index' })
     if (data.code === 1) {
       const firstLoginCoupon = data.object[0]
