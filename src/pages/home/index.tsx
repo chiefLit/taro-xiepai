@@ -162,7 +162,7 @@ export default class Home extends Component {
                       })
                     } else {
                       ele.linkUrl && Taro.navigateTo({
-                        url: `/pages/wechatWebView/index?title=${ele.title}&url=${ele.linkUrl}`
+                        url: `/pages/wechatWebView/index?title=${ele.title}&url=${encodeURIComponent(ele.linkUrl)}`
                       })
                     }
                   }}>

@@ -16,9 +16,8 @@ export default class WeChatWebView extends Component {
   }
 
   componentWillMount () { 
-    let params: any = this.$router.params;
     Taro.setNavigationBarTitle({
-      title: params.title
+      title: this.$router.params.title
     })
   }
 
