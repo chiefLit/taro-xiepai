@@ -171,6 +171,7 @@ export default class OrderEdit extends Component {
     params.deliverMode = 1
 
     let data: any;
+    const userPayResult = this.userPayResult.bind(this)
     if (this.formCartParams.cartIds.length) {
       data = await orderApi.toOrderByCart(params)
     } else {
@@ -189,7 +190,7 @@ export default class OrderEdit extends Component {
         signType: data.object.clientPayMap.signType,
         paySign: data.object.clientPayMap.paySign,
         success: (res) => {
-          this.userPayResult({
+          userPayResult({
             payOrderId: data.object.payOrderId,
             result: 'SUCCESS',
             resultDesc: JSON.stringify(res)
@@ -201,7 +202,7 @@ export default class OrderEdit extends Component {
           }))
         },
         fail: (res) => {
-          this.userPayResult({
+          userPayResult({
             payOrderId: data.object.payOrderId,
             result: 'FAIL',
             resultDesc: JSON.stringify(res)

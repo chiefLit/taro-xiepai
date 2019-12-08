@@ -54,11 +54,11 @@ export default class OrderDetail extends Component {
   }
 
   componentDidShow() {
-    this.pullData(this.$router.params.id)
+    this.pullData()
   }
 
-  async pullData(orderId: any) {
-    let data: any = await orderApi.getOrderDetail({ orderId });
+  async pullData() {
+    let data: any = await orderApi.getOrderDetail({ orderId: this.$router.params.id });
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -92,7 +92,7 @@ export default class OrderDetail extends Component {
               title: '订单已取消',
               icon: 'none'
             }).then(() => {
-              this.pullData(this.$router.params.id)
+              this.pullData()
             })
           }
         }
@@ -102,6 +102,8 @@ export default class OrderDetail extends Component {
 
   // 支付
   async toOrderById() {
+    const userPayResult = this.userPayResult.bind(this)
+    const pullData = this.pullData.bind(this)
     Taro.showLoading()
     let data: any = await orderApi.toOrderById({
       orderId: this.state.orderDetail.id
@@ -121,7 +123,7 @@ export default class OrderDetail extends Component {
         paySign: data.object.clientPayMap.paySign,
         success: (res) => {
           Taro.showLoading()
-          this.userPayResult({
+          userPayResult({
             payOrderId: this.state.orderDetail.id,
             result: 'SUCCESS',
             resultDesc: JSON.stringify(res)
@@ -131,13 +133,13 @@ export default class OrderDetail extends Component {
               title: "支付成功",
               icon: "none"
             }).then(() => {
-              this.pullData(this.$router.params.id)
+              pullData()
             })
           })
         },
         fail: (res) => {
           Taro.showLoading()
-          this.userPayResult({
+          userPayResult({
             payOrderId: this.state.orderDetail.id,
             result: 'FAIL',
             resultDesc: JSON.stringify(res)
