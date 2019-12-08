@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.less'
-import { AtButton, AtIcon } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 
 import * as orderApi from '../../api/order'
 import * as commonApi from '../../api/common'
@@ -72,6 +72,7 @@ export default class OrderDetail extends Component {
   }
 
   // { getOrderDetail, orderCancel, toOrderById }
+  // 订单取消
   async orderCancel() {
     Taro.showModal({
       // title: '提示',
@@ -99,6 +100,7 @@ export default class OrderDetail extends Component {
     })
   }
 
+  // 支付
   async toOrderById() {
     Taro.showLoading()
     let data: any = await orderApi.toOrderById({
@@ -151,6 +153,7 @@ export default class OrderDetail extends Component {
     }
   }
 
+  // 提交结果
   async userPayResult(params: any, callBack) {
     const data: any = await commonApi.userPayResult(params);
     if (data.code !== 1) {
@@ -161,6 +164,35 @@ export default class OrderDetail extends Component {
     } else {
       callBack && callBack()
     }
+  }
+
+  // 确认收货
+  async confirmReceipt() {
+    Taro.showModal({
+      // title: '提示',
+      content: '确定已收货？',
+      success: async (res: any) => {
+        if (res.confirm) {
+          Taro.showLoading();
+          const data: any = await orderApi.confirmReceipt({
+            orderId: this.state.orderDetail.id
+          })
+          Taro.hideLoading();
+          if (data.code !== 1) {
+            Taro.showToast({
+              title: data.message,
+              icon: 'none'
+            })
+          } else {
+            Taro.showToast({
+              title: '已确认收货',
+              icon: 'none'
+            })
+            this.pullData(this.$router.params.id)
+          }
+        }
+      }
+    })
   }
 
 
@@ -302,6 +334,7 @@ export default class OrderDetail extends Component {
               phoneNumber: String(DEFAULT_CONFIG.customerServicePhone)
             })
           }}>联系客服</AtButton> : null}
+          {orderDetail.status === 6 ? <AtButton className="type1" full onClick={this.confirmReceipt.bind(this)}>确认收货</AtButton> : null}
         </View>
       </View >
     )

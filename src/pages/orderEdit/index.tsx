@@ -297,7 +297,7 @@ export default class OrderEdit extends Component {
                   <View className="service-item" key={ele.id}>
                     {
                       ele.serviceImageList.map((imageItem: any) => {
-                        return imageItem.aspect === 0 && imageItem.step === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                        return imageItem.aspect === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
                       })
                     }
                     <View className="item-info">

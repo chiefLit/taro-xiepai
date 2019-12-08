@@ -99,5 +99,16 @@ export function findOrderExpressLog(data) {
   return axios(config);
 }
 
+// 订单-用户确认收货
+export function confirmReceipt(data) {
+  const config = {
+    method: 'post',
+    url: '/api/wxmp/order/confirm-receipt',
+    // mockData: require('../../mock/addExpressInfo.json'),
+    data: data
+  }
+  return axios(config);
+}
+
 
 
