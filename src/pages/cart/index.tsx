@@ -64,7 +64,8 @@ export default class Cart extends Component {
     }
   }
 
-  deleteItem(id: Number) {
+  deleteItem(id: Number, e) {
+    e.stopPropagation()
     let { cartList, selectedList } = this.state
     Taro.showModal({
       // title: '提示',
@@ -123,7 +124,8 @@ export default class Cart extends Component {
   }
 
   // 结算
-  async settlement() {
+  async settlement(e) {
+    e.stopPropagation()
     let { selectedList } = this.state
     if (!selectedList.length) return
     let cartIds: Array<any> = selectedList.map((ele: any) => ele.id)
@@ -169,7 +171,7 @@ export default class Cart extends Component {
 
   renderCartItem(ele: any, index: Number) {
     return (
-      <View className='cart-item'>
+      <View className='cart-item' onClick={this.tapItem.bind(this, ele, index)}>
         <View className="item-header">
           <View className="info-name">
             <Text>{ele.goodzTitle}</Text>
@@ -177,9 +179,7 @@ export default class Cart extends Component {
           <View className="info-right">快递配送</View>
         </View>
         <View className="item-content">
-          <View className="icon-box" onClick={this.tapItem.bind(this, ele, index)}>
-          {this.randerIcon(ele)}
-          </View>
+          <View className="icon-box">{this.randerIcon(ele)}</View>
           <View className="image-box">
             {
               ele.cartServiceImageList.map((imgItem: any) => {

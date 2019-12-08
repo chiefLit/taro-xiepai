@@ -45,7 +45,8 @@ export default class Home extends Component {
 
   componentWillMount() {
     this.pullData()
-    this.firstLoginActivity()
+    this.getUserInfo(this.firstLoginActivity)
+    // this.firstLoginActivity()
   }
 
   async pullData() {
@@ -80,11 +81,24 @@ export default class Home extends Component {
     { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' }
   ]
 
+  async getUserInfo(callBack) {
+    const userInfo = await userApi.getUserInfo(true)
+    this.setState({
+      userInfo
+    })
+    let totalNum = Number(userInfo.processingOrderCount || 0) +  Number(userInfo.waitPayOrderCount || 0)
+    Taro.setTabBarBadge({
+      index: 2,
+      text: String(totalNum)
+    })
+    callBack && callBack(userInfo)
+  }
+
   // 判断是否领取首次登陆优惠券
-  async firstLoginActivity() {
+  async firstLoginActivity(userInfo) {
     const disableShowPopupFisrtCoupon = storage.getStorage(STORAGE_NAME.disableShowPopupFisrtCoupon, null)
     if (disableShowPopupFisrtCoupon) return
-    const userInfo = await userApi.getUserInfo(true)
+    // const userInfo = await userApi.getUserInfo(true)
     if (userInfo.id) {
       const data: any = await couponApi.getCouponSchemeList({ putLocation: 'index' })
       if (data.code === 1) {
@@ -92,8 +106,7 @@ export default class Home extends Component {
         if (firstLoginCoupon.currentUserDrawStatus === 0) {
           this.setState({
             firstLoginCouponId: firstLoginCoupon.id,
-            showPopupFisrtCoupon: true,
-            userInfo
+            showPopupFisrtCoupon: true
           })
         }
       }

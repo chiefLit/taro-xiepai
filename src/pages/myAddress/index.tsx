@@ -64,6 +64,16 @@ export default class MyAddr extends Component {
     this.pullData()
   }
 
+  selectAddress(item: any) {
+    if (!this.state.isSelectStatus) return
+    this.setState({
+      selectedAddressId: item.id
+    })
+    this.props.addSelectedAddress(item)
+
+    Taro.navigateBack()
+  }
+
   renderItem(item: any) {
     let { selectedAddressId, isSelectStatus } = this.state;
     return (
@@ -80,7 +90,8 @@ export default class MyAddr extends Component {
             </View>
           </View>
         </View>
-        <AtIcon value="edit" size="15" color="#999" onClick={() => {
+        <AtIcon value="edit" size="15" color="#999" onClick={(e) => {
+          e.stopPropagation()
           Taro.navigateTo({
             url: `/pages/myAddressEdit/index?id=${item.id}`
           })
@@ -101,16 +112,6 @@ export default class MyAddr extends Component {
         }}>立即添加</AtButton>
       </View>
     )
-  }
-
-  selectAddress(item: any) {
-    if (!this.state.isSelectStatus) return
-    this.setState({
-      selectedAddressId: item.id
-    })
-    this.props.addSelectedAddress(item)
-
-    Taro.navigateBack()
   }
 
   render() {

@@ -170,7 +170,7 @@ export default class OrderList extends Component {
               return <View className="produce-item" key={ele.id}>
                 {
                   ele.serviceImageList.map((imageItem: any) => {
-                    return imageItem.aspect === 0 ? <Image mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                    return imageItem.aspect === 0 && imageItem.step === 0 ? <Image mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
                   })
                 }
                 <View className="info">

@@ -54,10 +54,7 @@ export default class OrderDetail extends Component {
   }
 
   componentDidShow() {
-    let params: any = this.$router.params
-    // if (params.id) {
-    this.pullData(params.id)
-    // }
+    this.pullData(this.$router.params.id)
   }
 
   async pullData(orderId: any) {
@@ -94,7 +91,7 @@ export default class OrderDetail extends Component {
               title: '订单已取消',
               icon: 'none'
             }).then(() => {
-              Taro.navigateBack();
+              this.pullData(this.$router.params.id)
             })
           }
         }
@@ -103,9 +100,11 @@ export default class OrderDetail extends Component {
   }
 
   async toOrderById() {
+    Taro.showLoading()
     let data: any = await orderApi.toOrderById({
       orderId: this.state.orderDetail.id
     });
+    Taro.hideLoading()
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -119,26 +118,34 @@ export default class OrderDetail extends Component {
         signType: data.object.clientPayMap.signType,
         paySign: data.object.clientPayMap.paySign,
         success: (res) => {
+          Taro.showLoading()
           this.userPayResult({
             payOrderId: this.state.orderDetail.id,
             result: 'SUCCESS',
             resultDesc: JSON.stringify(res)
-          }, Taro.showToast({
-            title: "支付成功",
-            icon: "none"
-          }).then(() => {
-            this.pullData(this.$router.params.id)
-          }))
+          }, () => {
+            Taro.hideLoading()
+            Taro.showToast({
+              title: "支付成功",
+              icon: "none"
+            }).then(() => {
+              this.pullData(this.$router.params.id)
+            })
+          })
         },
         fail: (res) => {
+          Taro.showLoading()
           this.userPayResult({
             payOrderId: this.state.orderDetail.id,
             result: 'FAIL',
             resultDesc: JSON.stringify(res)
-          }, Taro.showToast({
-            title: "支付失败",
-            icon: "none"
-          }))
+          }, () => {
+            Taro.hideLoading()
+            Taro.showToast({
+              title: "支付失败",
+              icon: "none"
+            })
+          })
         }
       })
     }
@@ -167,18 +174,14 @@ export default class OrderDetail extends Component {
             url: `/pages/orderSteps/index?id=${orderDetail.id}`
           })
         }}>
-          <View className="status-value">{orderStatusToValue(orderDetail.status, 0)}</View>
-          {
-            orderStatusToValue(orderDetail.status, 1) ?
-              <View className="status-desc">
-                {
-                  orderDetail.status === -2 ?
-                    orderDetail.closeReason :
-                    orderStatusToValue(orderDetail.status, 1)
-                }
-              </View> :
-              null
-          }
+          <View className="status-value">{orderStatusToValue(orderDetail.status, 0)}></View>
+          <View className="status-desc">
+            {
+              orderDetail.status === -2 ?
+                <Text>{orderDetail.closeReason}</Text> :
+                <Text>{orderStatusToValue(orderDetail.status, 1)}</Text>
+            }
+          </View>
         </View>
 
         <View className="order-address">
@@ -207,7 +210,7 @@ export default class OrderDetail extends Component {
                   <View className="service-item" key={ele.id}>
                     {
                       ele.serviceImageList.map((imageItem: any) => {
-                        return imageItem.aspect === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                        return imageItem.aspect === 0 && imageItem.step === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
                       })
                     }
                     <View className="item-info">
@@ -233,14 +236,13 @@ export default class OrderDetail extends Component {
             <View className="key">运费</View>
             <View className="value">￥ 6.00</View>
           </View> */}
-          <View className="module-list">
+          {/* <View className="module-list">
             <View className="key">优惠券</View>
             <View className="value">
               {orderDetail.couponId ? <Text>-￥{orderDetail.couponAmount}</Text> : '未使用'}
-              {/* <Text>暂无可用</Text> */}
             </View>
             {orderDetail.status === undefined ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null}
-          </View>
+          </View> */}
         </View>
 
         <View className="order-price">
