@@ -124,7 +124,7 @@ export default class OrderDetail extends Component {
         success: (res) => {
           Taro.showLoading()
           userPayResult({
-            payOrderId: this.state.orderDetail.id,
+            payOrderId: data.object.payOrderId,
             result: 'SUCCESS',
             resultDesc: JSON.stringify(res)
           }, () => {
@@ -140,7 +140,7 @@ export default class OrderDetail extends Component {
         fail: (res) => {
           Taro.showLoading()
           userPayResult({
-            payOrderId: this.state.orderDetail.id,
+            payOrderId: data.object.payOrderId,
             result: 'FAIL',
             resultDesc: JSON.stringify(res)
           }, () => {
