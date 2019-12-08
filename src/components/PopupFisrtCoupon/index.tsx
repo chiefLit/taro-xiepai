@@ -24,7 +24,7 @@ export default class FirstCoupon extends Component {
     return (
       <View className='popup-first-coupon-wrapper'>
         <View className="mask-module"></View>
-        <View className="content-module" onClick={receive}>
+        <View className="content-module">
           <AtIcon value='close' size='20' color='#fff' onClick={cancel}></AtIcon>
           <Image className="coupon-card" src={couponCardImage}></Image>
           <View className="cover-box">
@@ -35,7 +35,7 @@ export default class FirstCoupon extends Component {
               <View className="price">20</View>
             </View>
             <View className="desc">新人专享优惠券</View>
-            <View className="button">立即领取</View>
+            <View className="button" onClick={receive}>立即领取</View>
           </View>
         </View>
       </View>
