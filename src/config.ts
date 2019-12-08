@@ -3,6 +3,7 @@ export const STORAGE_NAME: any = {
 
   // 首页优惠券是否展示
   disableShowPopupFisrtCoupon: '__DISABLE_SHOW_POPUP_FIRST_COUPON__',
+  
   // 用户信息
   userInfo: "__USER_INFO__",
 

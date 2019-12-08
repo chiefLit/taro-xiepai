@@ -59,6 +59,24 @@ export default class MyAddrEdit extends Component {
   async submitAddress() {
     let { addressId, addressInfo } = this.state
     let data: any;
+
+    if (!addressInfo.linkName) {
+      Taro.showToast({ title: '请填写联系人', icon: 'none' })
+      return 
+    }
+    if (!(/^1[34578]\d{9}$/.test(addressInfo.phone))) {
+      Taro.showToast({ title: '请填写正确的手机号', icon: 'none' })
+      return 
+    }
+    if (!addressInfo.provinceCode) {
+      Taro.showToast({ title: '请选择省市区', icon: 'none' })
+      return 
+    }
+    if (!addressInfo.address) {
+      Taro.showToast({ title: '请填写详细地址', icon: 'none' })
+      return 
+    }
+
     if (addressId) {
       data = await editAddress({ ...addressInfo })
     } else {
