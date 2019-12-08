@@ -88,7 +88,7 @@ export async function getUserInfo(isForce: boolean) {
     const wxRes: any = await Taro.login();
     await login({ wxCode: wxRes.code })
     const token = storage.getStorage(STORAGE_NAME.token, null)
-    console.log(token)
+    // console.log(token)
     const userData: any = await getMine()
     if (userData && userData.code === 1) {
       storage.setStorage(STORAGE_NAME.userInfo, userData.object);
@@ -145,10 +145,10 @@ export async function getMine() {
   return new Promise((resolve) => {
     storage.setStorage(STORAGE_NAME.userInfo, userData.object);
     let totalNum = Number(userData.object.processingOrderCount || 0) +  Number(userData.object.waitPayOrderCount || 0)
-    totalNum > 0 ? Taro.setTabBarBadge({
+    Taro.setTabBarBadge({
       index: 2,
-      text: String(totalNum)
-    }) : null
+      text: totalNum > 0 ? String(totalNum) : ''
+    })
     resolve(userData)
   })
 }
