@@ -50,7 +50,7 @@ export default class PopupAuthorization extends Component {
         <View className="popup-mask"></View>
         <View className="popup-container">
           <View className="popup-title">提示</View>
-          <View className="popup-content">请授权手机号</View>
+          <View className="popup-content">请授权使用您的手机号码登录</View>
           <View className="popup-footer">
             <Button className="no-button-style" onClick={this.cancel.bind(this)}>取消</Button>
             <Button open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className="no-button-style">授权</Button>

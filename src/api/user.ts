@@ -87,6 +87,8 @@ export async function getUserInfo(isForce: boolean) {
   } else {
     const wxRes: any = await Taro.login();
     await login({ wxCode: wxRes.code })
+    const token = storage.getStorage(STORAGE_NAME.token, null)
+    console.log(token)
     const userData: any = await getMine()
     if (userData && userData.code === 1) {
       storage.setStorage(STORAGE_NAME.userInfo, userData.object);

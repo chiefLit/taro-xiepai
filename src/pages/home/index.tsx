@@ -18,6 +18,7 @@ export default class Home extends Component {
   constructor() {
     super()
     this.pullData = this.pullData.bind(this)
+    this.firstLoginActivity = this.firstLoginActivity.bind(this)
   }
   /**
    * 指定config的类型声明为: Taro.Config
