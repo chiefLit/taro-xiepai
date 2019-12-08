@@ -64,8 +64,7 @@ export default class Cart extends Component {
     }
   }
 
-  deleteItem(id: Number, e) {
-    e.stopPropagation()
+  deleteItem(id: Number) {
     let { cartList, selectedList } = this.state
     Taro.showModal({
       // title: '提示',

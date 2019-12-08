@@ -22,10 +22,12 @@ export default class WeChatWebView extends Component {
     })
   }
 
+  url = "https://mp.weixin.qq.com/s?__biz=MzI4NDUxNzQzMA==&mid=2247483665&idx=1&sn=7e522636cb9910d18332a416b42cae13&chksm=ebfb7448dc8cfd5eaa16114fe5f1b5822076bdcecf49f1fa7e0d87b603b666f03f019d0ec87e&token=566012935&lang=zh_CN#rd"
+
   render () {
     return (
       <View className='web-view-wrapper'>
-        <WebView src={this.$router.params.url}></WebView>
+        <WebView src={this.url}></WebView>
       </View>
     )
   }

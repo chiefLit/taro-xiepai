@@ -156,7 +156,7 @@ export default class Home extends Component {
               articleList.map((ele: any, index: Number) => {
                 return (
                   <SwiperItem className="swiper-item" key={ele.id} onClick={() => {
-                    if (ele.linkType === 1) {
+                    if (ele.linkType === 0) {
                       ele.linkUrl && Taro.navigateTo({
                         url: ele.linkUrl
                       })
@@ -167,7 +167,7 @@ export default class Home extends Component {
                     }
                   }}>
                     <View className={bannerIndex === index ? 'banner active' : 'banner'} style={{ 'background': '#ccc' }}>
-                      <Image style={{ minWidth: '100%' }} mode="aspectFill" src={ele.imageUrl}></Image>
+                      <Image mode="aspectFill" src={ele.imageUrl}></Image>
                     </View>
                   </SwiperItem>
                 )
@@ -268,6 +268,7 @@ export default class Home extends Component {
         </View>
         {/* 常见问题 */}
         {faqList && faqList.length ? this.renderFaq() : null}
+        
         {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
           this.handlePopupAuthorization(res)
         }} /> : null}
