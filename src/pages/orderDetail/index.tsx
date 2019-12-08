@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, Block } from '@tarojs/components'
 import './index.less'
 import { AtButton } from 'taro-ui'
 
@@ -195,6 +195,18 @@ export default class OrderDetail extends Component {
     })
   }
 
+  toEditExpressInfo() {
+    Taro.navigateTo({
+      url: `/pages/expressInfoEdit/index?id=${this.state.orderDetail.id}`
+    })
+  }
+
+  callCustomerServicePhone() {
+    Taro.makePhoneCall({
+      phoneNumber: String(DEFAULT_CONFIG.customerServicePhone)
+    })
+  }
+
 
 
   render() {
@@ -322,19 +334,23 @@ export default class OrderDetail extends Component {
         <View className="footer-cover"></View>
 
         <View className="order-footer">
-          {orderDetail.status === 0 || orderDetail.status === 1 ? <AtButton className="type1" full onClick={this.orderCancel.bind(this)}>取消订单</AtButton> : null}
-          {orderDetail.status === 0 ? <AtButton className="type2" full onClick={this.toOrderById.bind(this)}>立即支付</AtButton> : null}
-          {orderDetail.status === 1 ? <AtButton className="type2" full onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/expressInfoEdit/index?id=${orderDetail.id}`
-            })
-          }}>填写快递信息</AtButton> : null}
-          {orderDetail.status !== 0 && orderDetail.status !== 1 ? <AtButton className="type2" full onClick={() => {
-            Taro.makePhoneCall({
-              phoneNumber: String(DEFAULT_CONFIG.customerServicePhone)
-            })
-          }}>联系客服</AtButton> : null}
-          {orderDetail.status === 6 ? <AtButton className="type1" full onClick={this.confirmReceipt.bind(this)}>确认收货</AtButton> : null}
+          {orderDetail.status === 0 ? <Block>
+            <AtButton className="type1" full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
+            <AtButton className="type2" full onClick={this.toOrderById.bind(this)}>立即支付</AtButton>
+          </Block> : null}
+          {orderDetail.status === 1 ? <Block>
+            <AtButton className="type1" full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
+            <AtButton className="type2" full onClick={this.toEditExpressInfo.bind(this)}>填写快递信息</AtButton>
+          </Block> : null}
+
+          {[2,3,4,5,7,8,9,-1,-2].some(ele => ele === orderDetail.status) ? <Block>
+            <AtButton className="type2" full onClick={this.callCustomerServicePhone.bind(this)}>联系客服</AtButton>
+          </Block> : null}
+
+          {orderDetail.status === 6 ? <Block>
+            <AtButton className="type1" full onClick={this.callCustomerServicePhone.bind(this)}>联系客服</AtButton>
+            <AtButton className="type2" full onClick={this.confirmReceipt.bind(this)}>确认收货</AtButton>
+          </Block> : null}
         </View>
       </View >
     )

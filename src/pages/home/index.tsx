@@ -86,11 +86,6 @@ export default class Home extends Component {
     this.setState({
       userInfo
     })
-    let totalNum = Number(userInfo.processingOrderCount || 0) +  Number(userInfo.waitPayOrderCount || 0)
-    Taro.setTabBarBadge({
-      index: 2,
-      text: String(totalNum)
-    })
     callBack && callBack(userInfo)
   }
 

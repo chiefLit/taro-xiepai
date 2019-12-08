@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
-import { getMine, improvePhone, checkPhoneLogin } from '../../api/user'
+import * as userApi from '../../api/user'
 import { storeInfo, STORAGE_NAME } from '../../config'
 import storage from '../../utils/storage'
 import PopupAuthorization from '../../components/PopupAuthorization'
@@ -55,28 +55,21 @@ export default class Mine extends Component {
   }
 
   async pullData() {
-    let data: any = await getMine()
-    if (data.code !== 1) {
-      Taro.showToast({
-        title: data.message,
-        icon: 'none'
+    let userInfo: any = await userApi.getUserInfo(true)
+    this.setState((preState: any) => ({
+      userInfo,
+      orderContentList: preState.orderContentList.map((ele: any, index: Number) => {
+        if (index === 0) ele.amount = userInfo.waitPayOrderCount
+        if (index === 1) ele.amount = userInfo.processingOrderCount
+        return ele
       })
-    } else {
-      this.setState((preState: any) => ({
-        userInfo: data.object,
-        orderContentList: preState.orderContentList.map((ele: any, index: Number) => {
-          if (index === 0) ele.amount = data.object.waitPayOrderCount
-          if (index === 1) ele.amount = data.object.processingOrderCount
-          return ele
-        })
-      }))
-    }
+    }))
   }
 
   // 获取手机号码
   async onGetPhoneNumber(res: any) {
     if (!res || !res.detail || !res.detail.encryptedData || !res.detail.iv) return
-    let data: any = await improvePhone({
+    let data: any = await userApi.improvePhone({
       encryptedData: res.detail.encryptedData,
       vi: res.detail.iv
     })
@@ -133,7 +126,7 @@ export default class Mine extends Component {
   }
 
   async handleEvents(url) {
-    const isLogin: boolean = await checkPhoneLogin();
+    const isLogin: boolean = await userApi.checkPhoneLogin();
     if (isLogin) {
       url && Taro.navigateTo({url})
     } else {

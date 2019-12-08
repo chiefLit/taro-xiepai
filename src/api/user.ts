@@ -2,6 +2,7 @@ import axios from '../utils/axios'
 import Taro from '@tarojs/taro'
 import { STORAGE_NAME } from '../config'
 import storage from '../utils/storage'
+import '@tarojs/async-await';
 
 // 补充微信用户手机号码
 export function improvePhone(data) {
@@ -50,7 +51,7 @@ export async function login(data) {
 
 // 判断手机号登录
 export async function checkPhoneLogin() {
-  const userInfo: any = await getUserInfo()
+  const userInfo: any = await getUserInfo(false)
   if (userInfo && userInfo.phone) {
     return true
   } else {
@@ -141,6 +142,11 @@ export async function getMine() {
   const userData: any = await axios(config)
   return new Promise((resolve) => {
     storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+    let totalNum = Number(userData.object.processingOrderCount || 0) +  Number(userData.object.waitPayOrderCount || 0)
+    totalNum > 0 ? Taro.setTabBarBadge({
+      index: 2,
+      text: String(totalNum)
+    }) : null
     resolve(userData)
   })
 }
