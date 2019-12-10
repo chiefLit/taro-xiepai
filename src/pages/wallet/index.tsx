@@ -16,15 +16,7 @@ export default class Home extends Component {
     navigationBarTitleText: '钱包'
   }
 
-  componentWillMount() { }
-
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
+  onShareAppMessage() {}
 
   render() {
     return (

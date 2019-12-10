@@ -16,15 +16,7 @@ export default class ServicePrice extends Component {
     backgroundColor: '#fff'
   }
 
-  componentWillMount() { }
-
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
+  onShareAppMessage() {}
 
   render() {
     let priceList = [

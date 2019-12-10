@@ -28,6 +28,8 @@ export default class MyAddrEdit extends Component {
     // navigationBarTitleText: '收货地址'
   }
 
+  onShareAppMessage() {}
+
   state = {
     addressId: '',
     addressInfo: {

@@ -32,6 +32,8 @@ export default class OrderEdit extends Component {
     navigationBarTitleText: '订单确认'
   }
 
+  onShareAppMessage() {}
+
   constructor(props) {
     super(props)
     this.calcCoupon = this.calcCoupon.bind(this)

@@ -23,6 +23,8 @@ export default class CouponList extends Component {
     enablePullDownRefresh: true
   }
 
+  onShareAppMessage() {}
+
   state = {
     current: 0,
     page0: {

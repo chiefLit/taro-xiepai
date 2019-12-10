@@ -35,6 +35,8 @@ export default class Cart extends Component {
     navigationBarTitleText: '购物车'
   }
 
+  onShareAppMessage() {}
+
   constructor(props) {
     super(props)
   }

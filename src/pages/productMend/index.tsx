@@ -17,6 +17,8 @@ export default class ProductMend extends Component {
     navigationBarTitleText: '修鞋修复'
   }
 
+  onShareAppMessage() {}
+
   componentWillMount() { }
 
   render() {

@@ -21,6 +21,8 @@ export default class OrderDetail extends Component {
     navigationBarTitleText: '订单详情'
   }
 
+  onShareAppMessage() {}
+
   state = {
     orderDetail: {
       id: null,

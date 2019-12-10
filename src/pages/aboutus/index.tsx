@@ -17,6 +17,8 @@ export default class Aboutus extends Component {
     navigationBarTitleText: '关于我们'
   }
 
+  onShareAppMessage() {}
+
   componentWillMount() { }
 
   render() {

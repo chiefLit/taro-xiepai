@@ -32,6 +32,8 @@ export default class MyAddr extends Component {
     navigationBarTitleText: '我的地址'
   }
 
+  onShareAppMessage() {}
+
   state = {
     addressList: [],
     selectedAddressId: null,

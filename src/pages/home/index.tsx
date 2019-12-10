@@ -31,6 +31,8 @@ export default class Home extends Component {
     navigationBarTitleText: 'Sneaker Pi'
   }
 
+  onShareAppMessage() {}
+
   state = {
     userInfo: {},
     bannerIndex: 0,

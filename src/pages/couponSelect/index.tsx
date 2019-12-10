@@ -1,13 +1,11 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.less'
-import { AtDivider } from 'taro-ui'
 import { getCouponList } from '../../api/coupon'
 // import iconYsx from '../../assets/images/yishixiao.png'
 // import iconYsy from '../../assets/images/yishiyong.png'
 import noDataImage from '../../assets/images/no-data-coupon.png'
 
-import { STORAGE_NAME } from '../../config'
 import { connect } from '@tarojs/redux'
 
 import { addSelectedCoupon } from '../../reducers/actions/selectedCoupon'
@@ -30,6 +28,8 @@ export default class CouponList extends Component {
   constructor(props) {
     super(props)
   }
+
+  onShareAppMessage() {}
 
   config: Config = {
     navigationBarTitleText: '优惠券',

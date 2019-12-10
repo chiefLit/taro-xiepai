@@ -19,6 +19,8 @@ export default class FirstOrder extends Component {
     navigationBarTitleText: '开业大吉,首单立减20元'
   }
 
+  onShareAppMessage() {}
+
   constructor(props) {
     super(props)
     this.drawFirstLoginCoupon = this.drawFirstLoginCoupon.bind(this)

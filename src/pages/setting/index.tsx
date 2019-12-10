@@ -16,17 +16,7 @@ export default class Setting extends Component {
     navigationBarTitleText: '设置'
   }
 
-  componentWillMount() { }
-
-  componentDidMount() { }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  handleClick() { }
+  onShareAppMessage() {}
 
   render() {
     return (
