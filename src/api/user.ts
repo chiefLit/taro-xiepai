@@ -144,11 +144,14 @@ export async function getMine() {
   const userData: any = await axios(config)
   return new Promise((resolve) => {
     storage.setStorage(STORAGE_NAME.userInfo, userData.object);
-    let totalNum = Number(userData.object.processingOrderCount || 0) +  Number(userData.object.waitPayOrderCount || 0)
-    Taro.setTabBarBadge({
-      index: 2,
-      text: totalNum > 0 ? String(totalNum) : ''
-    })
+    let totalNum = Number(userData.object.processingOrderCount || 0) + Number(userData.object.waitPayOrderCount || 0)
+    // totalNum > 0 ? Taro.showTabBarRedDot({ index: 2 }) : Taro.hideTabBarRedDot({ index: 2 })
+    totalNum > 0 ?
+      Taro.setTabBarBadge({
+        index: 2,
+        text: String(totalNum)
+      }) :
+      Taro.removeTabBarBadge({ index: 2 })
     resolve(userData)
   })
 }

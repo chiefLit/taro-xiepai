@@ -32,7 +32,7 @@ export default class OrderEdit extends Component {
     navigationBarTitleText: '订单确认'
   }
 
-  onShareAppMessage() {}
+  onShareAppMessage() { }
 
   constructor(props) {
     super(props)
@@ -174,11 +174,13 @@ export default class OrderEdit extends Component {
 
     let data: any;
     const userPayResult = this.userPayResult.bind(this)
+    Taro.showLoading()
     if (this.formCartParams.cartIds.length) {
       data = await orderApi.toOrderByCart(params)
     } else {
       data = await serviceApi.toOrderByWash(params)
     }
+    Taro.hideLoading()
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -192,28 +194,36 @@ export default class OrderEdit extends Component {
         signType: data.object.clientPayMap.signType,
         paySign: data.object.clientPayMap.paySign,
         success: (res) => {
+          Taro.showLoading()
           userPayResult({
             payOrderId: data.object.payOrderId,
             result: 'SUCCESS',
             resultDesc: JSON.stringify(res)
-          }, Taro.showToast({
-            title: "支付成功",
-            icon: "none"
-          }).then(() => {
-            Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
-          }))
+          }, () => {
+            Taro.hideLoading()
+            Taro.showToast({
+              title: "支付成功",
+              icon: "none"
+            }).then(() => {
+              Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
+            })
+          })
         },
         fail: (res) => {
+          Taro.showLoading()
           userPayResult({
             payOrderId: data.object.payOrderId,
             result: 'FAIL',
             resultDesc: JSON.stringify(res)
-          }, Taro.showToast({
-            title: "支付失败",
-            icon: "none"
-          }).then(() => {
-            Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
-          }))
+          }, () => {
+            Taro.hideLoading()
+            Taro.showToast({
+              title: "支付失败",
+              icon: "none"
+            }).then(() => {
+              Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
+            })
+          })
         }
       })
     }
