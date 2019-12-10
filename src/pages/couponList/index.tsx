@@ -79,7 +79,7 @@ export default class CouponList extends Component {
     } else {
       let dataList: Array<any> = [];
       data.object = data.object || []
-
+      
       if (page.params.currentPage === 1) {
         dataList = [...data.object];
       } else {
