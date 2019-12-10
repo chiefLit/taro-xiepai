@@ -22,8 +22,6 @@ export default class OrderList extends Component {
     enablePullDownRefresh: true
   }
 
-  onShareAppMessage() {}
-
   state = {
     current: 0,
     page0: {

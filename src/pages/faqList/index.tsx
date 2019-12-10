@@ -19,8 +19,6 @@ export default class FaqList extends Component {
     navigationBarTitleText: '常见问题'
   }
 
-  onShareAppMessage() {}
-
   state = {
     faqList: []
   }

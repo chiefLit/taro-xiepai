@@ -16,8 +16,6 @@ export default class Home extends Component {
     navigationBarTitleText: '钱包'
   }
 
-  onShareAppMessage() {}
-
   render() {
     return (
       <View className='wallet-wrapper'>

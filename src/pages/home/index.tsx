@@ -31,7 +31,12 @@ export default class Home extends Component {
     navigationBarTitleText: 'Sneaker Pi'
   }
 
-  onShareAppMessage() {}
+  onShareAppMessage() {
+    return { 
+      title: 'Sneaker Pi 潮鞋洗鞋',
+      path: '/pages/home/index'
+    }
+  }
 
   state = {
     userInfo: {},

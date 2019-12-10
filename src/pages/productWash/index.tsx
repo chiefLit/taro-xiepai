@@ -27,8 +27,6 @@ export default class productWash extends Component {
     navigationBarTitleText: '球鞋清洗'
   }
 
-  onShareAppMessage() {}
-
   constructor(props) {
     super(props)
     this.operateData = this.operateData.bind(this)

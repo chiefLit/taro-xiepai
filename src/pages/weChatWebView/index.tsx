@@ -15,8 +15,6 @@ export default class WeChatWebView extends Component {
     // navigationBarTitleText: '首页'
   }
 
-  onShareAppMessage() {}
-
   componentWillMount () { 
     Taro.setNavigationBarTitle({
       title: this.$router.params.title

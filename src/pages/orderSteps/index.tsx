@@ -18,8 +18,6 @@ export default class OrderSteps extends Component {
     navigationBarTitleText: '订单跟踪'
   }
 
-  onShareAppMessage() {}
-
   state = {
     stepList: []
   }

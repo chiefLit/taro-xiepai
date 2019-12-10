@@ -17,8 +17,6 @@ export default class ExpressSteps extends Component {
     navigationBarTitleText: '物流信息'
   }
 
-  onShareAppMessage() {}
-
   state = {
     expressSteps: []
   }

@@ -22,8 +22,6 @@ export default class Mine extends Component {
     navigationBarTitleText: '我的'
   }
 
-  onShareAppMessage() {}
-
   constructor() {
     super()
     this.onGetPhoneNumber = this.onGetPhoneNumber.bind(this)

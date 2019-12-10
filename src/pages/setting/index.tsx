@@ -16,8 +16,6 @@ export default class Setting extends Component {
     navigationBarTitleText: '设置'
   }
 
-  onShareAppMessage() {}
-
   render() {
     return (
       <View className='setting-wrapper'>

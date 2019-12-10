@@ -20,8 +20,6 @@ export default class ExpressInfo extends Component {
     navigationBarTitleText: '填写些快递信息'
   }
 
-  onShareAppMessage() {}
-
   state = {
     showExpressCompanyList: false,
     expressCompanyList: [],

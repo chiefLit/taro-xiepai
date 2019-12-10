@@ -29,8 +29,6 @@ export default class CouponList extends Component {
     super(props)
   }
 
-  onShareAppMessage() {}
-
   config: Config = {
     navigationBarTitleText: '优惠券',
     enablePullDownRefresh: true

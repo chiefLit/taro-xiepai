@@ -16,8 +16,6 @@ export default class ServicePrice extends Component {
     backgroundColor: '#fff'
   }
 
-  onShareAppMessage() {}
-
   render() {
     let priceList = [
       { content: '普通清洗', price: '49', desc: '仅清洗皮质球鞋' },
