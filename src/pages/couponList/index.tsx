@@ -78,10 +78,8 @@ export default class CouponList extends Component {
       })
     } else {
       let dataList: Array<any> = [];
-      if (page.params.currentPage === 1 && (!data.object || data.object.length === 0)) {
-        callBack && callBack()
-        return
-      }
+      data.object = data.object || []
+
       if (page.params.currentPage === 1) {
         dataList = [...data.object];
       } else {
