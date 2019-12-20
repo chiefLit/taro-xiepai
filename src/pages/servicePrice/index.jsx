@@ -1,5 +1,6 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+
 import './index.less'
 
 export default class ServicePrice extends Component {
@@ -11,13 +12,13 @@ export default class ServicePrice extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
+  config = {
     navigationBarTitleText: '服务价格',
     backgroundColor: '#fff'
   }
 
   render() {
-    let priceList = [
+    const priceList = [
       { content: '普通清洗', price: '49', desc: '仅清洗皮质球鞋' },
       { content: '中级清洗', price: '69', desc: '反皮/麂皮/绒皮' },
       { content: '高级清洗', price: '109', desc: '特殊面料/OW系列' },
@@ -31,7 +32,7 @@ export default class ServicePrice extends Component {
     ]
     return (
       <View className='service-price-wrapper'>
-        <View className="t-header">
+        <View className='t-header'>
           <View>服务内容</View>
           <View>价格</View>
           <View>备注</View>
@@ -39,7 +40,7 @@ export default class ServicePrice extends Component {
         {
           priceList.map(ele => {
             return (
-              <View className="t-body-row" key={ele.content}>
+              <View className='t-body-row' key={ele.content}>
                 <View>
                   <Text>{ele.content}</Text>
                 </View>

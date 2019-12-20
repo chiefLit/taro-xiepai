@@ -1,12 +1,13 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import './index.less'
+import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui'
+
+import './index.less'
 
 import { washServiceList, toCartByWash, toCashierByWash } from '../../api/service'
 import { DEFAULT_CONFIG } from '../../config'
 
-import { connect } from '@tarojs/redux'
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
 
 @connect(
@@ -23,9 +24,6 @@ export default class productWash extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: '球鞋清洗'
-  }
 
   constructor(props) {
     super(props)
@@ -49,16 +47,20 @@ export default class productWash extends Component {
     image2Url: ''
   }
 
-  defaultImg0Url = require('../../assets/images/photo-zm.png')
-  defaultImg1Url = require('../../assets/images/photo-cm.png')
-  defaultImg2Url = require('../../assets/images/photo-bm.png')
-
   componentWillMount() {
     this.pullData()
   }
 
+  config = {
+    navigationBarTitleText: '球鞋清洗'
+  }
+
+  defaultImg0Url = require('../../assets/images/photo-zm.png')
+  defaultImg1Url = require('../../assets/images/photo-cm.png')
+  defaultImg2Url = require('../../assets/images/photo-bm.png')
+
   initData() {
-    this.setState((preState: any) => ({
+    this.setState((preState) => ({
       chosenList: [preState.wayList[0]],
       image0Url: '',
       image1Url: '',
@@ -67,7 +69,7 @@ export default class productWash extends Component {
   }
 
   async pullData() {
-    let data: any = await washServiceList(null);
+    let data = await washServiceList(null);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message
@@ -78,7 +80,7 @@ export default class productWash extends Component {
   }
 
   // 获取数据之后操作数据
-  operateData(List: any) {
+  operateData(List) {
     let wayList = List.filter(ele => {
       return ele.classifyCode === '000001'
     })
@@ -94,21 +96,21 @@ export default class productWash extends Component {
   }
 
   // 生成已选中数据
-  handleChoose(type: Number, item: any) {
+  handleChoose(type, item) {
     if (!item) {
-      this.setState((preState: any) => {
+      this.setState((preState) => {
         let chosenList = [...preState.chosenList]
-        chosenList = chosenList.filter((ele: any) => ele.classifyCode === '000001')
+        chosenList = chosenList.filter((ele) => ele.classifyCode === '000001')
         return { chosenList }
       })
       return
     }
     // 删除
-    let index1 = this.state.chosenList.findIndex((ele: any) => {
+    let index1 = this.state.chosenList.findIndex((ele) => {
       return ele.id === item.id
     })
     if (type === 2 && index1 !== -1) {
-      this.setState((preState: any) => {
+      this.setState((preState) => {
         let chosenList = [...preState.chosenList]
         chosenList = chosenList.filter((ele, index) => index !== index1)
         return { chosenList }
@@ -116,10 +118,10 @@ export default class productWash extends Component {
       return
     }
     // 修改/添加
-    let index2 = this.state.chosenList.findIndex((ele: any) => {
+    let index2 = this.state.chosenList.findIndex((ele) => {
       return ele.group === item.group
     })
-    this.setState((preState: any) => {
+    this.setState((preState) => {
       let chosenList = [...preState.chosenList]
       index2 === -1 ? chosenList.push(item) : chosenList[index2] = item;
       return { chosenList }
@@ -127,7 +129,7 @@ export default class productWash extends Component {
   }
 
   // 计算总价
-  mathSum(list: any) {
+  mathSum(list) {
     let sum = 0;
     list.map(ele => {
       sum += ele.price
@@ -135,7 +137,7 @@ export default class productWash extends Component {
     return sum
   }
 
-  async chooseImage(index: Number) {
+  async chooseImage(index) {
     // 选择图片
     let { tempFilePaths } = await Taro.chooseImage({
       count: 1
@@ -191,8 +193,8 @@ export default class productWash extends Component {
     this.setState({ showSelectedProduct: false })
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
-    let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
-    const data: any = await toCartByWash({
+    let serviceItemIds = chosenList.map((ele) => ele.id)
+    const data = await toCartByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -223,8 +225,8 @@ export default class productWash extends Component {
     this.setState({ showSelectedProduct: false })
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
-    let serviceItemIds: Array<any> = chosenList.map((ele: any) => ele.id)
-    let data: any = await toCashierByWash({
+    let serviceItemIds = chosenList.map((ele) => ele.id)
+    let data = await toCashierByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -245,28 +247,30 @@ export default class productWash extends Component {
   randerSelectedProduct() {
     const { chosenList } = this.state
     return (
-      <View className="popup-container">
-        <View className="popup-mask" onClick={() => {
+      <View className='popup-container'>
+        <View className='popup-mask' onClick={() => {
           this.setState({
             showSelectedProduct: false
           })
-        }}></View>
-        <View className="popup-content">
-          <View className="content-title">
+        }}
+        ></View>
+        <View className='popup-content'>
+          <View className='content-title'>
             <Text>已选择项目</Text>
-            <View className="iconfont iconshanchu" onClick={() => {
+            <View className='iconfont iconshanchu' onClick={() => {
               this.setState({
                 showSelectedProduct: false
               })
-            }}></View>
+            }}
+            ></View>
           </View>
-          <View className="select-popup-list">
+          <View className='select-popup-list'>
             {
-              chosenList.map((ele: any) => {
+              chosenList.map((ele) => {
                 return (
-                  <View className="list-item" key={ele.id}>
-                    <View className="name">{ele.name}</View>
-                    <View className="price">￥{ele.price}</View>
+                  <View className='list-item' key={ele.id}>
+                    <View className='name'>{ele.name}</View>
+                    <View className='price'>￥{ele.price}</View>
                   </View>
                 )
               })
@@ -282,31 +286,31 @@ export default class productWash extends Component {
     let { wayList, productList, chosenList, showSelectedProduct, image0Url, image1Url, image2Url } = this.state
     return (
       <View className='product-wash-wrapper'>
-        <View className="module-container">
-          <View className="module-title">
-            <Text className="title">选择清洗方式</Text>
+        <View className='module-container'>
+          <View className='module-title'>
+            <Text className='title'>选择清洗方式</Text>
           </View>
-          <View className="wash-way">
+          <View className='wash-way'>
             {
-              wayList.map((ele: any) => {
-                let isActive = chosenList.some((item: any) => item.id === ele.id)
+              wayList.map((ele) => {
+                let isActive = chosenList.some((item) => item.id === ele.id)
                 return (
                   <View className={isActive ? 'way-item active' : 'way-item'} key={ele.id} onClick={this.handleChoose.bind(this, 1, ele)}>{`${ele.name} ￥${ele.price}`}</View>
                 )
               })
             }
           </View>
-          <View className="way-tips">注:普通清洗-仅清洗皮质球鞋,中级清洗-仅清洗反皮/麂皮/绒皮,高级清洗-仅清洗特殊面料/ow系列</View>
+          <View className='way-tips'>注:普通清洗-仅清洗皮质球鞋,中级清洗-仅清洗反皮/麂皮/绒皮,高级清洗-仅清洗特殊面料/ow系列</View>
         </View>
-        <View className="module-container">
-          <View className="module-title">
-            <Text className="title">选择护理项目</Text>
+        <View className='module-container'>
+          <View className='module-title'>
+            <Text className='title'>选择护理项目</Text>
           </View>
-          <View className="product-list">
-            <View className={chosenList.some((ele:any) => ele.classifyCode === '000002') ? 'product-item' : 'product-item active'}  onClick={this.handleChoose.bind(this, 2, null)}>无需护理</View>
+          <View className='product-list'>
+            <View className={chosenList.some((ele) => ele.classifyCode === '000002') ? 'product-item' : 'product-item active'}  onClick={this.handleChoose.bind(this, 2, null)}>无需护理</View>
             {
-              productList.map((ele: any) => {
-                let isActive = chosenList.some((item: any) => item.id === ele.id)
+              productList.map((ele) => {
+                let isActive = chosenList.some((item) => item.id === ele.id)
                 return (
                   <View className={isActive ? 'product-item active' : 'product-item'} key={ele.id} onClick={this.handleChoose.bind(this, 2, ele)}>{`${ele.name} ￥${ele.price}`}</View>
                 )
@@ -314,37 +318,39 @@ export default class productWash extends Component {
             }
           </View>
         </View>
-        <View className="module-container">
-          <View className="module-title">
-            <Text className="title">拍摄球鞋照片</Text>
-            <Text className="subTitle">便于我们确认您爱鞋的情况</Text>
+        <View className='module-container'>
+          <View className='module-title'>
+            <Text className='title'>拍摄球鞋照片</Text>
+            <Text className='subTitle'>便于我们确认您爱鞋的情况</Text>
           </View>
-          <View className="wash-photo">
-            <View className="photo-item" onClick={this.chooseImage.bind(this, 0)}>
-              <Image mode="aspectFill" src={image0Url ? image0Url : this.defaultImg0Url}></Image>
+          <View className='wash-photo'>
+            <View className='photo-item' onClick={this.chooseImage.bind(this, 0)}>
+              <Image mode='aspectFill' src={image0Url ? image0Url : this.defaultImg0Url}></Image>
             </View>
-            <View className="photo-item" onClick={this.chooseImage.bind(this, 1)}>
-              <Image mode="aspectFill" src={image1Url ? image1Url : this.defaultImg1Url}></Image>
+            <View className='photo-item' onClick={this.chooseImage.bind(this, 1)}>
+              <Image mode='aspectFill' src={image1Url ? image1Url : this.defaultImg1Url}></Image>
             </View>
-            <View className="photo-item" onClick={this.chooseImage.bind(this, 2)}>
-              <Image mode="aspectFill" src={image2Url ? image2Url : this.defaultImg2Url}></Image>
+            <View className='photo-item' onClick={this.chooseImage.bind(this, 2)}>
+              <Image mode='aspectFill' src={image2Url ? image2Url : this.defaultImg2Url}></Image>
             </View>
           </View>
         </View>
-        <View className="footer-cover"></View>
-        <View className="footer-container">
-          <View className="priceSum" onClick={() => {
-            this.setState({
-              showSelectedProduct: !showSelectedProduct
-            })
-          }}>
-            <View className="iconfont iconxihuxiangmu">
-              <View className="spot">{this.state.chosenList.length}</View>
+        <View className='footer-cover'></View>
+        <View className='footer-container'>
+          <View className='priceSum' 
+            onClick={() => {
+              this.setState({
+                showSelectedProduct: !showSelectedProduct
+              })
+            }}
+          >
+            <View className='iconfont iconxihuxiangmu'>
+              <View className='spot'>{this.state.chosenList.length}</View>
             </View>
             <Text>￥{this.mathSum(this.state.chosenList)}</Text>
           </View>
-          <AtButton full className="addInCart" onClick={this.addCart.bind(this)}>加入购物车</AtButton>
-          <AtButton full className="submit" onClick={this.submitOrder.bind(this)}>提交订单</AtButton>
+          <AtButton full className='addInCart' onClick={this.addCart.bind(this)}>加入购物车</AtButton>
+          <AtButton full className='submit' onClick={this.submitOrder.bind(this)}>提交订单</AtButton>
         </View>
         {showSelectedProduct ? this.randerSelectedProduct() : ''}
       </View>

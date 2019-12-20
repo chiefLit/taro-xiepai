@@ -1,6 +1,7 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import Taro, { Component } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { AtList, AtListItem } from "taro-ui"
+
 import './index.less'
 
 export default class Setting extends Component {
@@ -12,30 +13,33 @@ export default class Setting extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
+  config = {
     navigationBarTitleText: '设置'
   }
 
   render() {
     return (
       <View className='setting-wrapper'>
-        <AtList hasBorder={true}>
+        <AtList hasBorder>
           <AtListItem
             title='我的地址'
-            thumb="http://img3.imgtn.bdimg.com/it/u=2790496995,1710929494&fm=15&gp=0.jpg"
+            thumb='http://img3.imgtn.bdimg.com/it/u=2790496995,1710929494&fm=15&gp=0.jpg'
             arrow='right'
-            onClick={this.handleClick} />
+            onClick={this.handleClick} 
+          />
           <AtListItem
             title='关于我们'
-            thumb="http://img3.imgtn.bdimg.com/it/u=2790496995,1710929494&fm=15&gp=0.jpg"
+            thumb='http://img3.imgtn.bdimg.com/it/u=2790496995,1710929494&fm=15&gp=0.jpg'
             arrow='right'
-            onClick={this.handleClick} />
+            onClick={this.handleClick} 
+          />
           <AtListItem
             title='联系客服'
-            thumb="http://img3.imgtn.bdimg.com/it/u=2790496995,1710929494&fm=15&gp=0.jpg"
+            thumb='http://img3.imgtn.bdimg.com/it/u=2790496995,1710929494&fm=15&gp=0.jpg'
             arrow='right'
-            extraText="18815288276"
-            onClick={this.handleClick} />
+            extraText='18815288276'
+            onClick={this.handleClick} 
+          />
         </AtList>
       </View>
     )

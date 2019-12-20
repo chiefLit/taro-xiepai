@@ -27,24 +27,13 @@ export default class Home extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: 'Sneaker Pi'
-  }
-
-  onShareAppMessage() {
-    return { 
-      title: 'Sneaker Pi 潮鞋洗鞋',
-      path: '/pages/home/index'
-    }
-  }
-
   state = {
     userInfo: {},
     bannerIndex: 0,
 
     articleList: [],
-    bannerList: [],
-    couponList: [],
+    // bannerList: [],
+    // couponList: [],
     faqList: [],
     showPopupAuthorization: false,
     showPopupFisrtCoupon: false,
@@ -57,8 +46,20 @@ export default class Home extends Component {
     // this.firstLoginActivity()
   }
 
+  config = {
+    navigationBarTitleText: 'Sneaker Pi'
+  }
+
+  onShareAppMessage() {
+    return {
+      title: 'Sneaker Pi 潮鞋洗鞋',
+      path: '/pages/home/index'
+    }
+  }
+
+
   async pullData() {
-    let data: any = await commonApi.getIndex(null)
+    let data = await commonApi.getIndex(null)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -68,8 +69,8 @@ export default class Home extends Component {
       data.object = data.object || {}
       this.setState({
         articleList: data.object.articleList || [],
-        bannerList: data.object.bannerList || [],
-        couponList: data.object.couponList || [],
+        // bannerList: data.object.bannerList || [],
+        // couponList: data.object.couponList || [],
         faqList: data.object.faqList || []
       })
     }
@@ -103,7 +104,7 @@ export default class Home extends Component {
     if (disableShowPopupFisrtCoupon) return
     // const userInfo = await userApi.getUserInfo(true)
     if (userInfo.id) {
-      const data: any = await couponApi.getCouponSchemeList({ putLocation: 'index' })
+      const data = await couponApi.getCouponSchemeList({ putLocation: 'index' })
       if (data.code === 1) {
         const firstLoginCoupon = data.object[0]
         if (firstLoginCoupon.currentUserDrawStatus === 0) {
@@ -117,7 +118,7 @@ export default class Home extends Component {
   }
   // 领取首次登陆优惠券
   async drawFirstLoginCoupon(callBack) {
-    const data: any = await couponApi.drawCoupon({ schemeId: this.state.firstLoginCouponId })
+    const data = await couponApi.drawCoupon({ schemeId: this.state.firstLoginCouponId })
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -139,10 +140,44 @@ export default class Home extends Component {
     callBack && callBack()
   }
 
-  handlePopupAuthorization(state: boolean) {
+  handlePopupAuthorization(state) {
     this.setState({
       showPopupAuthorization: state
     })
+  }
+
+  renderFaq() {
+    let { faqList } = this.state;
+    return (
+      <View className='module-container'>
+        <View className='module-title'>
+          <Text className='line1'>常见问题</Text>
+          <Text className='line2'>Q&A</Text>
+          <View className='title-right-btn'
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/pages/faqList/index'
+              })
+            }}
+          >
+            <Text>全部</Text>
+            <View className='at-icon at-icon-chevron-right'></View>
+          </View>
+        </View>
+        <View className='qa'>
+          {
+            faqList.map(ele => {
+              return (
+                <View className='qa-item' key={ele.id}>
+                  <View className='item-q'>{ele.title}</View>
+                  <View className='item-a'>{ele.content}</View>
+                </View>
+              )
+            })
+          }
+        </View>
+      </View>
+    );
   }
 
   render() {
@@ -158,32 +193,35 @@ export default class Home extends Component {
               bannerIndex = e.detail.current
               this.setState({ bannerIndex })
             }}
-            autoplay>
+            autoplay
+          >
             {
-              articleList.map((ele: any, index: Number) => {
+              articleList.map((ele, index) => {
                 return (
-                  <SwiperItem className="swiper-item" key={ele.id} onClick={() => {
-                    if (ele.linkType === 0) {
-                      ele.linkUrl && Taro.navigateTo({
-                        url: ele.linkUrl
-                      })
-                    } else {
-                      ele.linkUrl && Taro.navigateTo({
-                        url: `/pages/wechatWebView/index?title=${ele.title}&url=${encodeURIComponent(ele.linkUrl)}`
-                      })
-                    }
-                  }}>
+                  <SwiperItem className='swiper-item' key={ele.id}
+                    onClick={() => {
+                      if (ele.linkType === 0) {
+                        ele.linkUrl && Taro.navigateTo({
+                          url: ele.linkUrl
+                        })
+                      } else {
+                        ele.linkUrl && Taro.navigateTo({
+                          url: `/pages/wechatWebView/index?title=${ele.title}&url=${encodeURIComponent(ele.linkUrl)}`
+                        })
+                      }
+                    }}
+                  >
                     <View className={bannerIndex === index ? 'banner active' : 'banner'} style={{ 'background': '#ccc' }}>
-                      <Image mode="aspectFill" src={ele.imageUrl}></Image>
+                      <Image mode='aspectFill' src={ele.imageUrl}></Image>
                     </View>
                   </SwiperItem>
                 )
               })
             }
           </Swiper>
-          <View className="dots">
+          <View className='dots'>
             {
-              articleList.map((ele: any, index: Number) => {
+              articleList.map((ele, index) => {
                 return (
                   <View className={index == bannerIndex ? 'curr dot-item' : 'dot-item'} key={ele.id}></View>
                 )
@@ -192,61 +230,51 @@ export default class Home extends Component {
           </View>
         </View>
         {/* 日常服务 */}
-        <View className="module-container">
-          {/* <View className="module-title">
-            <Text className="line1">日常服务</Text>
-            <Text className="line2">DAILY SERVICE</Text>
-          </View> */}
-          <View className="daily-service">
+        <View className='module-container'>
+          <View className='daily-service'>
             {
-              this.dailyServices.map((ele) => {
-                return (
-                  <View className="daily-item" key={ele.name} onClick={async () => {
+              this.dailyServices.map((ele) =>
+                <View className='daily-item' key={ele.name}
+                  onClick={async () => {
                     const res = await userApi.checkPhoneLogin();
-                    if (res) {
-                      Taro.navigateTo({
-                        url: ele.url
-                      })
-                    } else {
-                      this.handlePopupAuthorization(true)
-                    }
-                  }}>
-                    <View className="name">{ele.name}</View>
-                    <View className="price">￥ <Text>{ele.price}</Text></View>
-                    <View className="desc">{ele.desc}</View>
-                    <Image className="" src={ele.imageUrl} mode="aspectFit"></Image>
-                  </View>
-                )
-              })
+                    res ? Taro.navigateTo({ url: ele.url }) : this.handlePopupAuthorization(true)
+                  }}
+                >
+                  <View className='name'>{ele.name}</View>
+                  <View className='price'>￥ <Text>{ele.price}</Text></View>
+                  <View className='desc'>{ele.desc}</View>
+                  <Image className='' src={ele.imageUrl} mode='aspectFit'></Image>
+                </View>
+              )
             }
           </View>
         </View>
         {/* 服务价目 */}
-        <View className="module-container">
-          <View className="module-title">
-            <Text className="line1">服务价格</Text>
-            <Text className="line2">SERVICE PRICE</Text>
-            <View className="title-right-btn" onClick={() => {
-              Taro.navigateTo({
-                url: '/pages/servicePrice/index'
-              })
-            }}>
+        <View className='module-container'>
+          <View className='module-title'>
+            <Text className='line1'>服务价格</Text>
+            <Text className='line2'>SERVICE PRICE</Text>
+            <View className='title-right-btn'
+              onClick={() => {
+                Taro.navigateTo({ url: '/pages/servicePrice/index' })
+              }}
+            >
               <Text>查看明细</Text>
               <View className='at-icon at-icon-chevron-right'></View>
             </View>
           </View>
-          <View className="serivce-price">
-            <View className="t-header">
+          <View className='serivce-price'>
+            <View className='t-header'>
               <View>服务类型</View>
               <View>价格</View>
               <View>备注</View>
             </View>
-            <View className="t-body-row">
+            <View className='t-body-row'>
               <View>球鞋清洗</View>
               <View>49-129RMB</View>
               <View>普通/中级/高级</View>
             </View>
-            <View className="t-body-row">
+            <View className='t-body-row'>
               <View>球鞋护理</View>
               <View>15/129RMB</View>
               <View>去氧化/贴底/防水</View>
@@ -254,19 +282,19 @@ export default class Home extends Component {
           </View>
         </View>
         {/* 服务流程 */}
-        <View className="module-container">
-          <View className="module-title">
-            <Text className="line1">服务流程</Text>
-            <Text className="line2">SERVICE PROCESS</Text>
+        <View className='module-container'>
+          <View className='module-title'>
+            <Text className='line1'>服务流程</Text>
+            <Text className='line2'>SERVICE PROCESS</Text>
           </View>
-          <View className="service-process">
+          <View className='service-process'>
             {
               this.processList.map((ele) => {
                 return (
-                  <View className="process-item" key={ele.iconName}>
+                  <View className='process-item' key={ele.iconName}>
                     <View className={ele.iconName}></View>
-                    <View className="line2">{ele.line2}</View>
-                    <View className="line3">{ele.line3}</View>
+                    <View className='line2'>{ele.line2}</View>
+                    <View className='line3'>{ele.line3}</View>
                   </View>
                 )
               })
@@ -275,56 +303,29 @@ export default class Home extends Component {
         </View>
         {/* 常见问题 */}
         {faqList && faqList.length ? this.renderFaq() : null}
-        
-        {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
-          this.handlePopupAuthorization(res)
-        }} /> : null}
 
-        {showPopupFisrtCoupon ? <PopupFisrtCoupon cancel={() => {
-          storage.setStorage(STORAGE_NAME.disableShowPopupFisrtCoupon, true)
-          this.setState({
-            showPopupFisrtCoupon: false
-          })
-        }} receive={() => {
-          this.drawFirstLoginCoupon(() => {
+        {showPopupAuthorization ? <PopupAuthorization
+          changeValue={res => {
+            this.handlePopupAuthorization(res)
+          }}
+        /> : null}
+
+        {showPopupFisrtCoupon ? <PopupFisrtCoupon
+          cancel={() => {
+            storage.setStorage(STORAGE_NAME.disableShowPopupFisrtCoupon, true)
             this.setState({
               showPopupFisrtCoupon: false
             })
-          })
-        }} /> : null}
+          }}
+          receive={() => {
+            this.drawFirstLoginCoupon(() => {
+              this.setState({
+                showPopupFisrtCoupon: false
+              })
+            })
+          }}
+        /> : null}
       </View>
     )
-  }
-
-  renderFaq() {
-    let { faqList } = this.state;
-    return (
-      <View className="module-container">
-        <View className="module-title">
-          <Text className="line1">常见问题</Text>
-          <Text className="line2">Q&A</Text>
-          <View className="title-right-btn" onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/faqList/index'
-            })
-          }}>
-            <Text>全部</Text>
-            <View className='at-icon at-icon-chevron-right'></View>
-          </View>
-        </View>
-        <View className="qa">
-          {
-            faqList.map((ele: any) => {
-              return (
-                <View className="qa-item" key={ele.id}>
-                  <View className="item-q">{ele.title}</View>
-                  <View className="item-a">{ele.content}</View>
-                </View>
-              )
-            })
-          }
-        </View>
-      </View>
-    );
   }
 }

@@ -1,4 +1,4 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
@@ -18,9 +18,6 @@ export default class Mine extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: '我的'
-  }
 
   constructor() {
     super()
@@ -31,8 +28,8 @@ export default class Mine extends Component {
     userInfo: {
       id: null,
       phone: null,
-      nickName: "",
-      avatarUrl: "",
+      nickName: '',
+      avatarUrl: '',
       waitPayOrderCount: 2,
       ongoingOrderCount: 9,
       couponCount: 2
@@ -45,8 +42,12 @@ export default class Mine extends Component {
     showPopupAuthorization: false
   }
 
+  config = {
+    navigationBarTitleText: '我的'
+  }
+
   componentDidShow() {
-    const userInfo: any = storage.getStorage(STORAGE_NAME.userInfo, null)
+    const userInfo = storage.getStorage(STORAGE_NAME.userInfo, null)
     if (userInfo && userInfo.id) {
       this.setState({ userInfo })
     }
@@ -55,10 +56,10 @@ export default class Mine extends Component {
   }
 
   async pullData() {
-    let userInfo: any = await userApi.getUserInfo(true)
-    this.setState((preState: any) => ({
+    let userInfo = await userApi.getUserInfo(true)
+    this.setState((preState) => ({
       userInfo,
-      orderContentList: preState.orderContentList.map((ele: any, index: Number) => {
+      orderContentList: preState.orderContentList.map((ele, index) => {
         if (index === 0) ele.amount = userInfo.waitPayOrderCount
         if (index === 1) ele.amount = userInfo.processingOrderCount
         return ele
@@ -67,9 +68,9 @@ export default class Mine extends Component {
   }
 
   // 获取手机号码
-  async onGetPhoneNumber(res: any) {
+  async onGetPhoneNumber(res) {
     if (!res || !res.detail || !res.detail.encryptedData || !res.detail.iv) return
-    let data: any = await userApi.improvePhone({
+    let data = await userApi.improvePhone({
       encryptedData: res.detail.encryptedData,
       vi: res.detail.iv
     })
@@ -119,16 +120,16 @@ export default class Mine extends Component {
     },
   ]
 
-  handlePopupAuthorization(state: boolean) {
+  handlePopupAuthorization(state) {
     this.setState({
       showPopupAuthorization: state
     })
   }
 
   async handleEvents(url) {
-    const isLogin: boolean = await userApi.checkPhoneLogin();
+    const isLogin = await userApi.checkPhoneLogin();
     if (isLogin) {
-      url && Taro.navigateTo({url})
+      url && Taro.navigateTo({ url })
     } else {
       this.handlePopupAuthorization(true)
     }
@@ -138,16 +139,16 @@ export default class Mine extends Component {
     const { userInfo } = this.state
     return (
       userInfo.phone ?
-        <View className="user-container">
-          <Image className="head-portrait" mode="aspectFill" src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
-          <View className="username">
+        <View className='user-container'>
+          <Image className='head-portrait' mode='aspectFill' src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
+          <View className='username'>
             {/* <View>{userInfo.nickName}</View> */}
-            <View className="phone">{userInfo.phone}</View>
+            <View className='phone'>{userInfo.phone}</View>
           </View>
         </View> :
-        <Button open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className="user-container no-button-style">
-          <Image className="head-portrait" mode="aspectFill" src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
-          <View className="username">
+        <Button open-type='getPhoneNumber' onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className='user-container no-button-style'>
+          <Image className='head-portrait' mode='aspectFill' src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
+          <View className='username'>
             <View>登录/注册</View>
           </View>
         </Button>
@@ -157,27 +158,29 @@ export default class Mine extends Component {
   renderOrder() {
     const { orderContentList } = this.state
     return (
-      <View className="order-container">
-        <View className="order-header">
-          <View className="title">我的订单</View>
-          <View className="header-right-btn" onClick={() => {
+      <View className='order-container'>
+        <View className='order-header'>
+          <View className='title'>我的订单</View>
+          <View className='header-right-btn' onClick={() => {
             this.handleEvents('/pages/orderList/index')
-          }}>
+          }}
+          >
             <Text>查看全部</Text>
             <View className='at-icon at-icon-chevron-right'></View>
           </View>
         </View>
-        <View className="content-list">
+        <View className='content-list'>
           {
             orderContentList.map((ele, index) => {
               return (
-                <View className="list-item" key={ele.name} onClick={() => {
+                <View className='list-item' key={ele.name} onClick={() => {
                   this.handleEvents(`/pages/orderList/index?index=${index}`)
-                }} >
+                }} 
+                >
                   <View className={ele.iconClassName}>
-                    {ele.amount ? <View className="spot">{ele.amount}</View> : null}
+                    {ele.amount ? <View className='spot'>{ele.amount}</View> : null}
                   </View>
-                  <View className="name">{ele.name}</View>
+                  <View className='name'>{ele.name}</View>
                 </View>
               )
             })
@@ -187,14 +190,14 @@ export default class Mine extends Component {
     )
   }
 
-  renderListModule(moduleList: Array<any>) {
+  renderListModule(moduleList) {
     const { userInfo } = this.state
     return (
-      <View className="list-module">
+      <View className='list-module'>
         {
           moduleList.map((ele) => {
             return (
-              <View className="module-item" key={ele.name} onClick={() => {
+              <View className='module-item' key={ele.name} onClick={() => {
                 if (ele.skipUrl) {
                   Taro.navigateTo({
                     url: ele.skipUrl
@@ -204,10 +207,11 @@ export default class Mine extends Component {
                     phoneNumber: ele.phoneNumber
                   })
                 }
-              }}>
+              }}
+              >
                 <View className={ele.iconClassName}></View>
-                <View className="name">{ele.name}</View>
-                <View className="right-value" style={{ color: ele.color }}>{ele.isCoupon ? `${userInfo.couponCount}张` : ele.value}</View>
+                <View className='name'>{ele.name}</View>
+                <View className='right-value' style={{ color: ele.color }}>{ele.isCoupon ? `${userInfo.couponCount}张` : ele.value}</View>
                 <View className='at-icon at-icon-chevron-right'></View>
               </View>
             )
@@ -225,21 +229,22 @@ export default class Mine extends Component {
         {
           userInfo.phone ?
             this.renderOrder() :
-            <Button className="no-button-style" open-type="getPhoneNumber" onGetPhoneNumber={this.onGetPhoneNumber.bind(this)}>
+            <Button className='no-button-style' open-type='getPhoneNumber' onGetPhoneNumber={this.onGetPhoneNumber.bind(this)}>
               {this.renderOrder()}
             </Button>
         }
 
-        <View className="list-module">
+        <View className='list-module'>
           {
-            this.mineList1.map((ele: any) => {
+            this.mineList1.map((ele) => {
               return (
-                <View className="module-item" key={ele.name} onClick={() => {
+                <View className='module-item' key={ele.name} onClick={() => {
                   this.handleEvents(ele.skipUrl)
-                }}>
+                }}
+                >
                   <View className={ele.iconClassName}></View>
-                  <View className="name">{ele.name}</View>
-                  <View className="right-value" style={{ color: ele.color }}>{ele.isCoupon ? `${userInfo.couponCount}张` : ele.value}</View>
+                  <View className='name'>{ele.name}</View>
+                  <View className='right-value' style={{ color: ele.color }}>{ele.isCoupon ? `${userInfo.couponCount}张` : ele.value}</View>
                   <View className='at-icon at-icon-chevron-right'></View>
                 </View>
               )
@@ -250,7 +255,8 @@ export default class Mine extends Component {
         {this.renderListModule(this.mineList2)}
         {showPopupAuthorization ? <PopupAuthorization changeValue={res => {
           this.handlePopupAuthorization(res)
-        }} /> : null}
+        }} 
+        /> : null}
       </View>
     )
   }

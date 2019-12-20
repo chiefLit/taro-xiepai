@@ -1,11 +1,12 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+
 import './index.less'
 import bannerImage from '../../../assets/images/firstLogin/banner.png'
 import dianImage from '../../../assets/images/firstLogin/dian.png'
-
 import * as couponApi from '../../../api/coupon'
 import * as userApi from '../../../api/user'
+
 export default class FirstOrder extends Component {
 
   /**
@@ -15,9 +16,6 @@ export default class FirstOrder extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: '开业大吉,首单立减20元'
-  }
 
   constructor(props) {
     super(props)
@@ -30,12 +28,16 @@ export default class FirstOrder extends Component {
 
     userInfo: {}
   }
-
+  
   componentWillMount() {
     this.firstLoginActivity()
   }
+  
+  config = {
+    navigationBarTitleText: '开业大吉,首单立减20元'
+  }
 
-  articleList: Array<any> = [
+  articleList = [
     {
       id: 1,
       title: '活动时间',
@@ -64,7 +66,7 @@ export default class FirstOrder extends Component {
   // 判断是否领取首次登陆优惠券
   async firstLoginActivity() {
     const userInfo = await userApi.getUserInfo(false)
-    const data: any = await couponApi.getCouponSchemeList({ putLocation: 'index' })
+    const data = await couponApi.getCouponSchemeList({ putLocation: 'index' })
     if (data.code === 1) {
       const firstLoginCoupon = data.object[0]
       if (firstLoginCoupon.currentUserDrawStatus === 0) {
@@ -93,7 +95,7 @@ export default class FirstOrder extends Component {
 
   // 领取首次登陆优惠券
   async drawFirstLoginCoupon() {
-    const data: any = await couponApi.drawCoupon({ schemeId: this.state.firstLoginCouponId })
+    const data = await couponApi.drawCoupon({ schemeId: this.state.firstLoginCouponId })
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -122,38 +124,38 @@ export default class FirstOrder extends Component {
     const { isReceived } = this.state
     return (
       <View className='first-order-wrapper'>
-        <View className="banner">
+        <View className='banner'>
           <Image src={bannerImage}></Image>
         </View>
-        <View className="coupon-card">
-          <View className="circle-top circle-icon"></View>
-          <View className="circle-bottom circle-icon"></View>
-          <View className="card-left">
+        <View className='coupon-card'>
+          <View className='circle-top circle-icon'></View>
+          <View className='circle-bottom circle-icon'></View>
+          <View className='card-left'>
             <Image src={dianImage}></Image>
-            <View className="price-box">
-              <View className="unit">￥</View>
-              <View className="price">20</View>
+            <View className='price-box'>
+              <View className='unit'>￥</View>
+              <View className='price'>20</View>
             </View>
           </View>
-          <View className="card-right">
-            <View className="info">
-              <View className="line1">仅限洗鞋订单</View>
-              <View className="line2">有效期至：2019-12-20</View>
+          <View className='card-right'>
+            <View className='info'>
+              <View className='line1'>仅限洗鞋订单</View>
+              <View className='line2'>有效期至：2019-12-20</View>
             </View>
-            <View className="button" onClick={this.clickCoupon.bind(this)}>{isReceived ? '去使用' : '领取'}</View>
+            <View className='button' onClick={this.clickCoupon.bind(this)}>{isReceived ? '去使用' : '领取'}</View>
           </View>
         </View>
-        <View className="container">
-          <View className="container-title">活动规则</View>
+        <View className='container'>
+          <View className='container-title'>活动规则</View>
           {
-            this.articleList.map((ele: any, index) => {
+            this.articleList.map((ele, index) => {
               return (
-                <View className="item" key={ele.id}>
-                  <View className="title">{{ 0: '一', 1: '二', 2: '三' }[index]}、{ele.title}</View>
-                  <View className="content">
+                <View className='item' key={ele.id}>
+                  <View className='title'>{{ 0: '一', 1: '二', 2: '三' }[index]}、{ele.title}</View>
+                  <View className='content'>
                     {
-                      ele.content.map((subItem: any) => {
-                        return <View className="p" key={subItem}>{subItem}</View>
+                      ele.content.map((subItem) => {
+                        return <View className='p' key={subItem}>{subItem}</View>
                       })
                     }
                   </View>

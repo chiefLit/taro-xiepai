@@ -1,7 +1,7 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import './index.less'
 
+import './index.less'
 import * as orderApi from '../../api/order'
 
 export default class ExpressSteps extends Component {
@@ -13,9 +13,6 @@ export default class ExpressSteps extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: '物流信息'
-  }
 
   state = {
     expressSteps: []
@@ -29,8 +26,12 @@ export default class ExpressSteps extends Component {
     })
   }
 
+  config = {
+    navigationBarTitleText: '物流信息'
+  }
+
   async findOrderExpressLog(params) {
-    const data: any = await orderApi.findOrderExpressLog(params)
+    const data = await orderApi.findOrderExpressLog(params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -39,7 +40,7 @@ export default class ExpressSteps extends Component {
     } else {
       const expressData = JSON.parse(data.object.content)
 
-      const expressSteps = expressData.result.list.reverse().map((ele: any, index: number) => {
+      const expressSteps = expressData.result.list.reverse().map((ele, index) => {
         return {
           ...ele,
           datetimeList: ele.datetime.split(' '),
@@ -57,21 +58,21 @@ export default class ExpressSteps extends Component {
     return (
       <View className='express-steps-wrapper'>
         {
-          expressSteps.map((ele: any, index: Number) => {
+          expressSteps.map((ele, index) => {
             return (
-              <View className={index === 0 ? 'active step-item' : "step-item"} key={ele.id}>
-                <View className="item-date">
-                  <View className="line1">{ele.datetimeList[0]}</View>
-                  <View className="line2">{ele.datetimeList[1]}</View>
+              <View className={index === 0 ? 'active step-item' : 'step-item'} key={ele.id}>
+                <View className='item-date'>
+                  <View className='line1'>{ele.datetimeList[0]}</View>
+                  <View className='line2'>{ele.datetimeList[1]}</View>
                 </View>
-                <View className="item-point">
-                  {index === 0 ? <View className="circle"></View> : <View className="iconfont icongouxuan"></View>}
+                <View className='item-point'>
+                  {index === 0 ? <View className='circle'></View> : <View className='iconfont icongouxuan'></View>}
 
                   {index !== expressSteps.length - 1 ? <View className='line'></View> : null}
                 </View>
-                <View className="item-express">
-                  {/* <View className="title">鞋子寄回中</View> */}
-                  <View className="desc">{ele.remark}</View>
+                <View className='item-express'>
+                  {/* <View className='title'>鞋子寄回中</View> */}
+                  <View className='desc'>{ele.remark}</View>
                 </View>
               </View>
             )

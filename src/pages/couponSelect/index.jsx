@@ -1,13 +1,10 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import './index.less'
-import { getCouponList } from '../../api/coupon'
-// import iconYsx from '../../assets/images/yishixiao.png'
-// import iconYsy from '../../assets/images/yishiyong.png'
-import noDataImage from '../../assets/images/no-data-coupon.png'
-
 import { connect } from '@tarojs/redux'
 
+import './index.less'
+import * as couponApi from '../../api/coupon'
+import noDataImage from '../../assets/images/no-data-coupon.png'
 import { addSelectedCoupon } from '../../reducers/actions/selectedCoupon'
 
 @connect(
@@ -28,25 +25,13 @@ export default class CouponList extends Component {
   constructor(props) {
     super(props)
   }
-
-  config: Config = {
-    navigationBarTitleText: '优惠券',
-    enablePullDownRefresh: true
-  }
-
   state = {
-    current: 0,
+    // current: 0,
     dataList: [],
     pageInfo: {
       totalPages: 0
     },
     selectedCouponId: null
-  }
-
-  params = {
-    status: 0,
-    currentPage: 1,
-    pageSize: 20
   }
 
   componentWillMount() {
@@ -57,22 +42,35 @@ export default class CouponList extends Component {
     })
   }
 
+  config = {
+    navigationBarTitleText: '优惠券',
+    enablePullDownRefresh: true
+  }
+
+  params = {
+    status: 0,
+    currentPage: 1,
+    pageSize: 20
+  }
+
+
+
   /**
    * 
    * @param page 当前页对象
    * @param index 页索引
    * @param callBack 回调
    */
-  async pullData(callBack: any) {
+  async pullData(callBack) {
     let { dataList } = this.state
-    let data: any = await getCouponList(this.params)
+    let data = await couponApi.getCouponList(this.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
         icon: 'none'
       })
     } else {
-      let list: Array<any>;
+      let list;
       data.object = data.object || []
       if (this.params.currentPage === 1) {
         list = [...data.object];
@@ -105,31 +103,31 @@ export default class CouponList extends Component {
     Taro.navigateBack()
   }
 
-  randerItem(item: any, isActive: Boolean) {
+  randerItem(item, isActive) {
     return (
-      <View className="coupon-item">
-        <View className="name">
-          <Text className="num">{item.type === 1 ? item.discountRate : item.faceAmount}</Text>
-          <Text className="unit"> {item.type === 1 ? '%' : '元'}</Text>
+      <View className='coupon-item'>
+        <View className='name'>
+          <Text className='num'>{item.type === 1 ? item.discountRate : item.faceAmount}</Text>
+          <Text className='unit'> {item.type === 1 ? '%' : '元'}</Text>
         </View>
-        <View className="info">
-          <View className="line1">{item.title}</View>
-          <View className="line2">{item.describe}</View>
+        <View className='info'>
+          <View className='line1'>{item.title}</View>
+          <View className='line2'>{item.describe}</View>
         </View>
-        <View className={isActive ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View>
-        <View className="left-icon circle-icon"></View>
-        <View className="right-icon circle-icon"></View>
-        {/* {item.status === 1 ? <Image src={iconYsy} className="state-icons"></Image> : null}
-        {item.status === 2 ? <Image src={iconYsx} className="state-icons"></Image> : null} */}
+        <View className={isActive ? 'iconfont icongouxuan' : 'iconfont iconweigouxuan1'}></View>
+        <View className='left-icon circle-icon'></View>
+        <View className='right-icon circle-icon'></View>
+        {/* {item.status === 1 ? <Image src={iconYsy} className='state-icons'></Image> : null}
+        {item.status === 2 ? <Image src={iconYsx} className='state-icons'></Image> : null} */}
       </View>
     )
   }
 
   renderNoData() {
     return (
-      <View className="no-data-container">
+      <View className='no-data-container'>
         <Image src={noDataImage}></Image>
-        <View className="value">还没有任何优惠劵呢</View>
+        <View className='value'>还没有任何优惠劵呢</View>
       </View>
     );
   }
@@ -141,8 +139,8 @@ export default class CouponList extends Component {
       <View className='coupon-select-wrapper'>
         {
           dataList.length > 0 ?
-            dataList.map((ele: any) => {
-              let isActive: Boolean = ele.id === selectedCouponId
+            dataList.map((ele) => {
+              let isActive = ele.id === selectedCouponId
               return <View key={ele.id} onClick={this.selectCoupon.bind(this, ele)}> {this.randerItem(ele, isActive)} </View>
             }) :
             this.renderNoData()

@@ -1,6 +1,6 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
+import { AtTabs, AtTabsPane } from 'taro-ui'
 import './index.less'
 
 import { getCouponList } from '../../api/coupon'
@@ -17,12 +17,6 @@ export default class CouponList extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-
-  config: Config = {
-    navigationBarTitleText: '优惠券',
-    enablePullDownRefresh: true
-  }
-
   state = {
     current: 0,
     page0: {
@@ -61,23 +55,29 @@ export default class CouponList extends Component {
     this.pullData(this.state.page0, 0, null)
   }
 
+  config = {
+    navigationBarTitleText: '优惠券',
+    enablePullDownRefresh: true
+  }
+
+
   /**
    * 
    * @param page 当前页对象
    * @param index 页索引
    * @param callBack 回调
    */
-  async pullData(page: any, index: Number, callBack: any) {
-    let data: any = await getCouponList(page.params)
+  async pullData(page, index, callBack) {
+    let data = await getCouponList(page.params)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
         icon: 'none'
       })
     } else {
-      let dataList: Array<any> = [];
+      let dataList = [];
       data.object = data.object || []
-      
+
       if (page.params.currentPage === 1) {
         dataList = [...data.object];
       } else {
@@ -96,7 +96,7 @@ export default class CouponList extends Component {
   }
 
 
-  handleClick(index: Number) {
+  handleClick(index) {
     let currPageObj = this.state[`page${index}`]
     this.setState({
       current: index,
@@ -145,31 +145,31 @@ export default class CouponList extends Component {
     }
   }
 
-  randerItem(item: any) {
+  randerItem(item) {
     return (
-      <View className="coupon-item">
-        <View className="name">
-          <Text className="num">{item.type === 1 ? item.discountRate : item.faceAmount}</Text>
-          <Text className="unit">{item.type === 1 ? '%' : '元'}</Text>
+      <View className='coupon-item'>
+        <View className='name'>
+          <Text className='num'>{item.type === 1 ? item.discountRate : item.faceAmount}</Text>
+          <Text className='unit'>{item.type === 1 ? '%' : '元'}</Text>
         </View>
-        <View className="info">
-          <View className="line1">{item.title}</View>
-          <View className="line2">{item.describe}</View>
+        <View className='info'>
+          <View className='line1'>{item.title}</View>
+          <View className='line2'>{item.describe}</View>
         </View>
-        <View className="left-icon circle-icon"></View>
-        <View className="right-icon circle-icon"></View>
-        {item.status === 1 ? <Image src={iconYsy} className="state-icons"></Image> : null}
-        {item.status === 2 ? <Image src={iconYsx} className="state-icons"></Image> : null}
+        <View className='left-icon circle-icon'></View>
+        <View className='right-icon circle-icon'></View>
+        {item.status === 1 ? <Image src={iconYsy} className='state-icons'></Image> : null}
+        {item.status === 2 ? <Image src={iconYsx} className='state-icons'></Image> : null}
       </View>
     )
   }
 
   renderNoData() {
     return (
-       <View className="no-data-container">
-         <Image src={noDataImage}></Image>
-         <View className="value">还没有任何优惠劵呢</View>
-       </View>
+      <View className='no-data-container'>
+        <Image src={noDataImage}></Image>
+        <View className='value'>还没有任何优惠劵呢</View>
+      </View>
     );
   }
 
@@ -178,30 +178,27 @@ export default class CouponList extends Component {
     let { current, page0, page1, page2 } = this.state;
     return (
       <View className='coupon-list-wrapper'>
-        <AtTabs height="87" current={current} swipeable={false} animated={true} tabList={tabList} onClick={this.handleClick.bind(this)}>
+        <AtTabs height='87' current={current} swipeable={false} animated tabList={tabList} onClick={this.handleClick.bind(this)}>
           <AtTabsPane current={current} index={0} >
             {
-              page0.dataList.length > 0 ? 
-              page0.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
-              this.renderNoData()
+              page0.dataList.length > 0 ?
+                page0.dataList.map((ele) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                this.renderNoData()
             }
-            {/* { page0.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             {
-              page1.dataList.length > 0 ? 
-              page1.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
-              this.renderNoData()
+              page1.dataList.length > 0 ?
+                page1.dataList.map((ele) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                this.renderNoData()
             }
-            {/* { page1.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
           <AtTabsPane current={current} index={2}>
             {
-              page2.dataList.length > 0 ? 
-              page2.dataList.map((ele: any) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
-              this.renderNoData()
+              page2.dataList.length > 0 ?
+                page2.dataList.map((ele) => <View key={ele.id}> {this.randerItem(ele)} </View>) :
+                this.renderNoData()
             }
-            {/* { page2.dataList.length > 0 ? <AtDivider content='没有更多了' /> : null} */}
           </AtTabsPane>
         </AtTabs>
       </View>

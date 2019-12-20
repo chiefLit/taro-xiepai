@@ -23,7 +23,7 @@ export default class OrderSteps extends Component {
   }
 
   componentWillMount() {
-    let params: any = this.$router.params;
+    let params = this.$router.params;
     if (params.id) {
       this.pullData(params.id)
     } else {
@@ -35,7 +35,7 @@ export default class OrderSteps extends Component {
   }
 
   async pullData(orderId: string) {
-    let data: any = await orderApi.findOrderLog({ orderId })
+    let data = await orderApi.findOrderLog({ orderId })
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -53,7 +53,7 @@ export default class OrderSteps extends Component {
     return (
       <View className='order-steps-wrapper'>
         {
-          stepList.map((ele: any, index: Number) => {
+          stepList.map((ele, index) => {
             return (
               <View className={index === 0 ? 'active step-item' : "step-item"} key={ele}>
                 <View className="item-date">

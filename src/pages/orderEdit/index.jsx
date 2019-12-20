@@ -1,7 +1,9 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import './index.less'
 import { AtButton, AtIcon } from 'taro-ui'
+import { connect } from '@tarojs/redux'
+
+import './index.less'
 import addrLineImage from '../../assets/images/addr-line.png'
 
 import * as orderApi from '../../api/order'
@@ -9,7 +11,6 @@ import * as serviceApi from '../../api/service'
 import * as commonApi from '../../api/common'
 import * as userApi from '../../api/user'
 
-import { connect } from '@tarojs/redux'
 import { deleteOrderToCashier } from '../../reducers/actions/orderToCashier'
 import { deleteSelectedAddress } from '../../reducers/actions/selectedAddress'
 import { deleteSelectedCoupon } from '../../reducers/actions/selectedCoupon'
@@ -28,9 +29,6 @@ export default class OrderEdit extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: '订单确认'
-  }
 
   constructor(props) {
     super(props)
@@ -39,13 +37,13 @@ export default class OrderEdit extends Component {
 
   state = {
     // 订单是否已生成
-    isOrderGenerated: false,
+    // isOrderGenerated: false,
     hasNoAddress: false,
     orderDetail: {
       userId: null,
       cashierSubVoList: [],
       totalPrice: 0,
-      couponId: "",
+      couponId: '',
       couponDiscountAmount: 0,
       totalDiscountAmount: 0,
       realPayPrice: 0
@@ -54,30 +52,16 @@ export default class OrderEdit extends Component {
       id: null
     }
   }
-
-  // 来自洗鞋的参数
-  formWashProductParams: any = {
-    serviceItemIds: [],
-    image0Url: "",
-    image1Url: "",
-    image2Url: ""
-  }
-
-  // 来自购物车的参数
-  formCartParams: any = {
-    cartIds: []
-  }
-
   // 入口页区分（单品-洗鞋、购物车）
   componentWillMount() {
-    let params: any = this.$router.params
+    let params = this.$router.params
     if (params.cartIds) {
       this.formCartParams = {
-        cartIds: params.cartIds.split(",")
+        cartIds: params.cartIds.split(',')
       }
     } else if (params.serviceItemIds) {
       this.formWashProductParams = {
-        serviceItemIds: params.serviceItemIds.split(","),
+        serviceItemIds: params.serviceItemIds.split(','),
         image0Url: params.image0Url,
         image1Url: params.image1Url,
         image2Url: params.image2Url
@@ -89,7 +73,7 @@ export default class OrderEdit extends Component {
       })
     }
 
-    let orderDetail: any = this.props.orderToCashier.data || null
+    let orderDetail = this.props.orderToCashier.data || null
 
     if (orderDetail) {
       this.setState({
@@ -99,10 +83,28 @@ export default class OrderEdit extends Component {
     } else {
       Taro.showToast({
         title: '无订单信息',
-        icon: "none"
+        icon: 'none'
       })
     }
   }
+
+  config = {
+    navigationBarTitleText: '订单确认'
+  }
+
+  // 来自洗鞋的参数
+  formWashProductParams = {
+    serviceItemIds: [],
+    image0Url: '',
+    image1Url: '',
+    image2Url: ''
+  }
+
+  // 来自购物车的参数
+  formCartParams = {
+    cartIds: []
+  }
+
 
   componentDidShow() {
     const selectedAddressData = this.props.selectedAddress.data
@@ -116,7 +118,7 @@ export default class OrderEdit extends Component {
     }
 
     if (selectedCouponData && selectedCouponData.id) {
-      let selectedCoupon: any = selectedCouponData
+      let selectedCoupon = selectedCouponData
       selectedCoupon.id && this.calcCoupon(selectedCoupon.id)
       this.props.deleteSelectedCoupon()
     }
@@ -125,8 +127,8 @@ export default class OrderEdit extends Component {
   }
 
   // 请求接口计算价格
-  async calcCoupon(couponId: any) {
-    let data: any
+  async calcCoupon(couponId) {
+    let data
     if (this.formCartParams.cartIds.length) {
       data = await orderApi.toCashierByCart({
         ...this.formCartParams,
@@ -154,12 +156,12 @@ export default class OrderEdit extends Component {
   async submitOrder() {
     if (!this.state.userAddressVo || !this.state.userAddressVo.id) {
       Taro.showToast({
-        title: "请先选择收货地址",
+        title: '请先选择收货地址',
         icon: 'none'
       })
       return
     }
-    let params: any;
+    let params;
     // 直接下单--单品洗鞋
     if (this.formCartParams.cartIds.length) {
       params = { ...this.formCartParams }
@@ -170,7 +172,7 @@ export default class OrderEdit extends Component {
     params.toUserAddressId = this.state.userAddressVo.id
     params.deliverMode = 1
 
-    let data: any;
+    let data;
     const userPayResult = this.userPayResult.bind(this)
     Taro.showLoading()
     if (this.formCartParams.cartIds.length) {
@@ -182,7 +184,7 @@ export default class OrderEdit extends Component {
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
-        icon: "none"
+        icon: 'none'
       })
     } else {
       Taro.requestPayment({
@@ -200,8 +202,8 @@ export default class OrderEdit extends Component {
           }, () => {
             Taro.hideLoading()
             Taro.showToast({
-              title: "支付成功",
-              icon: "none"
+              title: '支付成功',
+              icon: 'none'
             }).then(() => {
               Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
             })
@@ -216,8 +218,8 @@ export default class OrderEdit extends Component {
           }, () => {
             Taro.hideLoading()
             Taro.showToast({
-              title: "支付失败",
-              icon: "none"
+              title: '支付失败',
+              icon: 'none'
             }).then(() => {
               Taro.redirectTo({ url: `/pages/orderDetail/index?id=${data.object.orderId}` })
             })
@@ -228,8 +230,8 @@ export default class OrderEdit extends Component {
   }
 
   // 提交支付结果
-  async userPayResult(params: any, callBack) {
-    const data: any = await commonApi.userPayResult(params);
+  async userPayResult(params, callBack) {
+    const data = await commonApi.userPayResult(params);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -242,7 +244,7 @@ export default class OrderEdit extends Component {
 
   // 地址列表
   async getAddressList() {
-    const data: any = await userApi.getAddressList(null)
+    const data = await userApi.getAddressList(null)
     if (data.code === 1) {
       if (data.object && data.object.length > 0) {
         this.setState({ hasNoAddress: false })
@@ -257,122 +259,128 @@ export default class OrderEdit extends Component {
     let { orderDetail, userAddressVo, hasNoAddress } = this.state;
     return (
       <View className='order-edit-wrapper'>
-        <View className="address-info" onClick={() => {
-          if (hasNoAddress) {
-            Taro.navigateTo({
-              url: `/pages/myAddressEdit/index?isSelectStatus=true`
-            })
-          } else {
-            Taro.navigateTo({
-              url: `/pages/myAddress/index?selectedId=${userAddressVo.id}&isSelectStatus=true`
-            })
-          }
-        }}>
-          {/* <View className="iconfont icondizhiguanli"></View> */}
+        <View className='address-info'
+          onClick={() => {
+            if (hasNoAddress) {
+              Taro.navigateTo({
+                url: `/pages/myAddressEdit/index?isSelectStatus=true`
+              })
+            } else {
+              Taro.navigateTo({
+                url: `/pages/myAddress/index?selectedId=${userAddressVo.id}&isSelectStatus=true`
+              })
+            }
+          }}
+        >
+          {/* <View className='iconfont icondizhiguanli'></View> */}
           {
             !userAddressVo || !userAddressVo.id ?
               <View className='at-icon at-icon-add-circle'></View> :
               null
           }
-          <View className="content">
+          <View className='content'>
             {
               !userAddressVo || !userAddressVo.id ?
-                <View className="default-value">请添加收货地址</View> :
-                <View className="info-box">
-                  <View className="line1">{userAddressVo.linkName} {userAddressVo.phone}</View>
-                  <View className="line2">{userAddressVo.provinceName} {userAddressVo.cityName} {userAddressVo.countyName} {userAddressVo.address}</View>
+                <View className='default-value'>请添加收货地址</View> :
+                <View className='info-box'>
+                  <View className='line1'>{userAddressVo.linkName} {userAddressVo.phone}</View>
+                  <View className='line2'>{userAddressVo.provinceName} {userAddressVo.cityName} {userAddressVo.countyName} {userAddressVo.address}</View>
                 </View>
             }
           </View>
-          <AtIcon value="chevron-right" size="15" color="#999"></AtIcon>
-          {/* {!isOrderGenerated ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null} */}
+          <AtIcon value='chevron-right' size='15' color='#999'></AtIcon>
+          {/* {!isOrderGenerated ? <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> : null} */}
         </View>
-        <Image className="addr-line" mode="aspectFill" src={addrLineImage}></Image>
+        <Image className='addr-line' mode='aspectFill' src={addrLineImage}></Image>
 
-        <View className="dist-mode">
-          <View className="mode-left">
-            <View className="line1">送鞋方式</View>
-            <View className="line2">请在支付后寄出鞋子，并补全快递信息</View>
+        <View className='dist-mode'>
+          <View className='mode-left'>
+            <View className='line1'>送鞋方式</View>
+            <View className='line2'>请在支付后寄出鞋子，并补全快递信息</View>
           </View>
-          <View className="mode-right">
+          <View className='mode-right'>
             <Text>自己快递</Text>
-            {/* <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> */}
+            {/* <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> */}
           </View>
         </View>
 
-        <View className="order-service">
-          <View className="service-list">
+        <View className='order-service'>
+          <View className='service-list'>
             {
-              orderDetail.cashierSubVoList.map((ele: any) => {
+              orderDetail.cashierSubVoList.map((ele) => {
                 return (
-                  <View className="service-item" key={ele.id}>
+                  <View className='service-item' key={ele.id}>
                     {
-                      ele.serviceImageList.map((imageItem: any) => {
-                        return imageItem.aspect === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                      ele.serviceImageList.map((imageItem) => {
+                        return imageItem.aspect === 0 ? <Image className='item-image' mode='aspectFill' key={imageItem.aspect} src={imageItem.url}></Image> : null
                       })
                     }
-                    <View className="item-info">
-                      <View className="name">{ele.goodzTitle}</View>
-                      <View className="product-list">
+                    <View className='item-info'>
+                      <View className='name'>{ele.goodzTitle}</View>
+                      <View className='product-list'>
                         {
-                          ele.serviceDetailList.map((serviceItem: any) => {
+                          ele.serviceDetailList.map((serviceItem) => {
                             return (
-                              <View className="product-item" key={serviceItem.serviceId}>{serviceItem.serviceName}</View>
+                              <View className='product-item' key={serviceItem.serviceId}>{serviceItem.serviceName}</View>
                             )
                           })
                         }
                       </View>
                     </View>
-                    <View className="product-price">￥{ele.totalPrice.toFixed(2)}</View>
+                    <View className='product-price'>￥{ele.totalPrice.toFixed(2)}</View>
                   </View>
                 )
               })
             }
           </View>
-          {/* <View className="module-list">
-            <View className="key">运费</View>
-            <View className="value">￥ 6.00</View>
+          {/* <View className='module-list'>
+            <View className='key'>运费</View>
+            <View className='value'>￥ 6.00</View>
           </View> */}
-          <View className="module-list" onClick={() => {
-            Taro.navigateTo({
-              url: `/pages/couponSelect/index?selectedId=${orderDetail.couponId}`
-            })
-          }}>
-            <View className="key">优惠券</View>
-            <View className="value">
+          <View className='module-list'
+            onClick={() => {
+              Taro.navigateTo({
+                url: `/pages/couponSelect/index?selectedId=${orderDetail.couponId}`
+              })
+            }}
+          >
+            <View className='key'>优惠券</View>
+            <View className='value'>
               {orderDetail.couponId ? <Text>-￥ {orderDetail.couponDiscountAmount}</Text> : <Text>未选择</Text>}
-              <AtIcon value="chevron-right" size="14" color="#999"></AtIcon>
+              <AtIcon value='chevron-right' size='14' color='#999'></AtIcon>
             </View>
           </View>
         </View>
 
-        <View className="order-price">
-          <View className="module-list">
-            <View className="key">商品总额</View>
-            <View className="value">￥{orderDetail.totalPrice.toFixed(2)}</View>
+        <View className='order-price'>
+          <View className='module-list'>
+            <View className='key'>商品总额</View>
+            <View className='value'>￥{orderDetail.totalPrice.toFixed(2)}</View>
           </View>
-          {/* <View className="module-list">
-            <View className="key">运费</View>
-            <View className="value">￥ 6.5</View>
+          {/* <View className='module-list'>
+            <View className='key'>运费</View>
+            <View className='value'>￥ 6.5</View>
           </View> */}
-          <View className="module-list" onClick={() => {
-            Taro.navigateTo({
-              url: '/pages/couponList/index'
-            })
-          }}>
-            <View className="key">优惠券</View>
-            <View className="value">-￥{orderDetail.couponDiscountAmount.toFixed(2)}</View>
+          <View className='module-list'
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/pages/couponList/index'
+              })
+            }}
+          >
+            <View className='key'>优惠券</View>
+            <View className='value'>-￥{orderDetail.couponDiscountAmount.toFixed(2)}</View>
           </View>
-          <View className="module-list">
-            <View className="key">实际支付</View>
-            <View className="value red">￥{orderDetail.realPayPrice.toFixed(2)}</View>
+          <View className='module-list'>
+            <View className='key'>实际支付</View>
+            <View className='value red'>￥{orderDetail.realPayPrice.toFixed(2)}</View>
           </View>
         </View>
-        <View className="footer-cover"></View>
-        <View className="footer-container">
-          <View className="total-price">
+        <View className='footer-cover'></View>
+        <View className='footer-container'>
+          <View className='total-price'>
             <Text>合计：</Text>
-            <Text className="price">￥{orderDetail.realPayPrice.toFixed(2)}</Text>
+            <Text className='price'>￥{orderDetail.realPayPrice.toFixed(2)}</Text>
           </View>
           <AtButton full onClick={this.submitOrder.bind(this)}>立即下单</AtButton>
         </View>

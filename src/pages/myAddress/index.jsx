@@ -1,4 +1,6 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
+import { connect } from '@tarojs/redux'
+
 import { View, Text, Image } from '@tarojs/components'
 import { AtIcon, AtButton } from 'taro-ui'
 import './index.less'
@@ -7,7 +9,6 @@ import { getAddressList } from '../../api/user'
 import noDataImage from '../../assets/images/no-data-address.png'
 
 // import { STORAGE_NAME } from '../../config'
-import { connect } from '@tarojs/redux'
 import { addSelectedAddress } from '../../reducers/actions/selectedAddress'
 
 @connect(
@@ -28,10 +29,6 @@ export default class MyAddr extends Component {
     super(props)
   }
 
-  config: Config = {
-    navigationBarTitleText: '我的地址'
-  }
-
   state = {
     addressList: [],
     selectedAddressId: null,
@@ -39,8 +36,20 @@ export default class MyAddr extends Component {
     isSelectStatus: false
   }
 
+  componentWillMount() {
+    this.setState({
+      isSelectStatus: this.$router.params.isSelectStatus || false,
+      selectedAddressId: Number(this.$router.params.selectedId) || null
+    })
+  }
+
+  config = {
+    navigationBarTitleText: '我的地址'
+  }
+
+
   async pullData() {
-    let data: any = await getAddressList(null)
+    let data = await getAddressList(null)
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -53,18 +62,11 @@ export default class MyAddr extends Component {
     }
   }
 
-  componentWillMount() {
-    this.setState({
-      isSelectStatus: this.$router.params.isSelectStatus || false,
-      selectedAddressId: Number(this.$router.params.selectedId) || null
-    })
-  }
-
   componentDidShow() {
     this.pullData()
   }
 
-  selectAddress(item: any) {
+  selectAddress(item) {
     if (!this.state.isSelectStatus) return
     this.setState({
       selectedAddressId: item.id
@@ -74,23 +76,23 @@ export default class MyAddr extends Component {
     Taro.navigateBack()
   }
 
-  renderItem(item: any) {
+  renderItem(item) {
     let { selectedAddressId, isSelectStatus } = this.state;
     return (
-      <View className="list-item">
-        <View style={{ display: "flex", alignItems: 'center' }} onClick={this.selectAddress.bind(this, item)}>
-          {isSelectStatus ? <View className={selectedAddressId === item.id ? "iconfont icongouxuan" : "iconfont iconweigouxuan1"}></View> : null}
-          <View className="info">
-            <View className="line-first">
+      <View className='list-item'>
+        <View style={{ display: 'flex', alignItems: 'center' }} onClick={this.selectAddress.bind(this, item)}>
+          {isSelectStatus ? <View className={selectedAddressId === item.id ? 'iconfont icongouxuan' : 'iconfont iconweigouxuan1'}></View> : null}
+          <View className='info'>
+            <View className='line-first'>
               <Text style={{ paddingRight: '60rpx' }}>{item.linkName}</Text>
               <Text>{item.phone}</Text>
             </View>
-            <View className="line-second">
+            <View className='line-second'>
               <Text>{item.provinceName}{item.cityName}{item.countyName}{item.address}</Text>
             </View>
           </View>
         </View>
-        <AtIcon value="edit" size="15" color="#999" onClick={(e) => {
+        <AtIcon value='edit' size='15' color='#999' onClick={(e) => {
           e.stopPropagation()
           Taro.navigateTo({
             url: `/pages/myAddressEdit/index?id=${item.id}`
@@ -102,10 +104,10 @@ export default class MyAddr extends Component {
 
   renderNoData() {
     return (
-      <View className="no-data-container">
+      <View className='no-data-container'>
         <Image src={noDataImage}></Image>
-        <View className="value">还没有收货地址呢</View>
-        <AtButton type="primary" size="small" circle onClick={() => {
+        <View className='value'>还没有收货地址呢</View>
+        <AtButton type='primary' size='small' circle onClick={() => {
           Taro.navigateTo({
             url: '/pages/myAddressEdit/index'
           })
@@ -121,9 +123,9 @@ export default class MyAddr extends Component {
         {
           addressList.length > 0 ?
             <View>
-              <View className="module-list">
+              <View className='module-list'>
                 {
-                  addressList.map((ele: any) => {
+                  addressList.map((ele) => {
                     return (
                       <View key={ele.id}>
                         {this.renderItem(ele)}
@@ -133,10 +135,10 @@ export default class MyAddr extends Component {
                 }
               </View>
 
-              <View className="footer-cover"></View>
-              <View className="footer-container">
+              <View className='footer-cover'></View>
+              <View className='footer-container'>
                 <AtButton
-                  className="add-button"
+                  className='add-button'
                   type='primary'
                   circle
                   onClick={() => {

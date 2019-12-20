@@ -1,8 +1,8 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Block } from '@tarojs/components'
-import './index.less'
 import { AtButton } from 'taro-ui'
 
+import './index.less'
 import * as orderApi from '../../api/order'
 import * as commonApi from '../../api/common'
 import { DEFAULT_CONFIG, orderStatusToValue } from '../../config'
@@ -17,17 +17,14 @@ export default class OrderDetail extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
-    navigationBarTitleText: '订单详情'
-  }
 
   state = {
     orderDetail: {
       id: null,
       number: null,
       userId: null,
-      deliverMode: "",
-      channel: "",
+      deliverMode: '',
+      channel: '',
       orderSubVoList: [],
       totalPrice: 0,
       couponId: null,
@@ -37,20 +34,24 @@ export default class OrderDetail extends Component {
       storeVo: {},
       toStoreId: null,
       toStoreExpressId: null,
-      toStoreExpressName: "",
+      toStoreExpressName: '',
       toStoreExpressNumber: null,
       toUserAddressId: null,
       userAddressVo: {},
       toUserExpressId: null,
-      toUserExpressName: "",
+      toUserExpressName: '',
       toUserExpressNumber: null,
       status: null,
       applyTime: null,
       payChannel: null,
       payTime: null,
       endTime: null,
-      closeReason: ""
+      closeReason: ''
     }
+  }
+
+  config = {
+    navigationBarTitleText: '订单详情'
   }
 
   componentDidShow() {
@@ -58,7 +59,7 @@ export default class OrderDetail extends Component {
   }
 
   async pullData() {
-    let data: any = await orderApi.getOrderDetail({ orderId: this.$router.params.id });
+    let data = await orderApi.getOrderDetail({ orderId: this.$router.params.id });
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -71,15 +72,14 @@ export default class OrderDetail extends Component {
     }
   }
 
-  // { getOrderDetail, orderCancel, toOrderById }
   // 订单取消
   async orderCancel() {
     Taro.showModal({
       // title: '提示',
       content: '确定取消订单？',
-      success: async (res: any) => {
+      success: async (res) => {
         if (res.confirm) {
-          let data: any = await orderApi.orderCancel({
+          let data = await orderApi.orderCancel({
             orderId: this.state.orderDetail.id
           });
           if (data.code !== 1) {
@@ -105,7 +105,7 @@ export default class OrderDetail extends Component {
     const userPayResult = this.userPayResult.bind(this)
     const pullData = this.pullData.bind(this)
     Taro.showLoading()
-    let data: any = await orderApi.toOrderById({
+    let data = await orderApi.toOrderById({
       orderId: this.state.orderDetail.id
     });
     Taro.hideLoading()
@@ -130,8 +130,8 @@ export default class OrderDetail extends Component {
           }, () => {
             Taro.hideLoading()
             Taro.showToast({
-              title: "支付成功",
-              icon: "none"
+              title: '支付成功',
+              icon: 'none'
             }).then(() => {
               pullData()
             })
@@ -146,8 +146,8 @@ export default class OrderDetail extends Component {
           }, () => {
             Taro.hideLoading()
             Taro.showToast({
-              title: "支付失败",
-              icon: "none"
+              title: '支付失败',
+              icon: 'none'
             })
           })
         }
@@ -156,8 +156,8 @@ export default class OrderDetail extends Component {
   }
 
   // 提交结果
-  async userPayResult(params: any, callBack) {
-    const data: any = await commonApi.userPayResult(params);
+  async userPayResult(params, callBack) {
+    const data = await commonApi.userPayResult(params);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
@@ -173,10 +173,10 @@ export default class OrderDetail extends Component {
     Taro.showModal({
       // title: '提示',
       content: '确定已收货？',
-      success: async (res: any) => {
+      success: async (res) => {
         if (res.confirm) {
           Taro.showLoading();
-          const data: any = await orderApi.confirmReceipt({
+          const data = await orderApi.confirmReceipt({
             orderId: this.state.orderDetail.id
           })
           Taro.hideLoading();
@@ -215,13 +215,15 @@ export default class OrderDetail extends Component {
     let { orderDetail } = this.state
     return (
       <View className='order-detail-wrapper'>
-        <View className="order-status" onClick={() => {
-          Taro.navigateTo({
-            url: `/pages/orderSteps/index?id=${orderDetail.id}`
-          })
-        }}>
-          <View className="status-value">{orderStatusToValue(orderDetail.status, 0)}></View>
-          <View className="status-desc">
+        <View className='order-status'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/orderSteps/index?id=${orderDetail.id}`
+            })
+          }}
+        >
+          <View className='status-value'>{orderStatusToValue(orderDetail.status, 0)} &gt;</View>
+          <View className='status-desc'>
             {
               orderDetail.status === -2 ?
                 <Text>{orderDetail.closeReason}</Text> :
@@ -230,128 +232,128 @@ export default class OrderDetail extends Component {
           </View>
         </View>
 
-        <View className="order-address">
-          <View className="title">收货地址</View>
-          <View className="address-info">
-            <View className="left-box">
-              <View className="name">{orderDetail.userAddressVo.linkName}  {orderDetail.userAddressVo.phone}</View>
-              <View className="address">{orderDetail.userAddressVo.provinceName} {orderDetail.userAddressVo.cityName} {orderDetail.userAddressVo.countyName} {orderDetail.userAddressVo.address}</View>
+        <View className='order-address'>
+          <View className='title'>收货地址</View>
+          <View className='address-info'>
+            <View className='left-box'>
+              <View className='name'>{orderDetail.userAddressVo.linkName}  {orderDetail.userAddressVo.phone}</View>
+              <View className='address'>{orderDetail.userAddressVo.provinceName} {orderDetail.userAddressVo.cityName} {orderDetail.userAddressVo.countyName} {orderDetail.userAddressVo.address}</View>
             </View>
-            {/* {orderDetail.status === 1 ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null} */}
+            {/* {orderDetail.status === 1 ? <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> : null} */}
           </View>
-          <View className="dist-mode">
-            <View className="mode-left">
-              <View className="line1">配送方式</View>
-              <View className="line2">请在支付后寄出鞋子，并补全快递信息</View>
+          <View className='dist-mode'>
+            <View className='mode-left'>
+              <View className='line1'>配送方式</View>
+              <View className='line2'>请在支付后寄出鞋子，并补全快递信息</View>
             </View>
-            <View className="mode-right">自己快递</View>
+            <View className='mode-right'>自己快递</View>
           </View>
         </View>
 
-        <View className="order-service">
-          <View className="service-list">
+        <View className='order-service'>
+          <View className='service-list'>
             {
-              orderDetail.orderSubVoList.map((ele: any) => {
+              orderDetail.orderSubVoList.map((ele) => {
                 return (
-                  <View className="service-item" key={ele.id}>
+                  <View className='service-item' key={ele.id}>
                     {
-                      ele.serviceImageList.map((imageItem: any) => {
-                        return imageItem.aspect === 0 && imageItem.step === 0 ? <Image className="item-image" mode="aspectFill" key={imageItem.aspect} src={imageItem.url}></Image> : null
+                      ele.serviceImageList.map((imageItem) => {
+                        return imageItem.aspect === 0 && imageItem.step === 0 ? <Image className='item-image' mode='aspectFill' key={imageItem.aspect} src={imageItem.url}></Image> : null
                       })
                     }
-                    <View className="item-info">
-                      <View className="name">{ele.goodzTitle}</View>
-                      <View className="product-list">
+                    <View className='item-info'>
+                      <View className='name'>{ele.goodzTitle}</View>
+                      <View className='product-list'>
                         {
-                          ele.serviceDetailList.map((serviceItem: any) => {
+                          ele.serviceDetailList.map((serviceItem) => {
                             return (
-                              <View className="product-item" key={serviceItem.serviceId}>{serviceItem.serviceName}</View>
+                              <View className='product-item' key={serviceItem.serviceId}>{serviceItem.serviceName}</View>
                             )
                           })
                         }
                       </View>
                     </View>
 
-                    <View className="product-price">￥{ele.totalPrice.toFixed(2)}</View>
+                    <View className='product-price'>￥{ele.totalPrice.toFixed(2)}</View>
                   </View>
                 )
               })
             }
           </View>
-          {/* <View className="module-list">
-            <View className="key">运费</View>
-            <View className="value">￥ 6.00</View>
+          {/* <View className='module-list'>
+            <View className='key'>运费</View>
+            <View className='value'>￥ 6.00</View>
           </View> */}
-          {/* <View className="module-list">
-            <View className="key">优惠券</View>
-            <View className="value">
+          {/* <View className='module-list'>
+            <View className='key'>优惠券</View>
+            <View className='value'>
               {orderDetail.couponId ? <Text>-￥{orderDetail.couponAmount}</Text> : '未使用'}
             </View>
-            {orderDetail.status === undefined ? <AtIcon value="chevron-right" size="15" color="#999"></AtIcon> : null}
+            {orderDetail.status === undefined ? <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> : null}
           </View> */}
         </View>
 
-        <View className="order-price">
-          <View className="module-list">
-            <View className="key">商品总额</View>
-            <View className="value">￥{orderDetail.totalPrice.toFixed(2)}</View>
+        <View className='order-price'>
+          <View className='module-list'>
+            <View className='key'>商品总额</View>
+            <View className='value'>￥{orderDetail.totalPrice.toFixed(2)}</View>
           </View>
-          {/* <View className="module-list">
-            <View className="key">运费</View>
-            <View className="value">￥ 6.5</View>
+          {/* <View className='module-list'>
+            <View className='key'>运费</View>
+            <View className='value'>￥ 6.5</View>
           </View> */}
-          <View className="module-list">
-            <View className="key">优惠券</View>
-            <View className="value">{orderDetail.couponId ? `-￥${orderDetail.couponAmount.toFixed(2)}` : `未使用`}</View>
+          <View className='module-list'>
+            <View className='key'>优惠券</View>
+            <View className='value'>{orderDetail.couponId ? `-￥${orderDetail.couponAmount.toFixed(2)}` : `未使用`}</View>
           </View>
           {
             orderDetail.status !== 0 ?
-              <View className="module-list">
-                <View className="key">实际支付</View>
-                <View className="value red">￥{orderDetail.realPayAmount.toFixed(2)}</View>
+              <View className='module-list'>
+                <View className='key'>实际支付</View>
+                <View className='value red'>￥{orderDetail.realPayAmount.toFixed(2)}</View>
               </View> :
               null
           }
         </View>
 
-        <View className="order-infomation">
-          <View className="module-list">
-            <View className="key">订单编号</View>
-            <View className="value">{orderDetail.number}</View>
+        <View className='order-infomation'>
+          <View className='module-list'>
+            <View className='key'>订单编号</View>
+            <View className='value'>{orderDetail.number}</View>
           </View>
-          <View className="module-list">
-            <View className="key">订单日期</View>
-            <View className="value">{utils.parseTime(orderDetail.applyTime, null)}</View>
+          <View className='module-list'>
+            <View className='key'>订单日期</View>
+            <View className='value'>{utils.parseTime(orderDetail.applyTime, null)}</View>
           </View>
           {
             orderDetail.status !== 0 ?
-              <View className="module-list">
-                <View className="key">支付方式</View>
-                <View className="value">{orderDetail.payChannel === 0 ? "微信支付" : ""}</View>
+              <View className='module-list'>
+                <View className='key'>支付方式</View>
+                <View className='value'>{orderDetail.payChannel === 0 ? '微信支付' : ''}</View>
               </View> :
               null
           }
         </View>
 
-        <View className="footer-cover"></View>
+        <View className='footer-cover'></View>
 
-        <View className="order-footer">
+        <View className='order-footer'>
           {orderDetail.status === 0 ? <Block>
-            <AtButton className="type1" full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
-            <AtButton className="type2" full onClick={this.toOrderById.bind(this)}>立即支付</AtButton>
+            <AtButton className='type1' full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
+            <AtButton className='type2' full onClick={this.toOrderById.bind(this)}>立即支付</AtButton>
           </Block> : null}
           {orderDetail.status === 1 ? <Block>
-            <AtButton className="type1" full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
-            <AtButton className="type2" full onClick={this.toEditExpressInfo.bind(this)}>填写快递信息</AtButton>
+            <AtButton className='type1' full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
+            <AtButton className='type2' full onClick={this.toEditExpressInfo.bind(this)}>填写快递信息</AtButton>
           </Block> : null}
 
-          {[2,3,4,5,7,8,9,-1,-2].some(ele => ele === orderDetail.status) ? <Block>
-            <AtButton className="type2" full onClick={this.callCustomerServicePhone.bind(this)}>联系客服</AtButton>
+          {[2, 3, 4, 5, 7, 8, 9, -1, -2].some(ele => ele === orderDetail.status) ? <Block>
+            <AtButton className='type2' full onClick={this.callCustomerServicePhone.bind(this)}>联系客服</AtButton>
           </Block> : null}
 
           {orderDetail.status === 6 ? <Block>
-            <AtButton className="type1" full onClick={this.callCustomerServicePhone.bind(this)}>联系客服</AtButton>
-            <AtButton className="type2" full onClick={this.confirmReceipt.bind(this)}>确认收货</AtButton>
+            <AtButton className='type1' full onClick={this.callCustomerServicePhone.bind(this)}>联系客服</AtButton>
+            <AtButton className='type2' full onClick={this.confirmReceipt.bind(this)}>确认收货</AtButton>
           </Block> : null}
         </View>
       </View >

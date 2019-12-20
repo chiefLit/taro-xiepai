@@ -1,12 +1,11 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-// import { functionalPageNavigator } from '@tarojs/components'
-import { AtForm, AtInput, AtButton } from 'taro-ui'
-import './index.less'
-import { View, Input, Text, Picker } from '@tarojs/components'
-
-import { getAddressList, addAddress, editAddress } from '../../api/user'
-
+import Taro, { Component } from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
+import { View, Input, Text, Picker } from '@tarojs/components'
+import { AtForm, AtInput, AtButton } from 'taro-ui'
+
+import './index.less'
+import * as userApi from '../../api/user'
+
 import { addSelectedAddress } from '../../reducers/actions/selectedAddress'
 
 @connect(
@@ -24,29 +23,25 @@ export default class MyAddrEdit extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
-  config: Config = {
-    // navigationBarTitleText: '收货地址'
-  }
-
   state = {
     addressId: '',
     addressInfo: {
-      provinceName: "",
-      provinceCode: "",
-      cityName: "",
-      cityCode: "",
-      countyName: "",
-      countyCode: "",
-      linkName: "",
-      address: "",
-      phone: "",
-      describe: ""
+      provinceName: '',
+      provinceCode: '',
+      cityName: '',
+      cityCode: '',
+      countyName: '',
+      countyCode: '',
+      linkName: '',
+      address: '',
+      phone: '',
+      describe: ''
     }
   }
 
   componentWillMount() {
-    let params: any = this.$router.params || {}
-    let title: string = params.id ? '编辑收货地址' : '新增收货地址'
+    let params = this.$router.params || {}
+    let title= params.id ? '编辑收货地址' : '新增收货地址'
     Taro.setNavigationBarTitle({ title })
     this.setState({
       addressId: Number(params.id)
@@ -56,9 +51,13 @@ export default class MyAddrEdit extends Component {
     }
   }
 
+  config = {
+    // navigationBarTitleText: '收货地址'
+  }
+
   async submitAddress() {
     let { addressId, addressInfo } = this.state
-    let data: any;
+    let data;
 
     if (!addressInfo.linkName) {
       Taro.showToast({ title: '请填写联系人', icon: 'none' })
@@ -78,9 +77,9 @@ export default class MyAddrEdit extends Component {
     }
 
     if (addressId) {
-      data = await editAddress({ ...addressInfo })
+      data = await userApi.editAddress({ ...addressInfo })
     } else {
-      data = await addAddress({ ...addressInfo })
+      data = await userApi.addAddress({ ...addressInfo })
     }
     if (data.code !== 1) {
       Taro.showToast({
@@ -101,19 +100,19 @@ export default class MyAddrEdit extends Component {
   }
 
   async deleteAddress() {
-    // let data: any = de
+    // let data = de
   }
 
-  async pullData(id: Number) {
-    let data: any = await getAddressList(null);
+  async pullData(id) {
+    let data = await userApi.getAddressList(null);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
         icon: 'none'
       })
     } else {
-      let addressList: Array<any> = data.object || []
-      let addressInfo: any = addressList.find((ele: any) => ele.id === id)
+      let addressList = data.object || []
+      let addressInfo = addressList.find((ele) => ele.id === id)
       this.setState({
         addressInfo: { ...addressInfo }
       })
@@ -122,9 +121,9 @@ export default class MyAddrEdit extends Component {
 
   render() {
     let { addressInfo } = this.state;
-    let fullAddress: string = `${addressInfo.provinceName} ${addressInfo.cityName} ${addressInfo.countyName}`;
+    let fullAddress= `${addressInfo.provinceName} ${addressInfo.cityName} ${addressInfo.countyName}`;
     return (
-      <View className="my-address-edit-wrapper">
+      <View className='my-address-edit-wrapper'>
         <AtForm >
           <AtInput
             name='name'
@@ -132,8 +131,8 @@ export default class MyAddrEdit extends Component {
             type='text'
             placeholder='请填写'
             value={addressInfo.linkName}
-            onChange={(val: String) => {
-              this.setState((preState: any) => ({
+            onChange={(val) => {
+              this.setState((preState) => ({
                 addressInfo: { ...preState.addressInfo, linkName: val }
               }))
             }}
@@ -144,8 +143,8 @@ export default class MyAddrEdit extends Component {
             type='phone'
             placeholder='请填写'
             value={addressInfo.phone}
-            onChange={(val: Number) => {
-              this.setState((preState: any) => ({
+            onChange={(val) => {
+              this.setState((preState) => ({
                 addressInfo: { ...preState.addressInfo, phone: val }
               }))
             }}
@@ -162,11 +161,12 @@ export default class MyAddrEdit extends Component {
                 countyCode: res.detail.code[2]
               }
             })
-          }}>
-            <View className="at-input">
-              <View className="at-input__container">
-                <Text className="at-input__title">地址</Text>
-                <Input className="at-input__input" placeholder="地址" value={fullAddress} type='text' disabled />
+          }}
+          >
+            <View className='at-input'>
+              <View className='at-input__container'>
+                <Text className='at-input__title'>地址</Text>
+                <Input className='at-input__input' placeholder='地址' value={fullAddress} type='text' disabled />
                 <View className='at-icon at-icon-chevron-right' style={{ color: '#ccc' }}></View>
               </View>
             </View>
@@ -177,16 +177,16 @@ export default class MyAddrEdit extends Component {
             type='text'
             placeholder='请填写'
             value={addressInfo.address}
-            onChange={(val: string) => {
-              this.setState((preState: any) => ({
+            onChange={(val) => {
+              this.setState((preState) => ({
                 addressInfo: { ...preState.addressInfo, address: val }
               }))
             }}
           />
         </AtForm>
-        <View className="footer-container">
-          <AtButton className="submit-button" onClick={this.submitAddress.bind(this)} type="primary">{this.$router.params.isSelectStatus ? '添加并保存' : '保存地址'}</AtButton>
-          {/* <AtButton full className="delete-button" onClick={this.deleteAddress.bind(this)} type="secondary">删除地址</AtButton> */}
+        <View className='footer-container'>
+          <AtButton className='submit-button' onClick={this.submitAddress.bind(this)} type='primary'>{this.$router.params.isSelectStatus ? '添加并保存' : '保存地址'}</AtButton>
+          {/* <AtButton full className='delete-button' onClick={this.deleteAddress.bind(this)} type='secondary'>删除地址</AtButton> */}
         </View>
       </View >
     )

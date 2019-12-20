@@ -1,4 +1,4 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.less'
 
@@ -13,22 +13,24 @@ export default class ProductMend extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
+  componentWillMount() { }
+
+  config = {
     navigationBarTitleText: '修鞋修复'
   }
 
-  componentWillMount() { }
 
   render() {
     return (
       <View className='product-mend-wrapper'>
-        <View className="tips">
+        <View className='tips'>
           <Text>系统加紧开发中，有鞋子修复需求请电话联系：</Text>
-          <Text className="phone" onClick={() => {
+          <Text className='phone' onClick={() => {
             Taro.makePhoneCall({
               phoneNumber: String(DEFAULT_CONFIG.customerServicePhone)
             })
-          }}>{DEFAULT_CONFIG.customerServicePhone}</Text>
+          }}
+          >{DEFAULT_CONFIG.customerServicePhone}</Text>
         </View>
       </View>
     )
