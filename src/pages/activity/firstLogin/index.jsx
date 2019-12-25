@@ -34,7 +34,7 @@ export default class FirstOrder extends Component {
   }
   
   config = {
-    navigationBarTitleText: '开业大吉,首单立减20元'
+    navigationBarTitleText: '2020年,首单立减20元'
   }
 
   articleList = [
@@ -42,14 +42,14 @@ export default class FirstOrder extends Component {
       id: 1,
       title: '活动时间',
       content: [
-        '2019年12月12日 00:00-2019年12月20日 23:59'
+        '2020年1月1日 00:00-2020年1月15日 23:59'
       ]
     },
     {
       id: 2,
       title: '参与条件',
       content: [
-        '活动期间,领券并下单成功的客户可以获得本优惠.'
+        '活动期间,第一次下单并成功的客户都可以获得优惠.'
       ]
     },
     {
@@ -140,7 +140,7 @@ export default class FirstOrder extends Component {
           <View className='card-right'>
             <View className='info'>
               <View className='line1'>仅限洗鞋订单</View>
-              <View className='line2'>有效期至：2019-12-20</View>
+              <View className='line2'>有效期至：2020-1-15</View>
             </View>
             <View className='button' onClick={this.clickCoupon.bind(this)}>{isReceived ? '去使用' : '领取'}</View>
           </View>
