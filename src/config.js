@@ -37,20 +37,20 @@ export const orderStatusToValue = (status, type) => {
 
 // 默认店铺信息
 export const storeInfo = {
-  storeName: '鞋π(三宝文化店)',
-  phone: '186 6822 3132',
+  storeName: '鞋π',
+  phone: '183 6701 1078',
   provinceName: '浙江省',
   cityName: '杭州市',
-  countyName: '下城区',
-  address: '体育场路406号',
+  countyName: '拱墅区',
+  address: '学院北路50号1栋108',
 }
 
 // 客服电话
-export const customerServicePhone = '186 6822 3132'
+export const customerServicePhone = '183 6701 1078'
 
 export const DEFAULT_CONFIG = {
   // 客服电话
-  customerServicePhone: '186 6822 3132',
+  customerServicePhone: '183 6701 1078',
   // 文件服务
   fileBaseURL: 'https://file.sneakerpai.com/file/upload',
   // fileBaseURL: 'https://dev-file.sneakerpai.com/file/upload',
