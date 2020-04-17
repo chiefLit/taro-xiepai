@@ -140,14 +140,16 @@ export default class Mine extends Component {
     return (
       userInfo.phone ?
         <View className='user-container'>
-          <Image className='head-portrait' mode='aspectFill' src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
+          {/* <Image className='head-portrait' mode='aspectFill' src={userInfo.avatarUrl || defaultAvatarUrl}></Image> */}
+          <open-data type="userAvatarUrl"></open-data>
           <View className='username'>
             {/* <View>{userInfo.nickName}</View> */}
             <View className='phone'>{userInfo.phone}</View>
           </View>
         </View> :
         <Button open-type='getPhoneNumber' onGetPhoneNumber={this.onGetPhoneNumber.bind(this)} className='user-container no-button-style'>
-          <Image className='head-portrait' mode='aspectFill' src={userInfo.avatarUrl || defaultAvatarUrl}></Image>
+          {/* <Image className='head-portrait' mode='aspectFill' src={userInfo.avatarUrl || defaultAvatarUrl}></Image> */}
+          <open-data type="userAvatarUrl"></open-data>
           <View className='username'>
             <View>登录/注册</View>
           </View>
