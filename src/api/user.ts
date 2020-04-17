@@ -78,7 +78,7 @@ export async function getUserInfo(isForce: boolean) {
     } else {
       const userData: any = await getMine()
       if (userData && userData.code === 1) {
-        storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+        storage.setStorage(STORAGE_NAME.userInfo, userData.object || {});
         return userData.object
       } else {
         return null
@@ -91,7 +91,7 @@ export async function getUserInfo(isForce: boolean) {
     // console.log(token)
     const userData: any = await getMine()
     if (userData && userData.code === 1) {
-      storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+      storage.setStorage(STORAGE_NAME.userInfo, userData.object || {});
       return userData.object
     } else {
       return null
@@ -143,7 +143,7 @@ export async function getMine() {
 
   const userData: any = await axios(config)
   return new Promise((resolve) => {
-    storage.setStorage(STORAGE_NAME.userInfo, userData.object);
+    storage.setStorage(STORAGE_NAME.userInfo, userData.object || {});
     let totalNum = Number(userData.object.processingOrderCount || 0) + Number(userData.object.waitPayOrderCount || 0)
     // totalNum > 0 ? Taro.showTabBarRedDot({ index: 2 }) : Taro.hideTabBarRedDot({ index: 2 })
     totalNum > 0 ?
