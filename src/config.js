@@ -52,9 +52,9 @@ export const DEFAULT_CONFIG = {
   // 客服电话
   customerServicePhone: '183 6701 1078',
   // 文件服务
-  fileBaseURL: 'https://file.sneakerpai.com/file/upload',
-  // fileBaseURL: 'https://dev-file.sneakerpai.com/file/upload',
+  // fileBaseURL: 'https://file.sneakerpai.com/file/upload',
+  fileBaseURL: 'https://dev-file.sneakerpai.com/file/upload',
   // 普通服务
-  baseURL: 'https://wxmp-api.sneakerpai.com/',
-  // baseURL: 'https://dev-wxmp-api.sneakerpai.com/',
+  // baseURL: 'https://wxmp-api.sneakerpai.com/',
+  baseURL: 'https://dev-wxmp-api.sneakerpai.com/',
 }

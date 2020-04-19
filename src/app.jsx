@@ -30,6 +30,7 @@ class App extends Component {
    */
   config = {
     pages: [
+      // 'pages/orderEdit/index',
       'pages/home/index',
       'pages/aboutus/index',
       'pages/wechatWebView/index',
