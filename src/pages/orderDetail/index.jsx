@@ -5,7 +5,7 @@ import { AtButton } from 'taro-ui'
 import './index.less'
 import * as orderApi from '../../api/order'
 import * as commonApi from '../../api/common'
-import { DEFAULT_CONFIG, orderStatusToValue } from '../../config'
+import { DEFAULT_CONFIG, orderStatusToValue, deliveryMethods } from '../../config'
 import * as utils from '../../utils/index'
 
 export default class OrderDetail extends Component {
@@ -242,11 +242,16 @@ export default class OrderDetail extends Component {
             {/* {orderDetail.status === 1 ? <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> : null} */}
           </View>
           <View className='dist-mode'>
-            <View className='mode-left'>
-              <View className='line1'>配送方式</View>
-              <View className='line2'>请在支付后寄出鞋子，并补全快递信息</View>
+            <View className='module-list'>
+              <View className='key'>配送方式</View>
+              <View className='value'>{deliveryMethods[orderDetail.deliverMode].label}</View>
             </View>
-            <View className='mode-right'>自己快递</View>
+            <View className='desc'>{deliveryMethods[orderDetail.deliverMode].desc}</View>
+            {/* <View className='mode-left'>
+              <View className='line1'>配送方式</View>
+              <View className='line2'>{deliveryMethods[orderDetail.deliverMode].desc}</View>
+            </View>
+            <View className='mode-right'>{deliveryMethods[orderDetail.deliverMode].label}</View> */}
           </View>
         </View>
 
@@ -298,10 +303,10 @@ export default class OrderDetail extends Component {
             <View className='key'>商品总额</View>
             <View className='value'>￥{orderDetail.totalPrice.toFixed(2)}</View>
           </View>
-          {/* <View className='module-list'>
+          <View className='module-list'>
             <View className='key'>运费</View>
-            <View className='value'>￥ 6.5</View>
-          </View> */}
+            <View className='value'>{orderDetail.expressFee ? `￥ ${orderDetail.expressFee.toFixed(2)}` : ''}</View>
+          </View>
           <View className='module-list'>
             <View className='key'>优惠券</View>
             <View className='value'>{orderDetail.couponId ? `-￥${orderDetail.couponAmount.toFixed(2)}` : `未使用`}</View>

@@ -6,6 +6,7 @@ import { connect } from '@tarojs/redux'
 import './index.less'
 import addrLineImage from '../../assets/images/addr-line.png'
 import DoorDate from './components/door-date'
+import { deliveryMethods } from "../../config";
 
 import * as orderApi from '../../api/order'
 import * as serviceApi from '../../api/service'
@@ -48,14 +49,15 @@ export default class OrderEdit extends Component {
       couponDiscountAmount: 0,
       totalDiscountAmount: 0,
       realPayPrice: 0,
-      deliverMode: 1,
-      makeDoorStartTime: '',
-      makeDoorEndTime: ''
     },
     userAddressVo: {
       id: null
     },
     showSelectAddr: false,
+
+    deliverMode: 1,
+    makeDoorStartTime: '',
+    makeDoorEndTime: ''
   }
   // 入口页区分（单品-洗鞋、购物车）
   componentWillMount() {
@@ -82,7 +84,11 @@ export default class OrderEdit extends Component {
 
     if (orderDetail) {
       this.setState({
-        orderDetail: this.props.orderToCashier.data
+        orderDetail: {
+          ...this.props.orderToCashier.data,
+          // 老数据给一个默认送鞋方式
+          // deliverMode: ( deliverMode !== undefined && deliverMode !== null ) ? deliverMode : 1
+        }
       })
       this.props.deleteOrderToCashier()
     } else {
@@ -109,14 +115,6 @@ export default class OrderEdit extends Component {
   formCartParams = {
     cartIds: []
   }
-
-  // 配送方式
-  selectAddrList = [
-    { label: '自己上门', value: 0 },
-    { label: '自己快递', value: 1, desc: '请在支付后寄出鞋子，并补全快递信息' },
-    { label: '快递上门取件', value: 2, desc: '顺丰快递上门取件，平台发回使用中通快递,当前仅支持江浙沪闽皖地区' }
-  ]
-
 
   componentDidShow() {
     const selectedAddressData = this.props.selectedAddress.data
@@ -166,6 +164,7 @@ export default class OrderEdit extends Component {
 
   // 提交订单
   async submitOrder() {
+    const { deliverMode, makeDoorStartTime, makeDoorEndTime } = this.state
     if (!this.state.userAddressVo || !this.state.userAddressVo.id) {
       Taro.showToast({
         title: '请先选择收货地址',
@@ -176,9 +175,9 @@ export default class OrderEdit extends Component {
     let params;
     // 直接下单--单品洗鞋
     if (this.formCartParams.cartIds.length) {
-      params = { ...this.formCartParams }
+      params = { ...this.formCartParams, deliverMode, makeDoorStartTime, makeDoorEndTime }
     } else {
-      params = { ...this.formWashProductParams }
+      params = { ...this.formWashProductParams, deliverMode, makeDoorStartTime, makeDoorEndTime }
     }
     params.couponId = this.state.orderDetail.couponId
     params.toUserAddressId = this.state.userAddressVo.id
@@ -266,7 +265,7 @@ export default class OrderEdit extends Component {
   }
 
   render() {
-    let { orderDetail, userAddressVo, hasNoAddress, showSelectAddr } = this.state;
+    let { orderDetail, userAddressVo, hasNoAddress, showSelectAddr, deliverMode } = this.state;
     return (
       <View className='order-edit-wrapper'>
         <View className='address-info'
@@ -304,24 +303,26 @@ export default class OrderEdit extends Component {
         <Image className='addr-line' mode='aspectFill' src={addrLineImage}></Image>
 
         <View className='dist-mode'>
-          <View className='module-list' onClick={() => this.setState({showSelectAddr: true})}>
+          <View className='module-list' onClick={() => this.setState({ showSelectAddr: true })}>
             <View className='key'>送鞋方式</View>
             <View className='value'>
-              <Text>{this.selectAddrList[orderDetail.deliverMode].label} </Text>
+              <Text>{deliveryMethods[deliverMode].label} </Text>
               <AtIcon value='chevron-right' size='15' color='#999'></AtIcon>
             </View>
           </View>
-          <View className="desc">{this.selectAddrList[orderDetail.deliverMode].desc}</View>
+          <View className="desc">{deliveryMethods[deliverMode].desc}</View>
         </View>
 
-        {orderDetail.deliverMode === 2 ?
+        {deliverMode === 2 ?
           <DoorDate setDate={(makeDoorStartTime, makeDoorEndTime) => {
             this.setState(preState => {
               return {
-                orderDetail: {
-                  ...preState.orderDetail,
-                  makeDoorStartTime, makeDoorEndTime
-                }
+                makeDoorStartTime,
+                makeDoorEndTime
+                // orderDetail: {
+                //   ...preState.orderDetail,
+                //   makeDoorStartTime, makeDoorEndTime
+                // }
               }
             })
           }}></DoorDate> : null}
@@ -398,7 +399,9 @@ export default class OrderEdit extends Component {
             <View className='value red'>￥{orderDetail.realPayPrice.toFixed(2)}</View>
           </View>
         </View>
+
         <View className='footer-cover'></View>
+
         <View className='footer-container'>
           <View className='total-price'>
             <Text>合计：</Text>
@@ -406,19 +409,15 @@ export default class OrderEdit extends Component {
           </View>
           <AtButton full onClick={this.submitOrder.bind(this)}>立即下单</AtButton>
         </View>
+
         <AtActionSheet isOpened={showSelectAddr}>
           {
-            this.selectAddrList.map((item) => {
+            deliveryMethods.map((item) => {
               return (
                 <AtActionSheetItem key={item.value} onClick={() => {
-                  this.setState(preState => {
-                    return {
-                      orderDetail: {
-                        ...preState.orderDetail,
-                        deliverMode: item.value
-                      },
-                      showSelectAddr: false
-                    }
+                  this.setState({
+                    deliverMode: item.value,
+                    showSelectAddr: false
                   })
 
                 }}>{item.label}</AtActionSheetItem>

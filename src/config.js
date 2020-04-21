@@ -32,8 +32,14 @@ export const orderStatusToValue = (status, type) => {
   }
 
   return statusVo[status][type]
-
 }
+
+// 配送方式
+export const deliveryMethods = [
+  { label: '自己上门', value: 0 },
+  { label: '自己快递', value: 1, desc: '请在支付后寄出鞋子，并补全快递信息' },
+  { label: '快递上门取件', value: 2, desc: '顺丰快递上门取件，平台发回使用中通快递,当前仅支持江浙沪闽皖地区' }
+]
 
 // 默认店铺信息
 export const storeInfo = {

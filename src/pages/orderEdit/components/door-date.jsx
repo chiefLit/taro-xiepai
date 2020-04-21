@@ -54,7 +54,7 @@ export default class DoorDate extends Component {
     })
   }
 
-  componentDidShow() {
+  componentDidMount() {
     this.setHourList(0)
   }
 
@@ -72,7 +72,7 @@ export default class DoorDate extends Component {
               const oneHour = 60 * 60 * 1000
               const makeDoorStartTime = new Date(new Date().toLocaleDateString()).setHours(selectHour.value) + oneDay * selectDay.value
               const makeDoorEndTime = makeDoorStartTime + oneHour
-              setDate(makeDoorStartTime, makeDoorEndTime)
+              setDate(new Date(makeDoorStartTime), new Date(makeDoorEndTime))
               this.setState({
                 dateValue: `${selectDay.label} ${selectHour.label}`
               })
