@@ -4,6 +4,8 @@ import './index.less'
 
 import { storeInfo } from '../../config'
 
+import * as storeApi from "../../api/store";
+
 export default class Aboutus extends Component {
 
   /**
@@ -13,29 +15,50 @@ export default class Aboutus extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  componentWillMount() { }
 
   config = {
     navigationBarTitleText: '关于我们'
   }
 
+  state = {
+    storeList: []
+  }
+
+  async getStoreList() {
+    const data = await storeApi.getStoreList();
+    this.setState({
+      storeList: data
+    })
+  }
+
+  componentDidMount() {
+    this.getStoreList()
+  }
+
 
   render() {
+    const { storeList } = this.state
     return (
       <View className='aboutus-wrapper'>
-        <View className='store-item'>
-          <View className='title'>{storeInfo.storeName}</View>
-          <View className='content'>
-            <Text>{storeInfo.provinceName} {storeInfo.cityName} {storeInfo.countyName} {storeInfo.address}</Text>
-            <View>联系方式: <Text className='phone'
-              onClick={() => {
-                Taro.makePhoneCall({
-                  phoneNumber: String(storeInfo.phone)
-                })
-              }}
-            >{storeInfo.phone}</Text></View>
-          </View>
-        </View>
+        {
+          storeList.map((storeItem) => {
+            return (
+              <View className='store-item' key={storeItem.id}>
+                <View className='title'>{storeItem.name}</View>
+                <View className='content'>
+                  <Text>{storeItem.provinceName} {storeItem.cityName} {storeItem.countyName} {storeItem.address}</Text>
+                  <View>联系方式: <Text className='phone'
+                    onClick={() => {
+                      Taro.makePhoneCall({
+                        phoneNumber: String(storeItem.phone)
+                      })
+                    }}
+                  >{storeItem.phone}</Text></View>
+                </View>
+              </View>
+            )
+          })
+        }
         <View className='footer-container'>
           {/* <View> */}
           <Text>杭州丝内刻科技有限公司</Text>

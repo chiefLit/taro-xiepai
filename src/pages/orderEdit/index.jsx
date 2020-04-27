@@ -6,6 +6,7 @@ import { connect } from '@tarojs/redux'
 import './index.less'
 import addrLineImage from '../../assets/images/addr-line.png'
 import DoorDate from './components/door-date'
+import StoreItem from "../../components/storeItem";
 import { deliveryMethods } from "../../config";
 
 import * as orderApi from '../../api/order'
@@ -50,6 +51,7 @@ export default class OrderEdit extends Component {
       totalDiscountAmount: 0,
       realPayPrice: 0,
     },
+    currStore: {},
     userAddressVo: {
       id: null
     },
@@ -264,6 +266,14 @@ export default class OrderEdit extends Component {
     }
   }
 
+  // 当前店铺
+  async getCurrStore() {
+    const currStore = await storeApi.getCurrStore({})
+    this.setState({
+      currStore
+    });
+  }
+
   render() {
     let { orderDetail, userAddressVo, hasNoAddress, showSelectAddr, deliverMode } = this.state;
     return (
@@ -301,6 +311,8 @@ export default class OrderEdit extends Component {
           {/* {!isOrderGenerated ? <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> : null} */}
         </View>
         <Image className='addr-line' mode='aspectFill' src={addrLineImage}></Image>
+
+        <StoreItem></StoreItem>
 
         <View className='dist-mode'>
           <View className='module-list' onClick={() => this.setState({ showSelectAddr: true })}>

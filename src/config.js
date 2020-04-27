@@ -9,6 +9,10 @@ export const STORAGE_NAME = {
 
   // token
   token: '__USER_TOKEN__',
+
+  storeList: '__STORE_LIST__',
+
+  currStore: '__STORE_SELECTED__',
 }
 
 // 订单状态管理
