@@ -79,7 +79,8 @@ export default class productWash extends Component {
     const data = await serviceApi.washServiceList(params);
     if (data.code !== 1) {
       Taro.showToast({
-        title: data.message
+        title: data.message,
+        icon: 'none'
       })
     } else {
       this.operateData(data.object || [])
