@@ -30,7 +30,7 @@ class App extends Component {
    */
   config = {
     pages: [
-      // 'pages/orderEdit/index',
+      'pages/nursingEffect/index',
       'pages/home/index',
       'pages/aboutus/index',
       'pages/wechatWebView/index',
@@ -40,7 +40,7 @@ class App extends Component {
       'pages/faqList/index',
       'pages/cart/index',
       'pages/productWash/index',
-      'pages/orderEdit/index',
+      'pages/cashier/index',
       'pages/orderDetail/index',
       'pages/activity/firstLogin/index',
       'pages/orderList/index',

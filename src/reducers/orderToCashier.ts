@@ -1,4 +1,4 @@
-// 提交到 /pages/orderEdit/index 页面的参数
+// 提交到 /pages/cashier/index 页面的参数
 import { ADD, DELETE } from './constants/orderToCashier'
 
 const INITIAL_STATE = {

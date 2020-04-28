@@ -4,8 +4,11 @@ import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui'
 
 import './index.less'
+import StoreCurrent from "../../components/storeCurrent";
 
-import { washServiceList, toCartByWash, toCashierByWash } from '../../api/service'
+import * as serviceApi from '../../api/service'
+import * as goodzApi from '../../api/goodz'
+import * as storeApi from "../../api/store";
 import { DEFAULT_CONFIG } from '../../config'
 
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
@@ -33,6 +36,7 @@ export default class productWash extends Component {
   }
 
   state = {
+    currStore: {},
     // 清洗方式（也属于产品）
     wayList: [],
     // 产品列表
@@ -46,7 +50,7 @@ export default class productWash extends Component {
     image1Url: '',
     image2Url: ''
   }
-
+  
   componentWillMount() {
     this.pullData()
   }
@@ -69,7 +73,16 @@ export default class productWash extends Component {
   }
 
   async pullData() {
-    let data = await washServiceList(null);
+    const currStore = await storeApi.getCurrStore()
+    // 写死goodzId
+    const goodzListData = await goodzApi.getGoodzList({
+      storeId: currStore.id
+    })
+    this.setState({ currStore })
+    const data = await serviceApi.washServiceList({
+      goodzId: goodzListData.object[0].id,
+      storeId: currStore.id
+    });
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message
@@ -194,7 +207,7 @@ export default class productWash extends Component {
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds = chosenList.map((ele) => ele.id)
-    const data = await toCartByWash({
+    const data = await serviceApi.toCartByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -226,7 +239,7 @@ export default class productWash extends Component {
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds = chosenList.map((ele) => ele.id)
-    let data = await toCashierByWash({
+    let data = await serviceApi.toCashierByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -239,7 +252,7 @@ export default class productWash extends Component {
       this.initData()
       // 添加成功
       Taro.redirectTo({
-        url: `/pages/orderEdit/index?serviceItemIds=${serviceItemIds}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
+        url: `/pages/cashier/index?serviceItemIds=${serviceItemIds}&image0Url=${image0Url}&image1Url=${image1Url}&image2Url=${image2Url}`
       })
     }
   }
@@ -286,6 +299,7 @@ export default class productWash extends Component {
     let { wayList, productList, chosenList, showSelectedProduct, image0Url, image1Url, image2Url } = this.state
     return (
       <View className='product-wash-wrapper'>
+        <StoreCurrent editable/>
         <View className='module-container'>
           <View className='module-title'>
             <Text className='title'>选择清洗方式</Text>

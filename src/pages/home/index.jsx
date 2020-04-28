@@ -6,6 +6,7 @@ import qxImage from '../../assets/images/qx.png'
 import xfImage from '../../assets/images/xf.png'
 import PopupAuthorization from '../../components/PopupAuthorization'
 import PopupFisrtCoupon from '../../components/PopupFisrtCoupon'
+import StoreChange from '../../components/storeChange'
 
 import * as commonApi from '../../api/common'
 import * as userApi from '../../api/user'
@@ -37,11 +38,12 @@ export default class Home extends Component {
     faqList: [],
     showPopupAuthorization: false,
     showPopupFisrtCoupon: false,
-    firstLoginCouponId: null,
+    firstLoginCouponId: null
   }
 
   componentWillMount() {
     this.pullData()
+    // this.setGoodzId()
     this.getUserInfo(this.firstLoginActivity)
     // this.firstLoginActivity()
   }
@@ -77,8 +79,8 @@ export default class Home extends Component {
   }
 
   dailyServices = [
-    { name: '清洗球鞋', price: '49', desc: '手工洗鞋', imageUrl: qxImage, url: '/pages/productWash/index' },
-    { name: '修复球鞋', price: '64', desc: '极致修复', imageUrl: xfImage, url: '/pages/productMend/index' }
+    { name: '清洗球鞋', price: '49', desc: '手工洗鞋', imageUrl: qxImage, url: '/pages/productWash/index', goodzId: null },
+    { name: '修复球鞋', price: '64', desc: '极致修复', imageUrl: xfImage, url: '/pages/productMend/index', goodzId: null }
   ]
 
   processList = [
@@ -184,6 +186,7 @@ export default class Home extends Component {
     let { articleList, bannerIndex, faqList, showPopupAuthorization, showPopupFisrtCoupon } = this.state;
     return (
       <View className='home-wrapper'>
+        <StoreChange />
         {/* swiper */}
         <View className='swiper-container'>
           <Swiper
@@ -237,7 +240,7 @@ export default class Home extends Component {
                 <View className='daily-item' key={ele.name}
                   onClick={async () => {
                     const res = await userApi.checkPhoneLogin();
-                    res ? Taro.navigateTo({ url: ele.url }) : this.handlePopupAuthorization(true)
+                    res ? Taro.navigateTo({ url: `${ele.url}` }) : this.handlePopupAuthorization(true)
                   }}
                 >
                   <View className='name'>{ele.name}</View>
@@ -299,6 +302,21 @@ export default class Home extends Component {
                 )
               })
             }
+          </View>
+        </View>
+        {/* 护理效果 */}
+        <View className='module-container'>
+          <View className='module-title'>
+            <Text className='line1'>护理效果</Text>
+            <Text className='line2'>NURSING EFFECT</Text>
+            <View className='title-right-btn'
+              onClick={() => {
+                Taro.navigateTo({ url: '/pages/nursingEffect/index' })
+              }}
+            >
+              <Text>查看更多</Text>
+              <View className='at-icon at-icon-chevron-right'></View>
+            </View>
           </View>
         </View>
         {/* 常见问题 */}

@@ -135,7 +135,7 @@ export default class Cart extends Component {
       this.props.addOrderToCashier(data.object)
       // 添加成功
       Taro.navigateTo({
-        url: `/pages/orderEdit/index?cartIds=${cartIds}`
+        url: `/pages/cashier/index?cartIds=${cartIds}`
       })
     }
   }

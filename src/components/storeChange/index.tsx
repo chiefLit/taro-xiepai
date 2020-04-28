@@ -1,8 +1,10 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Text } from "@tarojs/components";
-import { AtButton, AtActionSheet, AtActionSheetItem } from "taro-ui";
+import { View, Text, Image } from "@tarojs/components";
+import { AtActionSheet, AtActionSheetItem } from "taro-ui";
 import "./index.less";
 import "taro-ui/dist/style/components/icon.scss";
+
+import mapPinImage from "../../assets/images/map-pin.png";
 
 import * as storeApi from "../../api/store";
 
@@ -55,31 +57,27 @@ export default class storeItem extends Component {
     this.getCurrStore()
   }
 
-  componentWillMount() {
+  componentDidShow() {
     this.getStoreList();
-    this.getCurrStore()
+    this.getCurrStore();
+    this.setState({
+      isAction: false
+    });
   }
 
   render() {
     const { storeList, currStore, isAction } = this.state;
     return (
       <View className="store-item-wrapper">
-        <AtButton type="primary" size="small" onClick={() => {
+        <View className="address-box" onClick={() => {
           this.setState({
             isAction: true
           })
         }}>
-          切换店铺
-        </AtButton>
-        <View className="title">{currStore.name}</View>
-        <View className="address desc">
-          <View className="at-icon at-icon-map-pin"></View>
-          <Text>{currStore.provinceName} {currStore.cityName} {currStore.countyName} {currStore.describe}</Text>
+          <Image src={mapPinImage}></Image>
+          <Text>{currStore.name}</Text>
         </View>
-        <View className="business-hours desc">
-          <View className="at-icon at-icon-clock"></View>
-          <Text>{currStore.businessHour}</Text>
-        </View>
+
         <AtActionSheet isOpened={isAction}>
           {storeList.map((item: any) => {
             return (

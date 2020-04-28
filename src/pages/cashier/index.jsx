@@ -6,7 +6,7 @@ import { connect } from '@tarojs/redux'
 import './index.less'
 import addrLineImage from '../../assets/images/addr-line.png'
 import DoorDate from './components/door-date'
-import StoreItem from "../../components/storeItem";
+import StoreCurrent from "../../components/storeCurrent";
 import { deliveryMethods } from "../../config";
 
 import * as orderApi from '../../api/order'
@@ -166,10 +166,17 @@ export default class OrderEdit extends Component {
 
   // 提交订单
   async submitOrder() {
-    const { deliverMode, makeDoorStartTime, makeDoorEndTime } = this.state
-    if (!this.state.userAddressVo || !this.state.userAddressVo.id) {
+    const { orderDetail, userAddressVo, deliverMode, makeDoorStartTime, makeDoorEndTime, currStore } = this.state
+    if (!userAddressVo || !userAddressVo.id) {
       Taro.showToast({
         title: '请先选择收货地址',
+        icon: 'none'
+      })
+      return
+    }
+    if ( deliverMode === 2 && !makeDoorStartTime) {
+      Taro.showToast({
+        title: '快递上门取件需要选择上门时间',
         icon: 'none'
       })
       return
@@ -177,12 +184,18 @@ export default class OrderEdit extends Component {
     let params;
     // 直接下单--单品洗鞋
     if (this.formCartParams.cartIds.length) {
-      params = { ...this.formCartParams, deliverMode, makeDoorStartTime, makeDoorEndTime }
+      params = { 
+        ...this.formCartParams, 
+        deliverMode,
+        makeDoorStartTime, 
+        makeDoorEndTime,
+        storeId: currStore.id
+      }
     } else {
-      params = { ...this.formWashProductParams, deliverMode, makeDoorStartTime, makeDoorEndTime }
+      params = { ...this.formWashProductParams, deliverMode, makeDoorStartTime, makeDoorEndTime, storeId: currStore.id }
     }
-    params.couponId = this.state.orderDetail.couponId
-    params.toUserAddressId = this.state.userAddressVo.id
+    params.couponId = orderDetail.couponId
+    params.toUserAddressId = userAddressVo.id
 
     let data;
     const userPayResult = this.userPayResult.bind(this)
@@ -312,7 +325,7 @@ export default class OrderEdit extends Component {
         </View>
         <Image className='addr-line' mode='aspectFill' src={addrLineImage}></Image>
 
-        <StoreItem></StoreItem>
+        <StoreCurrent />
 
         <View className='dist-mode'>
           <View className='module-list' onClick={() => this.setState({ showSelectAddr: true })}>

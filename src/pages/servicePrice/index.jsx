@@ -3,6 +3,8 @@ import { View, Text } from '@tarojs/components'
 
 import './index.less'
 
+import * as goodzApi from "../../api/goodz";
+
 export default class ServicePrice extends Component {
 
   /**
@@ -15,6 +17,24 @@ export default class ServicePrice extends Component {
   config = {
     navigationBarTitleText: '服务价格',
     backgroundColor: '#fff'
+  }
+
+  async getGoodzList(storeId) {
+    const data = await goodzApi.getGoodzList({
+      storeId: 1
+    })
+    if (data.code !== 1) {
+      Taro.showToast({
+        title: data.message,
+        icon: "none"
+      })
+    } else {
+      console.log(data.object)
+    }
+  }
+
+  componentWillMount() {
+    this.getGoodzList()
   }
 
   render() {
