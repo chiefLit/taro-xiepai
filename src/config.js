@@ -13,6 +13,8 @@ export const STORAGE_NAME = {
   storeList: '__STORE_LIST__',
 
   currStore: '__STORE_SELECTED__',
+
+  currGoodz: '__GOODZ_SELECTED__'
 }
 
 // 订单状态管理

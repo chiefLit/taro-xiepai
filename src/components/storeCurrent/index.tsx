@@ -15,6 +15,10 @@ export default class storeItem extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
+  constructor(props) {
+    super(props)
+  }
+
   state = {
     storeList: [],
     currStore: {
@@ -44,15 +48,19 @@ export default class storeItem extends Component {
   }
 
   async getCurrStore() {
-    const currStore = await storeApi.getCurrStore({})
+    const currStore = await storeApi.getCurrStore()
     this.setState({
       currStore
     });
   }
 
   async setCurrStore(data: any) {
-    storeApi.setCurrStore(data);
-    this.getCurrStore()
+    await storeApi.setCurrStore(data);
+    const currStore = await storeApi.getCurrStore()
+    this.setState({
+      currStore
+    });
+    return Promise.resolve()
   }
 
   componentDidShow() {
@@ -65,7 +73,7 @@ export default class storeItem extends Component {
 
   render() {
     const { storeList, currStore, isAction } = this.state;
-    const { editable } = this.props
+    const { editable, onChange } = this.props
     return (
       <View className="store-item-wrapper">
         {
@@ -92,7 +100,11 @@ export default class storeItem extends Component {
             return (
               <AtActionSheetItem key={item.id}
                 onClick={() => {
-                  this.setCurrStore(item)
+                  if (currStore.id !== item.id) {
+                    this.setCurrStore(item).then(() => {
+                      onChange && onChange(item)
+                    });
+                  }
                   this.setState({
                     isAction: false
                   })

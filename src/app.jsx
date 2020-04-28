@@ -30,7 +30,7 @@ class App extends Component {
    */
   config = {
     pages: [
-      'pages/nursingEffect/index',
+      // 'pages/nursingEffect/index',
       'pages/home/index',
       'pages/aboutus/index',
       'pages/wechatWebView/index',

@@ -7,8 +7,8 @@ import './index.less'
 import StoreCurrent from "../../components/storeCurrent";
 
 import * as serviceApi from '../../api/service'
-import * as goodzApi from '../../api/goodz'
 import * as storeApi from "../../api/store";
+import * as commonApi from "../../api/common";
 import { DEFAULT_CONFIG } from '../../config'
 
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
@@ -51,7 +51,9 @@ export default class productWash extends Component {
     image2Url: ''
   }
   
-  componentWillMount() {
+  async componentWillMount() {
+    const currStore = await storeApi.getCurrStore()
+    this.setState({ currStore })
     this.pullData()
   }
 
@@ -73,16 +75,8 @@ export default class productWash extends Component {
   }
 
   async pullData() {
-    const currStore = await storeApi.getCurrStore()
-    // 写死goodzId
-    const goodzListData = await goodzApi.getGoodzList({
-      storeId: currStore.id
-    })
-    this.setState({ currStore })
-    const data = await serviceApi.washServiceList({
-      goodzId: goodzListData.object[0].id,
-      storeId: currStore.id
-    });
+    const params = commonApi.getCurrentStoreIdAndGoodzId()
+    const data = await serviceApi.washServiceList(params);
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message
@@ -237,9 +231,9 @@ export default class productWash extends Component {
   async submitOrder() {
     this.setState({ showSelectedProduct: false })
     if (!this.checkImageUpload()) return
-    let { chosenList, image0Url, image1Url, image2Url } = this.state;
-    let serviceItemIds = chosenList.map((ele) => ele.id)
-    let data = await serviceApi.toCashierByWash({
+    const { chosenList, image0Url, image1Url, image2Url } = this.state;
+    const serviceItemIds = chosenList.map((ele) => ele.id)
+    const data = await serviceApi.toCashierByWash({
       serviceItemIds, image0Url, image1Url, image2Url
     })
     if (data.code !== 1) {
@@ -299,7 +293,7 @@ export default class productWash extends Component {
     let { wayList, productList, chosenList, showSelectedProduct, image0Url, image1Url, image2Url } = this.state
     return (
       <View className='product-wash-wrapper'>
-        <StoreCurrent editable/>
+        <StoreCurrent editable onChange={this.pullData.bind(this)}/>
         <View className='module-container'>
           <View className='module-title'>
             <Text className='title'>选择清洗方式</Text>

@@ -1,4 +1,6 @@
 import axios from '../utils/axios'
+import { STORAGE_NAME } from "../config";
+import storage from '../utils/storage'
 
 // 首页
 export function getIndex(data) {
@@ -55,4 +57,14 @@ export function getKdInfo(data) {
     data
   }
   return axios(config);
+}
+
+// 获取当前
+export function getCurrentStoreIdAndGoodzId() {
+  const currStore = storage.getStorage(STORAGE_NAME.currStore, null);
+  const currGoodz = storage.getStorage(STORAGE_NAME.currGoodz, null);
+  return {
+    storeId: currStore.id,
+    goodzId: currGoodz.id
+  }
 }
