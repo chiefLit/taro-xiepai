@@ -318,6 +318,9 @@ export default class Home extends Component {
               <View className='at-icon at-icon-chevron-right'></View>
             </View>
           </View>
+          <View className="image-box">
+            <Image src={require('../../assets/images/wash-result1.png')}></Image>
+          </View>
         </View>
         {/* 常见问题 */}
         {faqList && faqList.length ? this.renderFaq() : null}

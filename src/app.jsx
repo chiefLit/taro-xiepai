@@ -30,8 +30,8 @@ class App extends Component {
    */
   config = {
     pages: [
-      // 'pages/nursingEffect/index',
       'pages/home/index',
+      'pages/nursingEffect/index',
       'pages/aboutus/index',
       'pages/wechatWebView/index',
       'pages/orderSteps/index',
@@ -40,6 +40,7 @@ class App extends Component {
       'pages/faqList/index',
       'pages/cart/index',
       'pages/productWash/index',
+      'pages/servicePrice/index',
       'pages/cashier/index',
       'pages/orderDetail/index',
       'pages/activity/firstLogin/index',
@@ -48,7 +49,6 @@ class App extends Component {
       'pages/couponSelect/index',
       'pages/productMend/index',
       'pages/mine/index',
-      'pages/servicePrice/index',
       'pages/myAddress/index',
       'pages/myAddressEdit/index',
       'pages/setting/index',

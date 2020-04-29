@@ -1,9 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { AtTabs, AtTabsPane } from 'taro-ui'
 
 import './index.less'
 
+import * as storeApi from "../../api/store";
 import * as goodzApi from "../../api/goodz";
+import * as serviceApi from "../../api/service";
 
 export default class ServicePrice extends Component {
 
@@ -19,22 +22,48 @@ export default class ServicePrice extends Component {
     backgroundColor: '#fff'
   }
 
-  async getGoodzList(storeId) {
-    const data = await goodzApi.getGoodzList({
-      storeId: 1
-    })
-    if (data.code !== 1) {
+  state = {
+    current: 0,
+    tabList: [],
+
+    storeList: [],
+    // serviceList: [],
+  }
+
+  async getStoreList() {
+    const storeList = await storeApi.getStoreList({})
+    this.setState({ storeList, tabList: storeList.map(ele => { return { title: ele.name } }) })
+    this.getServiceList(storeList, 0)
+  }
+
+  async getServiceList(storeList, index) {
+    if (storeList[index].serviceList && storeList[index].serviceList.length > 0) return
+    const goodzData = await goodzApi.getGoodzList({ storeId: storeList[index].id })
+    const serviceData = await serviceApi.washServiceList({ storeId: storeList[index].id, goodzId: goodzData.object[0].id })
+    if (serviceData.code !== 1) {
       Taro.showToast({
-        title: data.message,
+        title: serviceData.message,
         icon: "none"
       })
     } else {
-      console.log(data.object)
+      console.log(this.state.storeList)
+      this.setState(preState => {
+        let preStoreList = preState.storeList
+        preStoreList[index].serviceList = serviceData.object
+        return { storeList: preStoreList }
+      })
     }
   }
 
+  handleClick(value) {
+    this.getServiceList(this.state.storeList, value)
+    this.setState({
+      current: value
+    })
+  }
+
   componentWillMount() {
-    this.getGoodzList()
+    this.getStoreList()
   }
 
   render() {
@@ -50,30 +79,41 @@ export default class ServicePrice extends Component {
       { content: '去霉/去色/染色处理', price: '49', desc: '-' },
       { content: '防氧化', price: '69', desc: '-' },
     ]
+    const { tabList, current, storeList } = this.state
     return (
       <View className='service-price-wrapper'>
-        <View className='t-header'>
-          <View>服务内容</View>
-          <View>价格</View>
-          <View>备注</View>
-        </View>
-        {
-          priceList.map(ele => {
-            return (
-              <View className='t-body-row' key={ele.content}>
-                <View>
-                  <Text>{ele.content}</Text>
-                </View>
-                <View>
-                  <Text>{ele.price} RMB</Text>
-                </View>
-                <View>
-                  <Text>{ele.desc}</Text>
-                </View>
-              </View>
-            )
-          })
-        }
+        <AtTabs current={current} tabList={tabList} onClick={this.handleClick.bind(this)}>
+          {
+            storeList.map((storeItem, index) => {
+              return (
+                <AtTabsPane current={current} index={index} key={storeItem.id}>
+                  <View className='t-header'>
+                    <View>服务内容</View>
+                    <View>价格</View>
+                    <View>备注</View>
+                  </View>
+                  {
+                    storeItem.serviceList.map(ele => {
+                      return (
+                        <View className='t-body-row' key={ele.id}>
+                          <View>
+                            <Text>{ele.name}</Text>
+                          </View>
+                          <View>
+                            <Text>{ele.price} RMB</Text>
+                          </View>
+                          <View>
+                            <Text>{ele.remark || '-'}</Text>
+                          </View>
+                        </View>
+                      )
+                    })
+                  }
+                </AtTabsPane>
+              )
+            })
+          }
+        </AtTabs>
       </View>
     )
   }

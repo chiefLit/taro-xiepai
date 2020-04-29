@@ -35,7 +35,6 @@ export default class storeItem extends Component {
 
   render() {
     const { storeVo } = this.props
-    console.log(storeVo)
     return (
       <View className="store-item-wrapper">
         <View className="title">{storeVo.name}</View>
