@@ -8,7 +8,7 @@ import mapPinImage from "../../assets/images/map-pin.png";
 
 import * as storeApi from "../../api/store";
 
-export default class storeItem extends Component {
+export default class storeChange extends Component {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -77,7 +77,7 @@ export default class storeItem extends Component {
     const { storeList, currStore, isAction } = this.state;
     const { onChange } = this.props
     return (
-      <View className="store-item-wrapper">
+      <View className="store-change-wrapper">
         <View className="address-box" onClick={() => {
           this.setState({
             isAction: true

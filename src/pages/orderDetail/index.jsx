@@ -8,6 +8,8 @@ import * as commonApi from '../../api/common'
 import { DEFAULT_CONFIG, orderStatusToValue, deliveryMethods } from '../../config'
 import * as utils from '../../utils/index'
 
+import StoreItem from "../../components/storeItem";
+
 export default class OrderDetail extends Component {
 
   /**
@@ -232,6 +234,10 @@ export default class OrderDetail extends Component {
           </View>
         </View>
 
+        <View className="store-box">
+          <StoreItem storeVo={orderDetail.storeVo}></StoreItem>
+        </View>
+
         <View className='order-address'>
           <View className='title'>收货地址</View>
           <View className='address-info'>
@@ -247,11 +253,6 @@ export default class OrderDetail extends Component {
               <View className='value'>{deliveryMethods[orderDetail.deliverMode].label}</View>
             </View>
             <View className='desc'>{deliveryMethods[orderDetail.deliverMode].desc}</View>
-            {/* <View className='mode-left'>
-              <View className='line1'>配送方式</View>
-              <View className='line2'>{deliveryMethods[orderDetail.deliverMode].desc}</View>
-            </View>
-            <View className='mode-right'>{deliveryMethods[orderDetail.deliverMode].label}</View> */}
           </View>
         </View>
 
@@ -287,7 +288,7 @@ export default class OrderDetail extends Component {
           </View>
           {/* <View className='module-list'>
             <View className='key'>运费</View>
-            <View className='value'>￥ 6.00</View>
+            <View className='value'>￥{orderDetail.expressFee.toFixed(2)}</View>
           </View> */}
           {/* <View className='module-list'>
             <View className='key'>优惠券</View>

@@ -6,7 +6,9 @@ import "taro-ui/dist/style/components/icon.scss";
 
 import * as storeApi from "../../api/store";
 
-export default class storeItem extends Component {
+import StoreItem from "../storeItem";
+
+export default class storeCurrent extends Component {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -75,18 +77,17 @@ export default class storeItem extends Component {
     const { storeList, currStore, isAction } = this.state;
     const { editable, onChange } = this.props
     return (
-      <View className="store-item-wrapper">
+      <View className="store-current-wrapper">
         {
           editable ? 
           <AtButton type="primary" size="small" onClick={() => {
-            this.setState({
-              isAction: true
-            })
+            this.setState({ isAction: true })
           }}>
             切换店铺
           </AtButton> : null
         }
-        <View className="title">{currStore.name}</View>
+        <StoreItem storeVo={currStore}></StoreItem>
+        {/* <View className="title">{currStore.name}</View>
         <View className="address desc">
           <View className="at-icon at-icon-map-pin"></View>
           <Text>{currStore.provinceName} {currStore.cityName} {currStore.countyName} {currStore.describe}</Text>
@@ -94,7 +95,7 @@ export default class storeItem extends Component {
         <View className="business-hours desc">
           <View className="at-icon at-icon-clock"></View>
           <Text>{currStore.businessHour}</Text>
-        </View>
+        </View> */}
         <AtActionSheet isOpened={isAction}>
           {storeList.map((item: any) => {
             return (

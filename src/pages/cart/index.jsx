@@ -8,6 +8,7 @@ import './index.less'
 import * as cartApi from '../../api/cart'
 import { toCashierByCart } from '../../api/order'
 import { checkPhoneLogin } from '../../api/user'
+import * as commonApi from "../../api/common";
 
 import noDataImage from '../../assets/images/no-data-cart.png'
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
@@ -119,20 +120,36 @@ export default class Cart extends Component {
     return sum.toFixed(2)
   }
 
+  // 判断是否是同一个店铺的单子
+  judgeSameStore(list) {
+    const initStoreId = list[0].storeId
+    const result = list.every((item) => {
+      return item.storeId === initStoreId
+    })
+    return result ? initStoreId : result
+  }
+
   // 结算
   async settlement(e) {
+    // const goodzInfo = commonApi.getCurrentStoreIdAndGoodzId()
     e.stopPropagation()
     let { selectedList } = this.state
     if (!selectedList.length) return
+    const initStoreId = this.judgeSameStore(selectedList)
+    if (!initStoreId) {
+      Taro.showToast({ title: '订单含不同门店，请分开下单。', icon: 'none' })
+      return
+    }
     let cartIds = selectedList.map((ele) => ele.id)
-    let data = await toCashierByCart({ cartIds })
+    let data = await toCashierByCart({ cartIds, storeId: initStoreId })
     if (data.code !== 1) {
       Taro.showToast({
         title: data.message,
         icon: 'none'
       })
     } else {
-      this.props.addOrderToCashier(data.object)
+      const params = { ...data.object, storeId: initStoreId }
+      this.props.addOrderToCashier(params)
       // 添加成功
       Taro.navigateTo({
         url: `/pages/cashier/index?cartIds=${cartIds}`
@@ -173,7 +190,7 @@ export default class Cart extends Component {
           <View className='info-name'>
             <Text>{ele.goodzTitle}</Text>
           </View>
-          <View className='info-right'>快递配送</View>
+          <View className='info-right'>快递上门取件</View>
         </View>
         <View className='item-content'>
           <View className='icon-box'>{this.randerIcon(ele)}</View>

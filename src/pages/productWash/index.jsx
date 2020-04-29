@@ -198,12 +198,13 @@ export default class productWash extends Component {
 
   // 添加到购物车
   async addCart() {
+    const goodzInfo = commonApi.getCurrentStoreIdAndGoodzId()
     this.setState({ showSelectedProduct: false })
     if (!this.checkImageUpload()) return
     let { chosenList, image0Url, image1Url, image2Url } = this.state;
     let serviceItemIds = chosenList.map((ele) => ele.id)
     const data = await serviceApi.toCartByWash({
-      serviceItemIds, image0Url, image1Url, image2Url
+      serviceItemIds, image0Url, image1Url, image2Url, ...goodzInfo
     })
     if (data.code !== 1) {
       Taro.showToast({
@@ -230,12 +231,13 @@ export default class productWash extends Component {
   }
 
   async submitOrder() {
+    const goodzInfo = commonApi.getCurrentStoreIdAndGoodzId()
     this.setState({ showSelectedProduct: false })
     if (!this.checkImageUpload()) return
     const { chosenList, image0Url, image1Url, image2Url } = this.state;
     const serviceItemIds = chosenList.map((ele) => ele.id)
     const data = await serviceApi.toCashierByWash({
-      serviceItemIds, image0Url, image1Url, image2Url
+      serviceItemIds, image0Url, image1Url, image2Url, ...goodzInfo
     })
     if (data.code !== 1) {
       Taro.showToast({
@@ -294,7 +296,7 @@ export default class productWash extends Component {
     let { wayList, productList, chosenList, showSelectedProduct, image0Url, image1Url, image2Url } = this.state
     return (
       <View className='product-wash-wrapper'>
-        <StoreCurrent editable onChange={this.pullData.bind(this)}/>
+        <StoreCurrent editable={false} onChange={this.pullData.bind(this)}/>
         <View className='module-container'>
           <View className='module-title'>
             <Text className='title'>选择清洗方式</Text>

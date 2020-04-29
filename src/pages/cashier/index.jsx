@@ -57,7 +57,7 @@ export default class OrderEdit extends Component {
     },
     showSelectAddr: false,
 
-    deliverMode: 1,
+    deliverMode: 2,
     makeDoorStartTime: '',
     makeDoorEndTime: ''
   }
@@ -166,6 +166,7 @@ export default class OrderEdit extends Component {
 
   // 提交订单
   async submitOrder() {
+    const goodzInfo = commonApi.getCurrentStoreIdAndGoodzId()
     const { orderDetail, userAddressVo, deliverMode, makeDoorStartTime, makeDoorEndTime, currStore } = this.state
     if (!userAddressVo || !userAddressVo.id) {
       Taro.showToast({
@@ -185,14 +186,14 @@ export default class OrderEdit extends Component {
     // 直接下单--单品洗鞋
     if (this.formCartParams.cartIds.length) {
       params = { 
+        ...goodzInfo,
         ...this.formCartParams, 
         deliverMode,
         makeDoorStartTime, 
-        makeDoorEndTime,
-        storeId: currStore.id
+        makeDoorEndTime
       }
     } else {
-      params = { ...this.formWashProductParams, deliverMode, makeDoorStartTime, makeDoorEndTime, storeId: currStore.id }
+      params = { ...goodzInfo, ...this.formWashProductParams, deliverMode, makeDoorStartTime, makeDoorEndTime }
     }
     params.couponId = orderDetail.couponId
     params.toUserAddressId = userAddressVo.id
@@ -328,11 +329,13 @@ export default class OrderEdit extends Component {
         <StoreCurrent />
 
         <View className='dist-mode'>
-          <View className='module-list' onClick={() => this.setState({ showSelectAddr: true })}>
+          <View className='module-list' 
+            // onClick={() => this.setState({ showSelectAddr: true })}
+          >
             <View className='key'>送鞋方式</View>
             <View className='value'>
               <Text>{deliveryMethods[deliverMode].label} </Text>
-              <AtIcon value='chevron-right' size='15' color='#999'></AtIcon>
+              {/* <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> */}
             </View>
           </View>
           <View className="desc">{deliveryMethods[deliverMode].desc}</View>
