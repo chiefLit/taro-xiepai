@@ -306,7 +306,7 @@ export default class OrderDetail extends Component {
           </View>
           <View className='module-list'>
             <View className='key'>运费</View>
-            <View className='value'>{orderDetail.expressFee ? `￥ ${orderDetail.expressFee.toFixed(2)}` : ''}</View>
+            <View className='value'>{orderDetail.expressFee ? `￥${orderDetail.expressFee.toFixed(2)}` : ''}</View>
           </View>
           <View className='module-list'>
             <View className='key'>优惠券</View>
