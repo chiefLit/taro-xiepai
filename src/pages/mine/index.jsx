@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
-import defaultAvatarUrl from '../../assets/images/default-avatarUrl.png'
 
 import * as userApi from '../../api/user'
 import { storeInfo, STORAGE_NAME } from '../../config'
 import storage from '../../utils/storage'
 import PopupAuthorization from '../../components/PopupAuthorization'
+
+const defaultAvatarUrl = 'https://dev-file.sneakerpai.com/assets/images/default-avatarUrl.png'
 
 import './index.less'
 

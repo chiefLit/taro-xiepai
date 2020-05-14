@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import './index.less'
-import couponCardImage from '../../assets/images/coupon-card.png'
+const couponCardImage = 'https://dev-file.sneakerpai.com/assets/images/coupon-card.png'
 
 export default class FirstCoupon extends Component {
 

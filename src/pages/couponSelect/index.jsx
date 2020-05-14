@@ -4,8 +4,9 @@ import { connect } from '@tarojs/redux'
 
 import './index.less'
 import * as couponApi from '../../api/coupon'
-import noDataImage from '../../assets/images/no-data-coupon.png'
 import { addSelectedCoupon } from '../../reducers/actions/selectedCoupon'
+
+const noDataImage = 'https://dev-file.sneakerpai.com/assets/images/no-data-coupon.png'
 
 @connect(
   state => state,

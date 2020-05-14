@@ -4,9 +4,9 @@ import { AtActionSheet, AtActionSheetItem } from "taro-ui";
 import "./index.less";
 import "taro-ui/dist/style/components/icon.scss";
 
-import mapPinImage from "../../assets/images/map-pin.png";
-
 import * as storeApi from "../../api/store";
+
+const mapPinImage = 'https://dev-file.sneakerpai.com/assets/images/map-pin.png'
 
 export default class storeChange extends Component {
   /**

@@ -2,10 +2,11 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 
 import './index.less'
-import bannerImage from '../../../assets/images/firstLogin/banner.png'
-import dianImage from '../../../assets/images/firstLogin/dian.png'
 import * as couponApi from '../../../api/coupon'
 import * as userApi from '../../../api/user'
+
+const bannerImage = 'https://dev-file.sneakerpai.com/assets/images/firstLogin/banner.png'
+const dianImage = 'https://dev-file.sneakerpai.com/assets/images/firstLogin/dian.png'
 
 export default class FirstOrder extends Component {
 

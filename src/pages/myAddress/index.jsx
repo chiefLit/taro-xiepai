@@ -6,10 +6,11 @@ import { AtIcon, AtButton } from 'taro-ui'
 import './index.less'
 
 import { getAddressList } from '../../api/user'
-import noDataImage from '../../assets/images/no-data-address.png'
 
 // import { STORAGE_NAME } from '../../config'
 import { addSelectedAddress } from '../../reducers/actions/selectedAddress'
+
+const noDataImage = 'https://dev-file.sneakerpai.com/assets/images/no-data-address.png'
 
 @connect(
   state => state,

@@ -10,9 +10,10 @@ import { toCashierByCart } from '../../api/order'
 import { checkPhoneLogin } from '../../api/user'
 import * as commonApi from "../../api/common";
 
-import noDataImage from '../../assets/images/no-data-cart.png'
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
 import PopupAuthorization from '../../components/PopupAuthorization'
+
+const noDataImage = 'https://dev-file.sneakerpai.com/assets/images/no-data-cart.png'
 
 @connect(
   state => state,

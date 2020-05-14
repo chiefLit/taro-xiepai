@@ -21,13 +21,13 @@ export default class nursingEffect extends Component {
       id: 1,
       title: 'Air Jodran 1 Retro High Bred Toe 黑红脚趾',
       goodzName: '中级清洗',
-      image: require('../../assets/images/wash-result1.png')
+      image: 'https://dev-file.sneakerpai.com/assets/images/wash-result1.png'
     },
     {
       id: 2,
       title: '匡威 低帮 白色',
       goodzName: '中级清洗',
-      image: require('../../assets/images/wash-result2.png')
+      image: 'https://dev-file.sneakerpai.com/assets/images/wash-result2.png'
     }
   ]
 

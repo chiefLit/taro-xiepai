@@ -5,7 +5,8 @@ import { AtTabs, AtTabsPane, AtButton } from 'taro-ui'
 import './index.less'
 import * as orderApi from '../../api/order'
 import { orderStatusToValue } from '../../config'
-import noDataImage from '../../assets/images/no-data-order.png'
+
+const noDataImage = 'https://dev-file.sneakerpai.com/assets/images/no-data-order.png'
 
 export default class OrderList extends Component {
 

@@ -2,8 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
 
 import './index.less'
-import qxImage from '../../assets/images/qx.png'
-import xfImage from '../../assets/images/xf.png'
 import PopupAuthorization from '../../components/PopupAuthorization'
 import PopupFisrtCoupon from '../../components/PopupFisrtCoupon'
 import StoreChange from '../../components/storeChange'
@@ -14,6 +12,10 @@ import * as couponApi from '../../api/coupon'
 
 import storage from '../../utils/storage'
 import { STORAGE_NAME } from '../../config'
+
+const qxImage = 'https://dev-file.sneakerpai.com/assets/images/qx.png'
+const xfImage = 'https://dev-file.sneakerpai.com/assets/images/xf.png'
+const washResult1 = 'https://dev-file.sneakerpai.com/assets/images/wash-result1.png'
 
 export default class Home extends Component {
   constructor() {
@@ -319,7 +321,7 @@ export default class Home extends Component {
             </View>
           </View>
           <View className="image-box">
-            <Image src={require('../../assets/images/wash-result1.png')}></Image>
+            <Image src={washResult1}></Image>
           </View>
         </View>
         {/* 常见问题 */}

@@ -4,7 +4,6 @@ import { AtButton, AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import './index.less'
-import addrLineImage from '../../assets/images/addr-line.png'
 import DoorDate from './components/door-date'
 import StoreCurrent from "../../components/storeCurrent";
 import { deliveryMethods } from "../../config";
@@ -17,6 +16,8 @@ import * as userApi from '../../api/user'
 import { deleteOrderToCashier } from '../../reducers/actions/orderToCashier'
 import { deleteSelectedAddress } from '../../reducers/actions/selectedAddress'
 import { deleteSelectedCoupon } from '../../reducers/actions/selectedCoupon'
+
+const addrLineImage = 'https://dev-file.sneakerpai.com/assets/images/addr-line.png'
 
 @connect(
   state => state,

@@ -13,6 +13,10 @@ import { DEFAULT_CONFIG } from '../../config'
 
 import { addOrderToCashier } from '../../reducers/actions/orderToCashier'
 
+const defaultImg0Url = 'https://dev-file.sneakerpai.com/assets/images/photo-zm.png'
+const defaultImg1Url = 'https://dev-file.sneakerpai.com/assets/images/photo-cm.png'
+const defaultImg2Url = 'https://dev-file.sneakerpai.com/assets/images/photo-bm.png'
+
 @connect(
   state => state,
   { addOrderToCashier }
@@ -60,10 +64,6 @@ export default class productWash extends Component {
   config = {
     navigationBarTitleText: '球鞋清洗'
   }
-
-  defaultImg0Url = require('../../assets/images/photo-zm.png')
-  defaultImg1Url = require('../../assets/images/photo-cm.png')
-  defaultImg2Url = require('../../assets/images/photo-bm.png')
 
   initData() {
     this.setState((preState) => ({
@@ -336,13 +336,13 @@ export default class productWash extends Component {
           </View>
           <View className='wash-photo'>
             <View className='photo-item' onClick={this.chooseImage.bind(this, 0)}>
-              <Image mode='aspectFill' src={image0Url ? image0Url : this.defaultImg0Url}></Image>
+              <Image mode='aspectFill' src={image0Url ? image0Url : defaultImg0Url}></Image>
             </View>
             <View className='photo-item' onClick={this.chooseImage.bind(this, 1)}>
-              <Image mode='aspectFill' src={image1Url ? image1Url : this.defaultImg1Url}></Image>
+              <Image mode='aspectFill' src={image1Url ? image1Url : defaultImg1Url}></Image>
             </View>
             <View className='photo-item' onClick={this.chooseImage.bind(this, 2)}>
-              <Image mode='aspectFill' src={image2Url ? image2Url : this.defaultImg2Url}></Image>
+              <Image mode='aspectFill' src={image2Url ? image2Url : defaultImg2Url}></Image>
             </View>
           </View>
         </View>

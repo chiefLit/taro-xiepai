@@ -4,9 +4,10 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import './index.less'
 
 import { getCouponList } from '../../api/coupon'
-import iconYsx from '../../assets/images/yishixiao.png'
-import iconYsy from '../../assets/images/yishiyong.png'
-import noDataImage from '../../assets/images/no-data-coupon.png'
+
+const iconYsx = 'https://dev-file.sneakerpai.com/assets/images/yishixiao.png'
+const iconYsy = 'https://dev-file.sneakerpai.com/assets/images/yishiyong.png'
+const noDataImage = 'https://dev-file.sneakerpai.com/assets/images/no-data-coupon.png'
 
 export default class CouponList extends Component {
 
