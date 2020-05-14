@@ -86,7 +86,7 @@ export default class Home extends Component {
   processList = [
     { iconName: 'iconfont iconxuanzefuwu', line2: '选择服务', line3: '第01步' },
     { iconName: 'iconfont iconzaixianzhifu', line2: '在线支付', line3: '第02步' },
-    { iconName: 'iconfont iconfahuodaopingtai', line2: '发货到平台', line3: '第03步' },
+    { iconName: 'iconfont iconfahuodaopingtai', line2: '快递上门取鞋', line3: '第03步' },
     { iconName: 'iconfont iconkaishixihu', line2: '开始洗护', line3: '第04步' },
     { iconName: 'iconfont iconwanchengbingjichu', line2: '完成并寄出', line3: '第05步' },
     { iconName: 'iconfont iconquerenshouhuo', line2: '确认收货', line3: '第06步' }

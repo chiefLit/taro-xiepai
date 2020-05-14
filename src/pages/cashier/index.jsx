@@ -186,19 +186,28 @@ export default class OrderEdit extends Component {
     // 直接下单--单品洗鞋
     if (this.formCartParams.cartIds.length) {
       params = { 
-        ...goodzInfo,
+        // ...goodzInfo,
         ...this.formCartParams, 
+        storeId: orderDetail.storeId,
         deliverMode,
         makeDoorStartTime, 
         makeDoorEndTime
       }
     } else {
-      params = { ...goodzInfo, ...this.formWashProductParams, deliverMode, makeDoorStartTime, makeDoorEndTime }
+      params = { 
+        ...goodzInfo, 
+        ...this.formWashProductParams, 
+        deliverMode, 
+        makeDoorStartTime, 
+        makeDoorEndTime 
+      }
     }
     params.couponId = orderDetail.couponId
     params.toUserAddressId = userAddressVo.id
 
     let data;
+    // console.log(params)
+    // return
     const userPayResult = this.userPayResult.bind(this)
     Taro.showLoading()
     if (this.formCartParams.cartIds.length) {
@@ -282,14 +291,16 @@ export default class OrderEdit extends Component {
 
   // 当前店铺
   async getCurrStore() {
-    const currStore = await storeApi.getCurrStore({})
-    this.setState({
-      currStore
-    });
+    console.log('getCurrStore')
+    // const currStore = await storeApi.getCurrStore({})
+    // this.setState({
+    //   currStore
+    // });
   }
 
   render() {
     let { orderDetail, userAddressVo, hasNoAddress, showSelectAddr, deliverMode } = this.state;
+    // console.log(orderDetail)
     return (
       <View className='order-edit-wrapper'>
         <View className='address-info'
@@ -326,7 +337,7 @@ export default class OrderEdit extends Component {
         </View>
         <Image className='addr-line' mode='aspectFill' src={addrLineImage}></Image>
 
-        <StoreCurrent />
+        <StoreCurrent storeId={orderDetail.storeId}/>
 
         <View className='dist-mode'>
           <View className='module-list' 
@@ -408,10 +419,10 @@ export default class OrderEdit extends Component {
             <View className='key'>商品总额</View>
             <View className='value'>￥{orderDetail.totalPrice.toFixed(2)}</View>
           </View>
-          {/* <View className='module-list'>
+          <View className='module-list'>
             <View className='key'>运费</View>
-            <View className='value'>￥ 6.5</View>
-          </View> */}
+            <View className='value'>{orderDetail.expressFee ? `￥${orderDetail.expressFee.toFixed(2)}` : ''}</View>
+          </View>
           <View className='module-list'
             onClick={() => {
               Taro.navigateTo({

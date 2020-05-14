@@ -39,7 +39,7 @@ export default class nursingEffect extends Component {
             return (
               <View className="item" key={ele.id}>
                 <View className="title">{ele.title}</View>
-                <View className="name">{ele.goodzName}</View>
+                {/* <View className="name">{ele.goodzName}</View> */}
                 <View className="image-box">
                   <Image src={ele.image}></Image>
                 </View>

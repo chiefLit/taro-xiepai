@@ -40,11 +40,15 @@ export default class storeItem extends Component {
         <View className="title">{storeVo.name}</View>
         <View className="address desc">
           <View className="at-icon at-icon-map-pin"></View>
-          <Text>{storeVo.provinceName} {storeVo.cityName} {storeVo.countyName} {storeVo.describe}</Text>
+          <Text>{storeVo.provinceName}{storeVo.cityName}{storeVo.countyName}{storeVo.describe}</Text>
         </View>
-        <View className="business-hours desc">
+        {/* <View className="business-hours desc">
           <View className="at-icon at-icon-clock"></View>
           <Text>{storeVo.businessHour}</Text>
+        </View> */}
+        <View className="business-hours desc">
+          <View className="at-icon at-icon-phone"></View>
+          <Text>{storeVo.phone}</Text>
         </View>
       </View>
     );

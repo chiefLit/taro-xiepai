@@ -28,8 +28,13 @@ export default class DoorDate extends Component {
     ]
   }
 
+  /**
+   * 设置时间列表
+   * value 日期列表索引：0表示今天
+   */
   setHourList = (value) => {
     let hourList = []
+    // let dateList = [ ...this.state.multiRange[0] ]
     if (value === 0) {
       const nowHour = new Date().getHours()
       const todayStartHour = nowHour < 8 ? 8 : nowHour > 21 ? null : nowHour + 1
@@ -42,6 +47,7 @@ export default class DoorDate extends Component {
         }
       }
     } else {
+      // dateList.splice(0, 1)
       for (let hour = 8; hour < 22; hour++) {
         hourList.push({
           label: `${hour}:00 - ${hour + 1}:00`,

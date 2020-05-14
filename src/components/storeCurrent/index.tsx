@@ -47,6 +47,7 @@ export default class storeCurrent extends Component {
     this.setState({
       storeList
     });
+    return Promise.resolve(storeList)
   }
 
   async getCurrStore() {
@@ -62,12 +63,19 @@ export default class storeCurrent extends Component {
     this.setState({
       currStore
     });
-    return Promise.resolve()
+    return Promise.resolve(currStore)
   }
 
-  componentDidShow() {
-    this.getStoreList();
-    this.getCurrStore();
+  async componentDidShow() {
+    const storeList = await this.getStoreList();
+    if (!this.props.storeId) {
+      this.getCurrStore();
+    } else {
+      const currStore = storeList.find((item: any) => item.id === this.props.storeId)
+      this.setState({
+        currStore
+      });
+    }
     this.setState({
       isAction: false
     });

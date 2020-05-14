@@ -85,6 +85,7 @@ export default class storeChange extends Component {
         }}>
           <Image src={mapPinImage}></Image>
           <Text>{currStore.name}</Text>
+          <View className='at-icon at-icon-chevron-right'></View>
         </View>
 
         <AtActionSheet isOpened={isAction}>

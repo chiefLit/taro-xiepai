@@ -286,17 +286,6 @@ export default class OrderDetail extends Component {
               })
             }
           </View>
-          {/* <View className='module-list'>
-            <View className='key'>运费</View>
-            <View className='value'>￥{orderDetail.expressFee.toFixed(2)}</View>
-          </View> */}
-          {/* <View className='module-list'>
-            <View className='key'>优惠券</View>
-            <View className='value'>
-              {orderDetail.couponId ? <Text>-￥{orderDetail.couponAmount}</Text> : '未使用'}
-            </View>
-            {orderDetail.status === undefined ? <AtIcon value='chevron-right' size='15' color='#999'></AtIcon> : null}
-          </View> */}
         </View>
 
         <View className='order-price'>
