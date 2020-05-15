@@ -46,7 +46,6 @@ export default class ServicePrice extends Component {
         icon: "none"
       })
     } else {
-      console.log(this.state.storeList)
       this.setState(preState => {
         let preStoreList = preState.storeList
         preStoreList[index].serviceList = serviceData.object

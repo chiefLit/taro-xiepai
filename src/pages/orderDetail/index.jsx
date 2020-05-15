@@ -224,7 +224,10 @@ export default class OrderDetail extends Component {
             })
           }}
         >
-          <View className='status-value'>{orderStatusToValue(orderDetail.status, 0)} &gt;</View>
+          <View className='status-value'>
+            {orderStatusToValue(orderDetail.status, 0)} 
+            <View className='at-icon at-icon-chevron-right'></View>
+          </View>
           <View className='status-desc'>
             {
               orderDetail.status === -2 ?
@@ -339,7 +342,7 @@ export default class OrderDetail extends Component {
           </Block> : null}
           {orderDetail.status === 1 ? <Block>
             <AtButton className='type1' full onClick={this.orderCancel.bind(this)}>取消订单</AtButton>
-            <AtButton className='type2' full onClick={this.toEditExpressInfo.bind(this)}>填写快递信息</AtButton>
+            {/* <AtButton className='type2' full onClick={this.toEditExpressInfo.bind(this)}>填写快递信息</AtButton> */}
           </Block> : null}
 
           {[2, 3, 4, 5, 7, 8, 9, -1, -2].some(ele => ele === orderDetail.status) ? <Block>

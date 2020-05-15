@@ -2,8 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.less'
 
-import { storeInfo } from '../../config'
-
 import * as storeApi from "../../api/store";
 
 export default class Aboutus extends Component {
@@ -60,10 +58,8 @@ export default class Aboutus extends Component {
           })
         }
         <View className='footer-container'>
-          {/* <View> */}
           <Text>杭州丝内刻科技有限公司</Text>
           <Text>享有本服务最终解释权</Text>
-          {/* </View> */}
         </View>
       </View>
     )
