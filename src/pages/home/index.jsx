@@ -15,7 +15,14 @@ import { STORAGE_NAME } from '../../config'
 
 const qxImage = 'https://dev-file.sneakerpai.com/assets/images/qx.png'
 const xfImage = 'https://dev-file.sneakerpai.com/assets/images/xf.png'
-const washResult1 = 'https://dev-file.sneakerpai.com/assets/images/wash-result1.png'
+const washResultList = [
+  'https://dev-file.sneakerpai.com/assets/images/wash-result1.png',
+  'https://dev-file.sneakerpai.com/assets/images/wash-result2.png',
+  'https://dev-file.sneakerpai.com/assets/images/wash-result3.png',
+  'https://dev-file.sneakerpai.com/assets/images/wash-result4.png',
+  'https://dev-file.sneakerpai.com/assets/images/wash-result5.png',
+  'https://dev-file.sneakerpai.com/assets/images/wash-result6.png',
+]
 
 export default class Home extends Component {
   constructor() {
@@ -321,7 +328,18 @@ export default class Home extends Component {
             </View>
           </View>
           <View className="image-box">
-            <Image src={washResult1}></Image>
+            <Swiper className=''>
+              {
+                washResultList.map((ele, index) => {
+                  return (
+                    <SwiperItem className='swiper-item' key={index} >
+                      <Image mode='aspectFill' src={ele}></Image>
+                    </SwiperItem>
+                  )
+                })
+              }
+            </Swiper>
+            {/* <Image src={washResult1}></Image> */}
           </View>
         </View>
         {/* 常见问题 */}

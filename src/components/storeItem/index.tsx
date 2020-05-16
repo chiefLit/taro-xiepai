@@ -3,7 +3,7 @@ import { View, Text } from "@tarojs/components";
 import "./index.less";
 import "taro-ui/dist/style/components/icon.scss";
 
-interface storeVo{
+interface IStoreVo {
   address: string,
   baiduGpsLocation: string,
   businessHour: string,
@@ -20,7 +20,11 @@ interface storeVo{
   status: number
 }
 
-export default class storeItem extends Component {
+interface IProps {
+  storeVo: IStoreVo
+}
+
+export default class storeItem extends Component<IProps> {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -29,7 +33,7 @@ export default class storeItem extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props)
   }
 
@@ -46,9 +50,13 @@ export default class storeItem extends Component {
           <View className="at-icon at-icon-clock"></View>
           <Text>{storeVo.businessHour}</Text>
         </View> */}
-        <View className="business-hours desc">
+        <View className="business-hours desc" onClick={() => {
+          Taro.makePhoneCall({
+            phoneNumber: String(storeVo.phone)
+          })
+        }}>
           <View className="at-icon at-icon-phone"></View>
-          <Text>{storeVo.phone}</Text>
+          <Text className="phone">{storeVo.phone}</Text>
         </View>
       </View>
     );
