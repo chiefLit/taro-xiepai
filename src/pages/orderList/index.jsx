@@ -190,7 +190,7 @@ export default class OrderList extends Component {
         </View>
         <View className='item-footer'>
           {item.status === 0 ? <AtButton>去支付</AtButton> : null}
-          {item.status === 1 ? <AtButton>补充物流信息</AtButton> : null}
+          {/* {item.status === 1 ? <AtButton>补充物流信息</AtButton> : null} */}
         </View>
       </View>
     )

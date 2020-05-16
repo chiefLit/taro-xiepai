@@ -328,7 +328,7 @@ export default class Home extends Component {
             </View>
           </View>
           <View className="image-box">
-            <Swiper className=''>
+            <Swiper className='nursing-effect-swiper'>
               {
                 washResultList.map((ele, index) => {
                   return (
