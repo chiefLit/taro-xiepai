@@ -1,6 +1,6 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image } from "@tarojs/components";
-// import { AtActionSheet, AtActionSheetItem } from "taro-ui";
+import { AtActionSheet, AtActionSheetItem } from "taro-ui";
 import "./index.less";
 import "taro-ui/dist/style/components/icon.scss";
 
@@ -8,11 +8,7 @@ import * as storeApi from "../../api/store";
 
 const mapPinImage = 'https://dev-file.sneakerpai.com/assets/images/map-pin.png'
 
-interface IProps {
-  onChange?: Function
-}
-
-export default class storeChange extends Component<IProps> {
+export default class storeChange extends Component {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -21,7 +17,7 @@ export default class storeChange extends Component<IProps> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
-  constructor(props: IProps) {
+  constructor(props: any) {
     super(props)
   }
 
@@ -77,42 +73,9 @@ export default class storeChange extends Component<IProps> {
     });
   }
 
-  renderStoreList() {
-    const { storeList, currStore } = this.state;
-    return (
-      <View className="store-list-wrapper">
-        {
-          storeList.map((item: any) => <div key={item.id}>
-
-            <View
-              className={item.id === currStore.id ? 'store-item-wrapper active' : 'store-item-wrapper'}
-              onClick={() => {
-                if (currStore.id !== item.id) {
-                  this.setCurrStore(item);
-                }
-                this.setState({
-                  isAction: false
-                })
-              }}
-            >
-              <View className="title">{item.name}</View>
-              <View className="address desc">
-                <View className="at-icon at-icon-map-pin"></View>
-                <Text>{item.provinceName}{item.cityName}{item.countyName}{item.describe}</Text>
-              </View>
-              <View className="business-hours desc">
-                <View className="at-icon at-icon-phone"></View>
-                <Text>{item.phone}</Text>
-              </View>
-            </View>
-          </div>)
-        }
-      </View>
-    )
-  }
-
   render() {
-    const { currStore, isAction } = this.state;
+    const { storeList, currStore, isAction } = this.state;
+    const { onChange } = this.props
     return (
       <View className="store-change-wrapper">
         <View className="address-box" onClick={() => {
@@ -124,16 +87,29 @@ export default class storeChange extends Component<IProps> {
           <Text>{currStore.name}</Text>
           <View className='at-icon at-icon-chevron-right'></View>
         </View>
-        {isAction ?
-          <View>
-            <View className="mask" onClick={() => {
-              this.setState({
-                isAction: false
-              })
-            }}></View>
-            {this.renderStoreList()}
-          </View>
-          : null}
+
+        <AtActionSheet isOpened={isAction}>
+          {storeList.map((item: any) => {
+            return (
+              <AtActionSheetItem key={item.id}
+                onClick={() => {
+                  if (currStore.id !== item.id) {
+                    this.setCurrStore(item).then(() => {
+                      onChange && onChange()
+                    });
+                  }
+                  this.setState({
+                    isAction: false
+                  })
+                }}>
+                <View className="name">{item.name}</View>
+                <View className="address">
+                  {item.provinceName} {item.cityName} {item.countyName} {item.describe}
+                </View>
+              </AtActionSheetItem>
+            );
+          })}
+        </AtActionSheet>
       </View>
     );
   }

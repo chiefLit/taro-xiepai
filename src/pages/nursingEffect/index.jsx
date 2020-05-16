@@ -28,6 +28,30 @@ export default class nursingEffect extends Component {
       title: '匡威 低帮 白色',
       goodzName: '中级清洗',
       image: 'https://dev-file.sneakerpai.com/assets/images/wash-result2.png'
+    },
+    {
+      id: 3,
+      title: 'Fendi 芬迪 黑色',
+      goodzName: '中级清洗',
+      image: 'https://dev-file.sneakerpai.com/assets/images/wash-result3.png'
+    },
+    {
+      id: 4,
+      title: 'Yeezy 350 脏黄 鞋带反光',
+      goodzName: '中级清洗',
+      image: 'https://dev-file.sneakerpai.com/assets/images/wash-result4.png'
+    },
+    {
+      id: 5,
+      title: 'Nike Air Foampostite Pro Wool Fleece 喷泡',
+      goodzName: '中级清洗',
+      image: 'https://dev-file.sneakerpai.com/assets/images/wash-result5.png'
+    },
+    {
+      id: 6,
+      title: 'Off-White X Air Jordan 1 Retro High White 白色',
+      goodzName: '中级清洗',
+      image: 'https://dev-file.sneakerpai.com/assets/images/wash-result6.png'
     }
   ]
 
